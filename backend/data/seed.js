@@ -1,0 +1,62 @@
+const mongoose = require('mongoose');
+const Producto = require('../models/Producto');
+const Servicio = require('../models/Servicio');
+const Promocion = require('../models/Promocion');
+
+const conectarDB = async () => {
+  try {
+    await mongoose.connect('mongodb://localhost:27017/arosreto');
+    console.log('Base de datos conectada');
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
+};
+
+const productos = [
+  { nombre: 'Aro Deportivo 18"', categoria: 'aros', descripcion: 'Aro de aleación ligera diseño deportivo 5 radios', precio: 450, marca: 'MMX', medidas: '18x8', stock: 10 },
+  { nombre: 'Aro Clásico 16"', categoria: 'aros', descripcion: 'Aro clásico cromado para vehículos sedan', precio: 320, marca: 'Dream', medidas: '16x7', stock: 15 },
+  { nombre: 'Aro Todo Terreno 20"', categoria: 'aros', descripcion: 'Aro robusto para camionetas SUV 4x4', precio: 580, marca: 'Fuel', medidas: '20x9', stock: 8 },
+  { nombre: 'Llantas Pirelli 225/45R17', categoria: 'llantas', descripcion: 'Neumático deportivo de alto rendimiento', precio: 280, marca: 'Pirelli', medidas: '225/45R17', stock: 20 },
+  { nombre: 'Llantas Michelin 205/55R16', categoria: 'llantas', descripcion: 'Neumático de excelente durabilidad', precio: 250, marca: 'Michelin', medidas: '205/55R16', stock: 25 },
+  { nombre: 'Llantas Bridgestone 265/70R17', categoria: 'llantas', descripcion: 'Neumático para todo terreno', precio: 320, marca: 'Bridgestone', medidas: '265/70R17', stock: 12 },
+  { nombre: 'Kit de Neumáticos Run Flat', categoria: 'accesorios', descripcion: 'Kit antipinchazos para emergencias', precio: 85, marca: 'Slime', medidas: '', stock: 30 },
+  { nombre: 'Tapas de Válvulas LED', categoria: 'accesorios', descripcion: 'Tapas luminosas para válvulas de neumáticos', precio: 25, marca: 'AutoStyle', medidas: '', stock: 50 },
+  { nombre: 'Cámaras de Seguridad TPMS', categoria: 'accesorios', descripcion: 'Sensores de presión para neumáticos', precio: 150, marca: 'Orange', medidas: '', stock: 18 }
+];
+
+const servicios = [
+  { nombre: 'Reparación de Aros Aleación', tipo: 'reparacion', descripcion: 'Reparación profesional de aros de aleación: enderezado, soldadura y pintura', precio: 120, duracion: '2-3 días' },
+  { nombre: 'Reparación de Aros Acero', tipo: 'reparacion', descripcion: 'Enderezado y reparación de aros de acero', precio: 80, duracion: '1-2 días' },
+  { nombre: 'Pulido y Cromado', tipo: 'reparacion', descripcion: 'Pulido profesional y cromado de aros', precio: 150, duracion: '3-4 días' },
+  { nombre: 'Mantenimiento General', tipo: 'mantenimiento', descripcion: 'Revisión general, balanceo y alineación de aros y llantas', precio: 60, duracion: '2 horas' },
+  { nombre: 'Cambio de Neumáticos', tipo: 'mantenimiento', descripcion: 'Servicio de cambio y montaje de neumáticos nuevos', precio: 40, duracion: '1 hora' },
+  { nombre: 'Balanceo Electrónico', tipo: 'mantenimiento', descripcion: 'Balanceo electrónico de precisión para llantas', precio: 35, duracion: '30 min' },
+  { nombre: 'Delivery de Aros', tipo: 'delivery', descripcion: 'Entrega a domicilio de aros y llantas comprados en tienda', precio: 0, duracion: '24 horas' },
+  { nombre: 'Delivery de Reparaciones', tipo: 'delivery', descripcion: 'Recojo y entrega de aros reparados a domicilio', precio: 25, duracion: '24 horas' }
+];
+
+const promociones = [
+  { titulo: 'Descuento por Temporada', descripcion: '30% de descuento en reparación de aros de aleación', descuento: 30, codigo: 'TEMPORADA30' },
+  { titulo: 'Compra 3 Llantas y la 4ta Gratis', descripcion: 'En la compra de 3 llantas seleccionadas, llévate la cuarta completamente gratis', descuento: 25, codigo: 'LLANTA4' },
+  { titulo: 'Mantenimiento Premium', descripcion: 'Paquete completo de mantenimiento con 20% de descuento', descuento: 20, codigo: 'PREMIUM20' },
+  { titulo: 'Delivery Gratis', descripcion: 'Delivery gratuito en compras mayores a S/500', descuento: 100, codigo: 'DELIVERYFREE' },
+  { titulo: '2x1 en Accesorios', descripcion: 'Lleva 2 accesorios al precio de 1', descuento: 50, codigo: '2X1ACCE' }
+];
+
+const seed = async () => {
+  await conectarDB();
+
+  await Producto.deleteMany();
+  await Servicio.deleteMany();
+  await Promocion.deleteMany();
+
+  await Producto.insertMany(productos);
+  await Servicio.insertMany(servicios);
+  await Promocion.insertMany(promociones);
+
+  console.log('Datos insertados correctamente');
+  process.exit();
+};
+
+seed();

@@ -1,0 +1,189 @@
+.historia {
+  padding: 80px 0;
+  background: white;
+}
+
+.historia-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.historia-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  background: rgba(252, 185, 0, 0.15);
+  border: 1px solid rgba(252, 185, 0, 0.3);
+  border-radius: var(--radius-full);
+  color: var(--primary-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.historia-content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--secondary);
+  margin-bottom: 20px;
+}
+
+.historia-content p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.historia-content p strong {
+  color: var(--text-dark);
+}
+
+.historia-imagen-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.historia-icon {
+  font-size: 8rem;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.historia-imagen-badge {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 32px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badge-number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.badge-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mision-vision {
+  padding: 80px 0;
+  background: var(--bg-light);
+}
+
+.mv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.mv-card {
+  padding: 40px;
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.mv-card.mision {
+  background: linear-gradient(135deg, #005a87, #0077b6);
+  color: white;
+}
+
+.mv-card.vision {
+  background: linear-gradient(135deg, #fcb900, #e6a600);
+  color: var(--text-dark);
+}
+
+.mv-icon {
+  font-size: 2rem;
+  opacity: 0.2;
+  margin-bottom: 16px;
+}
+
+.mv-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.mv-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.valores {
+  padding: 80px 0;
+  background: white;
+}
+
+.valores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.valor-card {
+  padding: 32px;
+  text-align: center;
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.valor-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.valor-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 8px;
+}
+
+.valor-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .valores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .historia-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mv-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .valores-grid {
+    grid-template-columns: 1fr;
+  }
+}
