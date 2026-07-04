@@ -20,7 +20,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const AuthContext = createContext();
 
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   // ─── Obtener perfil del usuario desde el backend ───────────────
   const cargarUsuario = async (token) => {
     try {
-      const { data } = await axios.get('/api/auth/perfil', {
+      const { data } = await api.get('/api/auth/perfil', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsuario(data);
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
   // ─── Iniciar sesión ────────────────────────────────────────────
   const login = async (email, password) => {
-    const { data } = await axios.post('/api/auth/login', { email, password });
+    const { data } = await api.post('/api/auth/login', { email, password });
     localStorage.setItem('token', data.token);
     setToken(data.token);
     setUsuario({ _id: data._id, nombre: data.nombre, email: data.email });
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 
   // ─── Registrar nuevo usuario ───────────────────────────────────
   const registrar = async (datos) => {
-    const { data } = await axios.post('/api/auth/registrar', datos);
+    const { data } = await api.post('/api/auth/registrar', datos);
     localStorage.setItem('token', data.token);
     setToken(data.token);
     setUsuario({ _id: data._id, nombre: data.nombre, email: data.email });

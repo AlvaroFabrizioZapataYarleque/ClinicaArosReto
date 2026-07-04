@@ -18,7 +18,8 @@ const Promocion = require('../models/Promocion');
 
 const conectarDB = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/arosreto');
+    const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/arosreto';
+    await mongoose.connect(uri);
     console.log('Base de datos conectada');
   } catch (error) {
     console.error('Error:', error.message);
