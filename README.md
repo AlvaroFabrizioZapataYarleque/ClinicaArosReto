@@ -14,7 +14,8 @@ Plataforma web oficial de **Clínica de Aros Reto S.A.C.**, empresa peruana con 
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Requisitos Previos](#requisitos-previos)
 - [Instalación y Ejecución](#instalación-y-ejecución)
-- [Despliegue en GitHub Pages (Opcional)](#despliegue-en-github-pages-opcional)
+- [Documentación](#documentación)
+- [Producción](#producción)
 
 ## 📖 Descripción del Proyecto
 
@@ -119,7 +120,7 @@ ArosReto/
 ## ⚙️ Requisitos Previos
 
 - **Node.js** v18 o superior
-- **MongoDB** corriendo localmente (puerto por defecto 27017)
+- **MongoDB** corriendo localmente (puerto por defecto 27017) o cuenta en MongoDB Atlas
 - **npm** incluido con Node.js
 
 ## 🚀 Instalación y Ejecución
@@ -127,8 +128,8 @@ ArosReto/
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/TU_USUARIO/aros-reto.git
-cd aros-reto
+git clone https://github.com/AlvaroFabrizioZapataYarleque/ClinicaArosReto.git
+cd ClinicaArosReto
 ```
 
 ### 2. Backend
@@ -136,9 +137,14 @@ cd aros-reto
 ```bash
 cd backend
 npm install                    # Instalar dependencias
-npm run seed                   # Poblar base de datos con datos de ejemplo
+npm run seed                   # Poblar base de datos con datos de ejemplo (MongoDB local)
 npm run dev                    # Iniciar servidor (puerto 4000)
 ```
+
+> **⚠️ Si tu ISP bloquea SRV records** (error `querySrv ECONNREFUSED` al usar Atlas):
+> ```bash
+> node data/seed-atlas.js      # Seed usando Google DNS para resolver SRV
+> ```
 
 El backend se ejecutará en `http://localhost:4000`.
 
@@ -183,6 +189,22 @@ npm run build
 ```
 
 El build se genera en `frontend/dist/`.
+
+## Documentación
+
+| Documento | Descripción |
+|---|---|
+| [`docs/CONEXION_LOCAL.md`](docs/CONEXION_LOCAL.md) | Guía completa para ejecutar el proyecto localmente |
+| [`docs/DEPLOY.md`](docs/DEPLOY.md) | Despliegue en producción (Atlas + Render + Vercel) |
+| [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md) | Estructura del proyecto, modelos y API |
+| [`docs/GUIA_IA.md`](docs/GUIA_IA.md) | Contexto completo para asistentes de IA |
+
+## Producción
+
+| Servicio | URL |
+|---|---|
+| Backend API | [https://clinicaarosreto.onrender.com](https://clinicaarosreto.onrender.com) |
+| Frontend | [https://clinica-aros-reto.vercel.app](https://clinica-aros-reto.vercel.app) |
 
 ## 🤝 Contribuir
 
