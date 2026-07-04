@@ -1,3 +1,13 @@
+// ═══════════════════════════════════════════════════════════════
+// routes/productos.js — RUTAS DE PRODUCTOS
+//
+// GET    /api/productos           → Listar productos (?categoria=aros)
+// GET    /api/productos/:id       → Obtener por ID
+// POST   /api/productos           → Crear nuevo
+// PUT    /api/productos/:id       → Actualizar
+// DELETE /api/productos/:id       → Eliminar
+// ═══════════════════════════════════════════════════════════════
+
 const express = require('express');
 const router = express.Router();
 const {

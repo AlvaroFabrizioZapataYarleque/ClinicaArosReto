@@ -1,3 +1,15 @@
+// ═══════════════════════════════════════════════════════════════
+// components/PromotionsSection.jsx — SECCIÓN DE PROMOCIONES
+//
+// Muestra 3 promociones destacadas en la landing page.
+// Cada promoción tiene:
+//   • Badge con porcentaje de descuento
+//   • Código promocional para canjear
+//   • Indicador de "Por tiempo limitado"
+//
+// Incluye enlace "Ver todas" que redirige a /promociones.
+// ═══════════════════════════════════════════════════════════════
+
 import { Link } from 'react-router-dom';
 import { FaTag, FaArrowRight, FaClock, FaGift } from 'react-icons/fa';
 import './PromotionsSection.css';
@@ -30,6 +42,7 @@ const PromotionsSection = () => {
   return (
     <section className="promotions-section">
       <div className="container">
+        {/* Header con título y botón "Ver todas" */}
         <div className="promo-header">
           <div>
             <h2 className="section-title">Promociones Especiales</h2>
@@ -42,9 +55,11 @@ const PromotionsSection = () => {
           </Link>
         </div>
 
+        {/* Grid de promociones */}
         <div className="promo-grid">
           {promos.map((promo, idx) => (
             <div key={idx} className="promo-card" style={{ animationDelay: `${idx * 0.15}s` }}>
+              {/* Badge con el porcentaje de descuento */}
               <div className="promo-badge" style={{ background: promo.color }}>
                 <FaTag />
                 <span>-{promo.descuento}%</span>
@@ -52,6 +67,7 @@ const PromotionsSection = () => {
               <div className="promo-body">
                 <h3 className="promo-titulo">{promo.titulo}</h3>
                 <p className="promo-descripcion">{promo.descripcion}</p>
+                {/* Código promocional (border dashed) */}
                 <div className="promo-codigo">
                   <FaGift />
                   <span>Código: <strong>{promo.codigo}</strong></span>

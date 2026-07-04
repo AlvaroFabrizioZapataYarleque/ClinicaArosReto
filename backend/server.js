@@ -1,22 +1,35 @@
+// ═══════════════════════════════════════════════════════════════
+// server.js — PUNTO DE ENTRADA DEL BACKEND
+// Clínica de Aros Reto S.A.C.
+// 
+// Configura y levanta el servidor Express con:
+//   • Conexión a MongoDB (mongoose)
+//   • Middleware CORS para peticiones cruzadas
+//   • Parseo de JSON en body
+//   • Rutas de la API (auth, productos, servicios, promociones)
+//   • Manejador global de errores
+// ═══════════════════════════════════════════════════════════════
+
 const express = require('express');
 const cors = require('cors');
 const { conectarDB } = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;          // Puerto: 4000 por defecto, o el que defina la variable de entorno
 
-conectarDB();
+conectarDB();                                    // Inicia conexión a MongoDB
 
-app.use(cors());
-app.use(express.json());
+app.use(cors());                                 // Permite peticiones desde cualquier origen (frontend)
+app.use(express.json());                         // Convierte el body de las requests a JSON automáticamente
 
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/productos', require('./routes/productos'));
-app.use('/api/servicios', require('./routes/servicios'));
-app.use('/api/promociones', require('./routes/promociones'));
+// ─── Rutas de la API ──────────────────────────────────────────
+app.use('/api/auth', require('./routes/auth'));           // Autenticación: login, registro, perfil
+app.use('/api/productos', require('./routes/productos')); // CRUD de productos (aros, llantas, accesorios)
+app.use('/api/servicios', require('./routes/servicios')); // CRUD de servicios (reparación, mantenimiento, delivery)
+app.use('/api/promociones', require('./routes/promociones')); // CRUD de promociones
 
-app.use(errorHandler);
+app.use(errorHandler);                           // Middleware que captura errores no controlados
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);

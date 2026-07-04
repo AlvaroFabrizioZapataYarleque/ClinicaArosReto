@@ -1,3 +1,15 @@
+// ═══════════════════════════════════════════════════════════════
+// pages/Promociones.jsx — PÁGINA DE PROMOCIONES
+//
+// Grid completo de todas las promociones disponibles.
+// Muestra:
+//   • Badge con porcentaje de descuento (color variable según índice)
+//   • Título de la promoción
+//   • Descripción detallada
+//   • Código promocional destacado
+//   • Fecha de vigencia
+// ═══════════════════════════════════════════════════════════════
+
 import { FaTag, FaGift, FaClock, FaPercent } from 'react-icons/fa';
 import './Promociones.css';
 
@@ -11,6 +23,7 @@ const Promociones = () => {
     { titulo: 'Descuento por Referidos', descripcion: 'Recomienda a un amigo y ambos obtienen 15% de descuento', descuento: 15, codigo: 'REFERIDO', vigencia: 'Permanente' }
   ];
 
+  // Colores alternados para los badges de cada promoción
   const getColor = (idx) => {
     const colores = ['var(--secondary)', 'var(--primary)', 'var(--secondary-light)', 'var(--primary-dark)', 'var(--accent)', 'var(--secondary-dark)'];
     return colores[idx % colores.length];
@@ -18,6 +31,7 @@ const Promociones = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
+      {/* Header con gradiente */}
       <div className="page-header">
         <div className="container">
           <h1 className="page-title">Promociones</h1>
@@ -27,11 +41,13 @@ const Promociones = () => {
         </div>
       </div>
 
+      {/* Grid de promociones */}
       <section className="promos-page">
         <div className="container">
           <div className="promos-grid">
             {promociones.map((promo, idx) => (
               <div key={idx} className="promo-card-page">
+                {/* Badge con número de descuento */}
                 <div className="promo-card-badge" style={{ background: getColor(idx) }}>
                   <FaPercent />
                   <span>{promo.descuento}%</span>
@@ -39,10 +55,12 @@ const Promociones = () => {
                 <div className="promo-card-body">
                   <h3>{promo.titulo}</h3>
                   <p>{promo.descripcion}</p>
+                  {/* Código promocional */}
                   <div className="promo-card-code">
                     <FaTag />
                     <span>Código: <strong>{promo.codigo}</strong></span>
                   </div>
+                  {/* Vigencia */}
                   <div className="promo-card-footer">
                     <FaClock />
                     <span>Válido hasta: {promo.vigencia}</span>

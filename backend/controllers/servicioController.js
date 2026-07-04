@@ -1,5 +1,20 @@
+// ═══════════════════════════════════════════════════════════════
+// controllers/servicioController.js — CRUD DE SERVICIOS
+//
+// Endpoints (todos en /api/servicios):
+//   GET    /            → Listar (filtro opcional: ?tipo=reparacion)
+//   GET    /:id         → Obtener uno por ID
+//   POST   /            → Crear nuevo
+//   PUT    /:id         → Actualizar
+//   DELETE /:id         → Eliminar
+//
+// Tipos de servicio: reparacion | mantenimiento | delivery
+// ═══════════════════════════════════════════════════════════════
+
 const Servicio = require('../models/Servicio');
 
+// ─── GET /api/servicios ────────────────────────────────────────
+// Lista servicios. Filtro opcional: ?tipo=reparacion
 const obtenerServicios = async (req, res, next) => {
   try {
     const { tipo } = req.query;
@@ -12,6 +27,7 @@ const obtenerServicios = async (req, res, next) => {
   }
 };
 
+// ─── GET /api/servicios/:id ────────────────────────────────────
 const obtenerServicio = async (req, res, next) => {
   try {
     const servicio = await Servicio.findById(req.params.id);
@@ -22,6 +38,7 @@ const obtenerServicio = async (req, res, next) => {
   }
 };
 
+// ─── POST /api/servicios ───────────────────────────────────────
 const crearServicio = async (req, res, next) => {
   try {
     const servicio = await Servicio.create(req.body);
@@ -31,6 +48,7 @@ const crearServicio = async (req, res, next) => {
   }
 };
 
+// ─── PUT /api/servicios/:id ────────────────────────────────────
 const actualizarServicio = async (req, res, next) => {
   try {
     const servicio = await Servicio.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -41,6 +59,7 @@ const actualizarServicio = async (req, res, next) => {
   }
 };
 
+// ─── DELETE /api/servicios/:id ─────────────────────────────────
 const eliminarServicio = async (req, res, next) => {
   try {
     const servicio = await Servicio.findByIdAndDelete(req.params.id);

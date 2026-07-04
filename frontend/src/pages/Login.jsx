@@ -1,3 +1,17 @@
+// ═══════════════════════════════════════════════════════════════
+// pages/Login.jsx — PÁGINA DE INICIO DE SESIÓN
+//
+// Formulario de login con:
+//   • Campo de email
+//   • Campo de contraseña (con toggle mostrar/ocultar)
+//   • Validación de campos requeridos
+//   • Manejo de errores (credenciales inválidas)
+//   • Redirección al inicio tras login exitoso
+//   • Enlace a registro para nuevos usuarios
+//
+// Usa AuthContext.login() para autenticar.
+// ═══════════════════════════════════════════════════════════════
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -7,9 +21,9 @@ import './Auth.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [verPassword, setVerPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [cargando, setCargando] = useState(false);
+  const [verPassword, setVerPassword] = useState(false);  // Toggle ver/ocultar contraseña
+  const [error, setError] = useState('');                  // Mensaje de error
+  const [cargando, setCargando] = useState(false);         // Estado de carga
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -19,7 +33,7 @@ const Login = () => {
     setCargando(true);
     try {
       await login(email, password);
-      navigate('/');
+      navigate('/');                    // Redirige al inicio tras login exitoso
     } catch (err) {
       setError(err.response?.data?.mensaje || 'Error al iniciar sesión');
     } finally {
@@ -31,19 +45,20 @@ const Login = () => {
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-card">
+          {/* Header con icono corporativo */}
           <div className="auth-header">
             <FaRulerCombined className="auth-logo-icon" />
             <h2>Bienvenido de vuelta</h2>
             <p>Ingresa a tu cuenta de Aros Reto</p>
           </div>
 
+          {/* Mensaje de error (si existe) */}
           {error && <div className="auth-error">{error}</div>}
 
           <form onSubmit={handleSubmit} className="auth-form">
+            {/* Campo email */}
             <div className="form-group">
-              <label>
-                <FaUser /> Email
-              </label>
+              <label><FaUser /> Email</label>
               <input
                 type="email"
                 placeholder="tu@email.com"
@@ -53,10 +68,9 @@ const Login = () => {
               />
             </div>
 
+            {/* Campo contraseña con toggle */}
             <div className="form-group">
-              <label>
-                <FaLock /> Contraseña
-              </label>
+              <label><FaLock /> Contraseña</label>
               <div className="password-input">
                 <input
                   type={verPassword ? 'text' : 'password'}
@@ -80,10 +94,9 @@ const Login = () => {
             </button>
           </form>
 
+          {/* Enlace a registro */}
           <div className="auth-footer">
-            <p>
-              ¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link>
-            </p>
+            <p>¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link></p>
           </div>
         </div>
       </div>

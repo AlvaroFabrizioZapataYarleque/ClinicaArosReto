@@ -1,31 +1,64 @@
+/* ═══════════════════════════════════════════════════════════════
+   styles/global.css — DESIGN SYSTEM GLOBAL
+   
+   Define las variables CSS, estilos base, animaciones y
+   componentes reutilizables de toda la aplicación.
+   
+   PALETA CORPORATIVA:
+     • Primario:  #fcb900 (dorado)
+     • Secundario: #005a87 (azul profundo)
+     • Acento:     #023e8a (azul oscuro)
+   
+   GRADIENTES:
+     • --gradient-primary:  Azul degradado (fondos de secciones)
+     • --gradient-accent:   Dorado degradado (botones, badges)
+     • --gradient-hero:     Gradiente oscuro para el hero
+     • --gradient-card:     Sutil blanco para tarjetas
+   ═══════════════════════════════════════════════════════════════ */
+
 :root {
-  --primary: #fcb900;
-  --primary-dark: #e6a600;
-  --primary-light: #ffd60a;
-  --secondary: #005a87;
-  --secondary-dark: #003d5c;
-  --secondary-light: #0077b6;
-  --accent: #023e8a;
-  --gradient-primary: linear-gradient(135deg, #005a87 0%, #0077b6 50%, #023e8a 100%);
-  --gradient-accent: linear-gradient(135deg, #fcb900 0%, #ffd60a 50%, #e6a600 100%);
-  --gradient-hero: linear-gradient(135deg, #003d5c 0%, #005a87 40%, #0077b6 100%);
-  --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  /* ─── Colores corporativos ─────────────────────────────── */
+  --primary: #fcb900;          /* Dorado principal - botones, badges, acentos */
+  --primary-dark: #e6a600;     /* Dorado oscuro - hover states */
+  --primary-light: #ffd60a;    /* Dorado claro - variante */
+
+  --secondary: #005a87;        /* Azul principal - headers, textos importantes */
+  --secondary-dark: #003d5c;   /* Azul oscuro - fondos oscuros */
+  --secondary-light: #0077b6;  /* Azul claro - enlaces, hover */
+  --accent: #023e8a;           /* Azul acento - variante oscura */
+
+  /* ─── Gradientes ────────────────────────────────────────── */
+  --gradient-primary: linear-gradient(135deg, #005a87 0%, #0077b6 50%, #023e8a 100%);  /* Fondos de secciones */
+  --gradient-accent: linear-gradient(135deg, #fcb900 0%, #ffd60a 50%, #e6a600 100%);   /* Botones, badges */
+  --gradient-hero: linear-gradient(135deg, #003d5c 0%, #005a87 40%, #0077b6 100%);     /* Banner principal */
+  --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);                  /* Tarjetas */
+
+  /* ─── Textos ────────────────────────────────────────────── */
   --text-dark: #1a1a2e;
   --text-light: #ffffff;
   --text-muted: #6c757d;
+
+  /* ─── Fondos ────────────────────────────────────────────── */
   --bg-light: #f8f9fa;
   --bg-dark: #003d5c;
+
+  /* ─── Sombras ───────────────────────────────────────────── */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.15);
   --shadow-glow: 0 0 20px rgba(252, 185, 0, 0.3);
+
+  /* ─── Bordes redondeados ────────────────────────────────── */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-full: 50px;
+
+  /* ─── Transiciones ──────────────────────────────────────── */
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ─── Reset y estilos base ──────────────────────────────── */
 * {
   margin: 0;
   padding: 0;
@@ -44,26 +77,18 @@ body {
   overflow-x: hidden;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; height: auto; }
 
-ul {
-  list-style: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
+/* ─── Contenedor responsive ──────────────────────────────── */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
+/* ─── Títulos de sección ─────────────────────────────────── */
 .section-title {
   font-size: 2.5rem;
   font-weight: 800;
@@ -85,6 +110,7 @@ img {
   margin-right: auto;
 }
 
+/* ─── Botones reutilizables ──────────────────────────────── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -132,6 +158,7 @@ img {
   border-color: transparent;
 }
 
+/* ─── Tarjetas ────────────────────────────────────────────── */
 .card {
   background: var(--gradient-card);
   border-radius: var(--radius-md);
@@ -145,32 +172,16 @@ img {
   box-shadow: var(--shadow-md);
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* ─── Scrollbar personalizado ────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-light); }
+::-webkit-scrollbar-thumb { background: var(--secondary-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-light);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--secondary-light);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary);
-}
-
+/* ─── Animaciones ─────────────────────────────────────────── */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
@@ -182,11 +193,8 @@ img {
   animation: fadeInUp 0.6s ease forwards;
 }
 
+/* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .section-title {
-    font-size: 1.8rem;
-  }
-  .container {
-    padding: 0 16px;
-  }
+  .section-title { font-size: 1.8rem; }
+  .container { padding: 0 16px; }
 }

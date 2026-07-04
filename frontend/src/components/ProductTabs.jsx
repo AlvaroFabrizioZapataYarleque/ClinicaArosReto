@@ -1,3 +1,20 @@
+// ═══════════════════════════════════════════════════════════════
+// components/ProductTabs.jsx — TABS DE PRODUCTOS
+//
+// Muestra productos organizados por categorías en tabs.
+// Categorías: Aros | Llantas | Accesorios
+//
+// Props:
+//   limitado (boolean, opcional)
+//     • true  → Muestra solo 4 productos (usado en landing page)
+//     • false → Muestra todos (usado en página /productos)
+//
+// Estados:
+//   activo → Controla qué tab está seleccionada (aros / llantas / accesorios)
+//
+// Los datos son estáticos (mock). En producción se conectarían a la API.
+// ═══════════════════════════════════════════════════════════════
+
 import { useState } from 'react';
 import { FaStar, FaShoppingCart } from 'react-icons/fa';
 import { GiCarWheel, GiTireTracks } from 'react-icons/gi';
@@ -5,35 +22,38 @@ import { HiOutlineSparkles } from 'react-icons/hi';
 import './ProductTabs.css';
 
 const ProductTabs = ({ limitado = false }) => {
-  const [activo, setActivo] = useState('aros');
+  const [activo, setActivo] = useState('aros');   // Tab seleccionada por defecto: aros
 
+  // Configuración de las tabs
   const tabs = [
     { id: 'aros', label: 'Aros', icon: GiCarWheel },
     { id: 'llantas', label: 'Llantas', icon: GiTireTracks },
     { id: 'accesorios', label: 'Accesorios', icon: HiOutlineSparkles }
   ];
 
+  // Datos mock de productos (cada objeto representa un producto)
   const productos = {
     aros: [
-      { nombre: 'Aro Deportivo 18"', precio: 'S/450', imagen: '', marca: 'MMX', descripcion: 'Aleación ligera 5 radios', destacado: true },
-      { nombre: 'Aro Clásico 16"', precio: 'S/320', imagen: '', marca: 'Dream', descripcion: 'Cromado para sedan', destacado: false },
-      { nombre: 'Aro Todo Terreno 20"', precio: 'S/580', imagen: '', marca: 'Fuel', descripcion: 'Robusto para SUV 4x4', destacado: true },
-      { nombre: 'Aro Deportivo 17"', precio: 'S/390', imagen: '', marca: 'Enkei', descripcion: 'Diseño racing', destacado: false }
+      { nombre: 'Aro Deportivo 18"', precio: 'S/450', marca: 'MMX', descripcion: 'Aleación ligera 5 radios', destacado: true },
+      { nombre: 'Aro Clásico 16"', precio: 'S/320', marca: 'Dream', descripcion: 'Cromado para sedan', destacado: false },
+      { nombre: 'Aro Todo Terreno 20"', precio: 'S/580', marca: 'Fuel', descripcion: 'Robusto para SUV 4x4', destacado: true },
+      { nombre: 'Aro Deportivo 17"', precio: 'S/390', marca: 'Enkei', descripcion: 'Diseño racing', destacado: false }
     ],
     llantas: [
-      { nombre: 'Pirelli 225/45R17', precio: 'S/280', imagen: '', marca: 'Pirelli', descripcion: 'Alto rendimiento', destacado: true },
-      { nombre: 'Michelin 205/55R16', precio: 'S/250', imagen: '', marca: 'Michelin', descripcion: 'Excelente durabilidad', destacado: false },
-      { nombre: 'Bridgestone 265/70R17', precio: 'S/320', imagen: '', marca: 'Bridgestone', descripcion: 'Todo terreno', destacado: true },
-      { nombre: 'Goodyear 215/60R16', precio: 'S/230', imagen: '', marca: 'Goodyear', descripcion: 'Excelente agarre', destacado: false }
+      { nombre: 'Pirelli 225/45R17', precio: 'S/280', marca: 'Pirelli', descripcion: 'Alto rendimiento', destacado: true },
+      { nombre: 'Michelin 205/55R16', precio: 'S/250', marca: 'Michelin', descripcion: 'Excelente durabilidad', destacado: false },
+      { nombre: 'Bridgestone 265/70R17', precio: 'S/320', marca: 'Bridgestone', descripcion: 'Todo terreno', destacado: true },
+      { nombre: 'Goodyear 215/60R16', precio: 'S/230', marca: 'Goodyear', descripcion: 'Excelente agarre', destacado: false }
     ],
     accesorios: [
-      { nombre: 'Kit Run Flat', precio: 'S/85', imagen: '', marca: 'Slime', descripcion: 'Kit antipinchazos', destacado: false },
-      { nombre: 'Tapas Válvulas LED', precio: 'S/25', imagen: '', marca: 'AutoStyle', descripcion: 'Tapas luminosas', destacado: true },
-      { nombre: 'Sensores TPMS', precio: 'S/150', imagen: '', marca: 'Orange', descripcion: 'Presión neumáticos', destacado: false },
-      { nombre: 'Llantas Deportivas', precio: 'S/180', imagen: '', marca: 'Racing', descripcion: 'Aro de repuesto', destacado: false }
+      { nombre: 'Kit Run Flat', precio: 'S/85', marca: 'Slime', descripcion: 'Kit antipinchazos', destacado: false },
+      { nombre: 'Tapas Válvulas LED', precio: 'S/25', marca: 'AutoStyle', descripcion: 'Tapas luminosas', destacado: true },
+      { nombre: 'Sensores TPMS', precio: 'S/150', marca: 'Orange', descripcion: 'Presión neumáticos', destacado: false },
+      { nombre: 'Llantas Deportivas', precio: 'S/180', marca: 'Racing', descripcion: 'Aro de repuesto', destacado: false }
     ]
   };
 
+  // Si limitado es true, muestra solo los primeros 4 productos
   const items = limitado ? productos[activo].slice(0, 4) : productos[activo];
 
   return (
@@ -44,6 +64,7 @@ const ProductTabs = ({ limitado = false }) => {
           Explora nuestra amplia gama de aros, llantas y accesorios para tu vehículo
         </p>
 
+        {/* Barra de tabs */}
         <div className="tabs-header">
           {tabs.map(({ id, label, icon: Icon }) => (
             <button
@@ -57,26 +78,30 @@ const ProductTabs = ({ limitado = false }) => {
           ))}
         </div>
 
+        {/* Grid de productos */}
         <div className="tabs-content">
           {items.map((producto, idx) => (
             <div key={idx} className="product-card card" style={{ animationDelay: `${idx * 0.1}s` }}>
+              {/* Imagen placeholder con icono */}
               <div className="product-image">
                 <div className="product-placeholder">
                   <GiCarWheel className="placeholder-icon" />
                 </div>
+                {/* Badge "Destacado" si el producto lo es */}
                 {producto.destacado && (
                   <span className="product-badge">
                     <FaStar /> Destacado
                   </span>
                 )}
               </div>
+              {/* Información del producto */}
               <div className="product-info">
                 <span className="product-marca">{producto.marca}</span>
                 <h3 className="product-nombre">{producto.nombre}</h3>
                 <p className="product-descripcion">{producto.descripcion}</p>
                 <div className="product-footer">
                   <span className="product-precio">{producto.precio}</span>
-                  <button className="btn-buy">
+                  <button className="btn-buy" title="Agregar al carrito">
                     <FaShoppingCart />
                   </button>
                 </div>

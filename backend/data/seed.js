@@ -1,3 +1,16 @@
+// ═══════════════════════════════════════════════════════════════
+// data/seed.js — POBLAR BASE DE DATOS CON DATOS DE EJEMPLO
+//
+// Ejecutar con: npm run seed
+//
+// Inserta:
+//   • 9  productos  (3 aros, 3 llantas, 3 accesorios)
+//   • 8  servicios  (3 reparación, 3 mantenimiento, 2 delivery)
+//   • 5  promociones (con códigos de descuento)
+//
+// Antes de insertar, elimina todos los registros existentes.
+// ═══════════════════════════════════════════════════════════════
+
 const mongoose = require('mongoose');
 const Producto = require('../models/Producto');
 const Servicio = require('../models/Servicio');
@@ -13,6 +26,7 @@ const conectarDB = async () => {
   }
 };
 
+// Datos de ejemplo para productos
 const productos = [
   { nombre: 'Aro Deportivo 18"', categoria: 'aros', descripcion: 'Aro de aleación ligera diseño deportivo 5 radios', precio: 450, marca: 'MMX', medidas: '18x8', stock: 10 },
   { nombre: 'Aro Clásico 16"', categoria: 'aros', descripcion: 'Aro clásico cromado para vehículos sedan', precio: 320, marca: 'Dream', medidas: '16x7', stock: 15 },
@@ -25,6 +39,7 @@ const productos = [
   { nombre: 'Cámaras de Seguridad TPMS', categoria: 'accesorios', descripcion: 'Sensores de presión para neumáticos', precio: 150, marca: 'Orange', medidas: '', stock: 18 }
 ];
 
+// Datos de ejemplo para servicios
 const servicios = [
   { nombre: 'Reparación de Aros Aleación', tipo: 'reparacion', descripcion: 'Reparación profesional de aros de aleación: enderezado, soldadura y pintura', precio: 120, duracion: '2-3 días' },
   { nombre: 'Reparación de Aros Acero', tipo: 'reparacion', descripcion: 'Enderezado y reparación de aros de acero', precio: 80, duracion: '1-2 días' },
@@ -36,6 +51,7 @@ const servicios = [
   { nombre: 'Delivery de Reparaciones', tipo: 'delivery', descripcion: 'Recojo y entrega de aros reparados a domicilio', precio: 25, duracion: '24 horas' }
 ];
 
+// Datos de ejemplo para promociones
 const promociones = [
   { titulo: 'Descuento por Temporada', descripcion: '30% de descuento en reparación de aros de aleación', descuento: 30, codigo: 'TEMPORADA30' },
   { titulo: 'Compra 3 Llantas y la 4ta Gratis', descripcion: 'En la compra de 3 llantas seleccionadas, llévate la cuarta completamente gratis', descuento: 25, codigo: 'LLANTA4' },
@@ -47,10 +63,12 @@ const promociones = [
 const seed = async () => {
   await conectarDB();
 
+  // Limpiar colecciones existentes
   await Producto.deleteMany();
   await Servicio.deleteMany();
   await Promocion.deleteMany();
 
+  // Insertar datos nuevos
   await Producto.insertMany(productos);
   await Servicio.insertMany(servicios);
   await Promocion.insertMany(promociones);

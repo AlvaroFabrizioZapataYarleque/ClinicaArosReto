@@ -1,3 +1,17 @@
+// ═══════════════════════════════════════════════════════════════
+// pages/Servicios.jsx — PÁGINA DE SERVICIOS
+//
+// Lista detallada de todos los servicios ofrecidos.
+// Cada servicio se muestra en un bloque con:
+//   • Icono grande en un recuadro de color
+//   • Título del servicio
+//   • Descripción general
+//   • Lista de servicios específicos incluidos
+//   • Precio desde + duración estimada
+//
+// 3 categorías: Reparación, Mantenimiento, Delivery
+// ═══════════════════════════════════════════════════════════════
+
 import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import { GiCarWheel } from 'react-icons/gi';
 import './Servicios.css';
@@ -50,6 +64,7 @@ const Servicios = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
+      {/* Header con gradiente */}
       <div className="page-header">
         <div className="container">
           <h1 className="page-title">Servicios</h1>
@@ -59,16 +74,21 @@ const Servicios = () => {
         </div>
       </div>
 
+      {/* Bloques de servicio */}
       <section className="servicios-detalle">
         <div className="container">
           {servicios.map((servicio, idx) => (
             <div key={idx} className="servicio-bloque">
-              <div className="servicio-bloque-icono" style={{ background: `var(--${idx === 0 ? 'secondary' : idx === 1 ? 'primary' : 'secondary-light'})` }}>
+              {/* Icono del servicio con color distintivo */}
+              <div className="servicio-bloque-icono" style={{
+                background: `var(--${idx === 0 ? 'secondary' : idx === 1 ? 'primary' : 'secondary-light'})`
+              }}>
                 <servicio.icon />
               </div>
               <div className="servicio-bloque-content">
                 <h2>{servicio.titulo}</h2>
                 <p className="servicio-descripcion">{servicio.descripcion}</p>
+                {/* Lista de servicios incluidos */}
                 <ul className="servicio-detalles">
                   {servicio.detalles.map((det, i) => (
                     <li key={i}>
@@ -77,6 +97,7 @@ const Servicios = () => {
                     </li>
                   ))}
                 </ul>
+                {/* Precio y duración */}
                 <div className="servicio-meta">
                   <span className="servicio-precio">{servicio.precio}</span>
                   <span className="servicio-duracion"><FaTools /> {servicio.duracion}</span>

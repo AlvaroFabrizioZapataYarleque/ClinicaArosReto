@@ -1,3 +1,13 @@
+// ═══════════════════════════════════════════════════════════════
+// routes/promociones.js — RUTAS DE PROMOCIONES
+//
+// GET    /api/promociones         → Listar promociones vigentes
+// GET    /api/promociones/:id     → Obtener por ID
+// POST   /api/promociones         → Crear nueva
+// PUT    /api/promociones/:id     → Actualizar
+// DELETE /api/promociones/:id     → Eliminar
+// ═══════════════════════════════════════════════════════════════
+
 const express = require('express');
 const router = express.Router();
 const {

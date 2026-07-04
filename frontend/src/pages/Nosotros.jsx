@@ -1,8 +1,21 @@
+// ═══════════════════════════════════════════════════════════════
+// pages/Nosotros.jsx — PÁGINA INSTITUCIONAL
+//
+// Contiene la información completa de la empresa:
+//   1. Historia  → Origen de la empresa (2010), fundadores, crecimiento
+//   2. Misión    → Propósito de la empresa
+//   3. Visión    → Meta a futuro
+//   4. Valores   → 6 principios corporativos con iconos
+//
+// Datos proporcionados por Clínica de Aros Reto S.A.C.
+// ═══════════════════════════════════════════════════════════════
+
 import { FaShieldAlt, FaStar, FaComments, FaHandshake, FaUsers, FaHeart, FaQuoteLeft, FaArrowRight } from 'react-icons/fa';
 import { GiCarWheel } from 'react-icons/gi';
 import './Nosotros.css';
 
 const Nosotros = () => {
+  // Valores corporativos (cada uno con icono, título y descripción)
   const valores = [
     { icon: FaShieldAlt, titulo: 'Integridad', descripcion: 'Somos honestos y responsables en todo lo que ofrecemos.' },
     { icon: FaStar, titulo: 'Calidad', descripcion: 'Ofrecemos el servicio de alta calidad.' },
@@ -14,26 +27,28 @@ const Nosotros = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
+      {/* Header */}
       <div className="page-header">
         <div className="container">
           <h1 className="page-title">Nosotros</h1>
-          <p className="page-subtitle">
-            Conoce nuestra historia, misión y valores
-          </p>
+          <p className="page-subtitle">Conoce nuestra historia, misión y valores</p>
         </div>
       </div>
 
+      {/* ─── HISTORIA ─────────────────────────────────────────── */}
       <section className="historia">
         <div className="container">
           <div className="historia-grid">
+            {/* Texto de la historia */}
             <div className="historia-content">
               <span className="historia-badge">Nuestra Historia</span>
               <h2>Clínica de Aros Reto S.A.C.</h2>
               <p>
-                La Empresa inicio sus actividades el <strong>01 de octubre del 2010</strong> con el nombre de <strong>AROS RETO</strong>,
-                fundada por el Sr. <strong>Julio Reto Sosa</strong>, la cual después tuvo el apoyo de su hermano
-                <strong> Andrés Reto Sosa</strong>. Ellos formaron parte de varias empresas dedicadas a la reparación
-                de aros y se especializaron e invirtieron un capital para la creación de la empresa.
+                La Empresa inicio sus actividades el <strong>01 de octubre del 2010</strong> con el nombre de{' '}
+                <strong>AROS RETO</strong>, fundada por el Sr. <strong>Julio Reto Sosa</strong>, la cual después
+                tuvo el apoyo de su hermano <strong>Andrés Reto Sosa</strong>. Ellos formaron parte de varias
+                empresas dedicadas a la reparación de aros y se especializaron e invirtieron un capital para
+                la creación de la empresa.
               </p>
               <p>
                 Con la satisfacción del cliente como objetivo principal, la empresa transitó un ininterrumpido
@@ -50,6 +65,7 @@ const Nosotros = () => {
                 contamos con el personal adecuado para alcanzar el éxito.
               </p>
             </div>
+            {/* Imagen decorativa con gradiente y badge de años */}
             <div className="historia-imagen">
               <div className="historia-imagen-box">
                 <GiCarWheel className="historia-icon" />
@@ -63,9 +79,11 @@ const Nosotros = () => {
         </div>
       </section>
 
+      {/* ─── MISIÓN Y VISIÓN ──────────────────────────────────── */}
       <section className="mision-vision">
         <div className="container">
           <div className="mv-grid">
+            {/* Tarjeta de Misión (fondo azul) */}
             <div className="mv-card mision">
               <FaQuoteLeft className="mv-icon" />
               <h3>Misión</h3>
@@ -76,6 +94,7 @@ const Nosotros = () => {
                 confianza, seguridad y satisfacción.
               </p>
             </div>
+            {/* Tarjeta de Visión (fondo dorado) */}
             <div className="mv-card vision">
               <FaQuoteLeft className="mv-icon" />
               <h3>Visión</h3>
@@ -90,12 +109,11 @@ const Nosotros = () => {
         </div>
       </section>
 
+      {/* ─── VALORES ───────────────────────────────────────────── */}
       <section className="valores">
         <div className="container">
           <h2 className="section-title">Nuestros Valores</h2>
-          <p className="section-subtitle">
-            Principios que guían nuestro trabajo diario
-          </p>
+          <p className="section-subtitle">Principios que guían nuestro trabajo diario</p>
           <div className="valores-grid">
             {valores.map((valor, idx) => (
               <div key={idx} className="valor-card card" style={{ animationDelay: `${idx * 0.1}s` }}>

@@ -1,3 +1,16 @@
+// ═══════════════════════════════════════════════════════════════
+// components/Footer.jsx — PIE DE PÁGINA
+//
+// Contiene:
+//   • Ola decorativa SVG en la parte superior
+//   • Logo + descripción de la empresa
+//   • Redes sociales (Facebook, Instagram, WhatsApp)
+//   • Enlaces rápidos a todas las páginas
+//   • Enlaces a servicios
+//   • Información de contacto (dirección, teléfono, email, horario)
+//   • Copyright
+// ═══════════════════════════════════════════════════════════════
+
 import { Link } from 'react-router-dom';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaFacebook, FaInstagram, FaWhatsapp, FaRulerCombined } from 'react-icons/fa';
 import './Footer.css';
@@ -5,6 +18,7 @@ import './Footer.css';
 const Footer = () => {
   return (
     <footer className="footer">
+      {/* Ola decorativa SVG en la parte superior del footer */}
       <div className="footer-wave">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,511.73,50.41,585,56.77c82.06,7.4,161.8-8.56,241-8.56,96.54,0,184.32,17.56,277,27.56,42.42,4.57,87.46,7.17,133,1.06,51.38-6.85,102.29-25.89,152-38.16V0Z" opacity=".25" />
@@ -16,6 +30,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="container">
           <div className="footer-grid">
+            {/* Columna 1: Logo + Descripción + Redes Sociales */}
             <div className="footer-brand">
               <Link to="/" className="footer-logo">
                 <FaRulerCombined className="footer-logo-icon" />
@@ -26,12 +41,13 @@ const Footer = () => {
                 mantenimiento y venta de aros para todo tipo de automóviles.
               </p>
               <div className="footer-social">
-                <a href="#" className="social-link"><FaFacebook /></a>
-                <a href="#" className="social-link"><FaInstagram /></a>
-                <a href="#" className="social-link"><FaWhatsapp /></a>
+                <a href="#" className="social-link" aria-label="Facebook"><FaFacebook /></a>
+                <a href="#" className="social-link" aria-label="Instagram"><FaInstagram /></a>
+                <a href="#" className="social-link" aria-label="WhatsApp"><FaWhatsapp /></a>
               </div>
             </div>
 
+            {/* Columna 2: Enlaces rápidos */}
             <div className="footer-col">
               <h4>Enlaces Rápidos</h4>
               <ul>
@@ -43,6 +59,7 @@ const Footer = () => {
               </ul>
             </div>
 
+            {/* Columna 3: Servicios */}
             <div className="footer-col">
               <h4>Servicios</h4>
               <ul>
@@ -54,31 +71,21 @@ const Footer = () => {
               </ul>
             </div>
 
+            {/* Columna 4: Contacto */}
             <div className="footer-col">
               <h4>Contacto</h4>
               <ul className="footer-contact">
-                <li>
-                  <FaMapMarkerAlt />
-                  <span>Av. Principal 123, Lima, Perú</span>
-                </li>
-                <li>
-                  <FaPhone />
-                  <span>+51 999 888 777</span>
-                </li>
-                <li>
-                  <FaEnvelope />
-                  <span>info@arosreto.com</span>
-                </li>
-                <li>
-                  <FaClock />
-                  <span>Lun-Sab: 8:00am - 7:00pm</span>
-                </li>
+                <li><FaMapMarkerAlt /><span>Av. Principal 123, Lima, Perú</span></li>
+                <li><FaPhone /><span>+51 999 888 777</span></li>
+                <li><FaEnvelope /><span>info@arosreto.com</span></li>
+                <li><FaClock /><span>Lun-Sab: 8:00am - 7:00pm</span></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Copyright */}
       <div className="footer-bottom">
         <div className="container">
           <p>&copy; {new Date().getFullYear()} Clínica de Aros Reto S.A.C. Todos los derechos reservados.</p>
