@@ -16,8 +16,21 @@ import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaFacebook, FaInstagram, 
 import { useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import segundologo from '../assets/segundologo-aroreto.jpg';
 import './Footer.css';
+
+const defaultIcon = L.icon({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 const Footer = () => {
   useEffect(() => {
@@ -27,7 +40,7 @@ const Footer = () => {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
-      L.marker([-12.2025, -76.9500]).addTo(map)
+      L.marker([-12.2025, -76.9500], { icon: defaultIcon }).addTo(map)
         .bindPopup('<b>Clínica de Aros Reto S.A.C.</b><br>Av Mateo Pumacahua MZ B LT 4<br>Villa el Salvador, Lima')
         .openPopup();
       setTimeout(() => map.invalidateSize(), 200);

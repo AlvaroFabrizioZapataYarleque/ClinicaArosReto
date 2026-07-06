@@ -62,7 +62,7 @@ const CartPanel = () => {
         {items.length === 0 ? (
           <div className="cart-panel-empty">
             <FaShoppingCart className="empty-icon" />
-            <p>Tu carrito est\u00e1 vac\u00edo</p>
+            <p>Tu carrito esta vacío</p>
           </div>
         ) : (
           <>
