@@ -12,10 +12,28 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Link } from 'react-router-dom';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaFacebook, FaInstagram, FaWhatsapp, FaRulerCombined } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import { useEffect } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import segundologo from '../assets/segundologo-aroreto.jpg';
 import './Footer.css';
 
 const Footer = () => {
+  useEffect(() => {
+    const container = document.getElementById('map');
+    if (container && !container._leaflet_id) {
+      const map = L.map('map', { zoomControl: true }).setView([-12.2025, -76.9500], 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      L.marker([-12.2025, -76.9500]).addTo(map)
+        .bindPopup('<b>Clínica de Aros Reto S.A.C.</b><br>Av Mateo Pumacahua MZ B LT 4<br>Villa el Salvador, Lima')
+        .openPopup();
+      setTimeout(() => map.invalidateSize(), 200);
+    }
+  }, []);
+
   return (
     <footer className="footer">
       {/* Ola decorativa SVG en la parte superior del footer */}
@@ -28,59 +46,64 @@ const Footer = () => {
       </div>
 
       <div className="footer-content">
-        <div className="container">
-          <div className="footer-grid">
-            {/* Columna 1: Logo + Descripción + Redes Sociales */}
-            <div className="footer-brand">
-              <Link to="/" className="footer-logo">
-                <FaRulerCombined className="footer-logo-icon" />
-                <span>Aros <span className="logo-highlight">Reto</span></span>
-              </Link>
-              <p className="footer-desc">
-                Clínica de Aros Reto S.A.C. - Más de 10 años de experiencia en reparación,
-                mantenimiento y venta de aros para todo tipo de automóviles.
-              </p>
-              <div className="footer-social">
-                <a href="#" className="social-link" aria-label="Facebook"><FaFacebook /></a>
-                <a href="#" className="social-link" aria-label="Instagram"><FaInstagram /></a>
-                <a href="#" className="social-link" aria-label="WhatsApp"><FaWhatsapp /></a>
+        <div className="footer-grid">
+          <div className="footer-left-cols">
+              {/* Columna 1: Logo + Descripción + Redes Sociales */}
+              <div className="footer-brand">
+                <Link to="/" className="footer-logo">
+                  <img src={segundologo} alt="Aros Reto" className="footer-logo-img" />
+                </Link>
+                <p className="footer-desc">
+                  Clínica de Aros Reto S.A.C. - Más de 10 años de experiencia en reparación,
+                  mantenimiento y venta de aros para todo tipo de automóviles.
+                </p>
+                <div className="footer-social">
+                  <a href="https://www.facebook.com/clinicadearosreto" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Facebook"><FaFacebook /></a>
+                  <a href="https://www.instagram.com/clinicadearosreto/" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram"><FaInstagram /></a>
+                  <a href="https://wa.me/51934096012" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="WhatsApp"><FaWhatsapp /></a>
+                </div>
+              </div>
+
+              {/* Columna 2: Enlaces rápidos */}
+              <div className="footer-col">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                  <li><Link to="/">Inicio</Link></li>
+                  <li><Link to="/productos">Productos</Link></li>
+                  <li><Link to="/servicios">Servicios</Link></li>
+                  <li><Link to="/promociones">Promociones</Link></li>
+                  <li><Link to="/nosotros">Nosotros</Link></li>
+                </ul>
+              </div>
+
+              {/* Columna 3: Servicios */}
+              <div className="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                  <li><Link to="/servicios">Reparación de Aros</Link></li>
+                  <li><Link to="/servicios">Mantenimiento</Link></li>
+                  <li><Link to="/servicios">Delivery</Link></li>
+                  <li><Link to="/productos">Venta de Aros</Link></li>
+                  <li><Link to="/productos">Venta de Llantas</Link></li>
+                </ul>
+              </div>
+
+              {/* Columna 4: Contacto */}
+              <div className="footer-col">
+                <h4>Contacto</h4>
+                <ul className="footer-contact">
+                  <li><FaMapMarkerAlt /><span>Av Mateo Pumacahua MZ B LT 4, Villa el Salvador, Lima</span></li>
+                  <li><FaPhone /><span>(511) 2925710 – 993365051 – 981578455</span></li>
+                  <li><FaEnvelope /><span>asesordeservicios@clinicadearosreto.com</span></li>
+                  <li><FaClock /><span>Lun-Sab: 8:00am - 7:00pm</span></li>
+                </ul>
               </div>
             </div>
 
-            {/* Columna 2: Enlaces rápidos */}
-            <div className="footer-col">
-              <h4>Enlaces Rápidos</h4>
-              <ul>
-                <li><Link to="/">Inicio</Link></li>
-                <li><Link to="/productos">Productos</Link></li>
-                <li><Link to="/servicios">Servicios</Link></li>
-                <li><Link to="/promociones">Promociones</Link></li>
-                <li><Link to="/nosotros">Nosotros</Link></li>
-              </ul>
-            </div>
-
-            {/* Columna 3: Servicios */}
-            <div className="footer-col">
-              <h4>Servicios</h4>
-              <ul>
-                <li><Link to="/servicios">Reparación de Aros</Link></li>
-                <li><Link to="/servicios">Mantenimiento</Link></li>
-                <li><Link to="/servicios">Delivery</Link></li>
-                <li><Link to="/productos">Venta de Aros</Link></li>
-                <li><Link to="/productos">Venta de Llantas</Link></li>
-              </ul>
-            </div>
-
-            {/* Columna 4: Contacto */}
-            <div className="footer-col">
-              <h4>Contacto</h4>
-              <ul className="footer-contact">
-                <li><FaMapMarkerAlt /><span>Av. Principal 123, Lima, Perú</span></li>
-                <li><FaPhone /><span>+51 999 888 777</span></li>
-                <li><FaEnvelope /><span>info@arosreto.com</span></li>
-                <li><FaClock /><span>Lun-Sab: 8:00am - 7:00pm</span></li>
-              </ul>
-            </div>
+            {/* Columna 5: Mapa */}
+            <div className="footer-map-wrapper">
+              <h4>Ubícanos</h4>
+              <div id="map" className="footer-map"></div>
           </div>
         </div>
       </div>

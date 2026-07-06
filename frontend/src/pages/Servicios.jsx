@@ -1,24 +1,18 @@
-// ═══════════════════════════════════════════════════════════════
-// pages/Servicios.jsx — PÁGINA DE SERVICIOS
-//
-// Lista detallada de todos los servicios ofrecidos.
-// Cada servicio se muestra en un bloque con:
-//   • Icono grande en un recuadro de color
-//   • Título del servicio
-//   • Descripción general
-//   • Lista de servicios específicos incluidos
-//   • Precio desde + duración estimada
-//
-// 3 categorías: Reparación, Mantenimiento, Delivery
-// ═══════════════════════════════════════════════════════════════
-
-import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
+import { useState } from 'react';
+import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaWhatsapp } from 'react-icons/fa';
 import { GiCarWheel } from 'react-icons/gi';
 import './Servicios.css';
 
+const TELEFONO = '51934096012';
+
 const Servicios = () => {
+  const [formAbierto, setFormAbierto] = useState(null);
+  const [form, setForm] = useState({ nombre: '', empresa: '', detalles: '' });
+  const [enviando, setEnviando] = useState(false);
+
   const servicios = [
     {
+      id: 'reparacion',
       icon: GiCarWheel,
       titulo: 'Reparación de Aros',
       descripcion: 'Servicio profesional de reparación para todo tipo de aros de aleación y acero.',
@@ -33,6 +27,7 @@ const Servicios = () => {
       duracion: '2-3 días'
     },
     {
+      id: 'mantenimiento',
       icon: FaTools,
       titulo: 'Mantenimiento',
       descripcion: 'Mantenimiento preventivo y correctivo para alargar la vida útil de tus aros y llantas.',
@@ -47,6 +42,7 @@ const Servicios = () => {
       duracion: '1-2 horas'
     },
     {
+      id: 'delivery',
       icon: FaTruck,
       titulo: 'Delivery',
       descripcion: 'Llevamos nuestros servicios hasta la puerta de tu casa u oficina.',
@@ -62,9 +58,32 @@ const Servicios = () => {
     }
   ];
 
+  const abrirForm = (servicio) => {
+    setFormAbierto(servicio);
+    setForm({ nombre: '', empresa: '', detalles: '' });
+  };
+
+  const generarMensaje = () => {
+    let msg = `🛞 *Solicitud de Servicio - Aros Reto*%0A%0A`;
+    msg += `*Servicio:* ${formAbierto.titulo}%0A`;
+    if (form.empresa) msg += `*Empresa:* ${form.empresa}%0A`;
+    msg += `*Nombre:* ${form.nombre}%0A`;
+    msg += `*Detalles:*%0A${form.detalles}%0A%0A`;
+    msg += `Enviado desde la web de Aros Reto`;
+    return msg;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setEnviando(true);
+    const msg = generarMensaje();
+    window.open(`https://wa.me/${TELEFONO}?text=${msg}`, '_blank');
+    setEnviando(false);
+    setFormAbierto(null);
+  };
+
   return (
     <div style={{ paddingTop: '70px' }}>
-      {/* Header con gradiente */}
       <div className="page-header">
         <div className="container">
           <h1 className="page-title">Servicios</h1>
@@ -74,12 +93,10 @@ const Servicios = () => {
         </div>
       </div>
 
-      {/* Bloques de servicio */}
       <section className="servicios-detalle">
         <div className="container">
           {servicios.map((servicio, idx) => (
             <div key={idx} className="servicio-bloque">
-              {/* Icono del servicio con color distintivo */}
               <div className="servicio-bloque-icono" style={{
                 background: `var(--${idx === 0 ? 'secondary' : idx === 1 ? 'primary' : 'secondary-light'})`
               }}>
@@ -88,7 +105,6 @@ const Servicios = () => {
               <div className="servicio-bloque-content">
                 <h2>{servicio.titulo}</h2>
                 <p className="servicio-descripcion">{servicio.descripcion}</p>
-                {/* Lista de servicios incluidos */}
                 <ul className="servicio-detalles">
                   {servicio.detalles.map((det, i) => (
                     <li key={i}>
@@ -97,16 +113,52 @@ const Servicios = () => {
                     </li>
                   ))}
                 </ul>
-                {/* Precio y duración */}
                 <div className="servicio-meta">
                   <span className="servicio-precio">{servicio.precio}</span>
                   <span className="servicio-duracion"><FaTools /> {servicio.duracion}</span>
                 </div>
+                <button className="btn-solicitar" onClick={() => abrirForm(servicio)}>
+                  <FaWhatsapp /> Solicitar Servicio
+                </button>
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {formAbierto && (
+        <div className="servicio-modal-overlay" onClick={() => setFormAbierto(null)}>
+          <div className="servicio-modal" onClick={e => e.stopPropagation()}>
+            <h3>Solicitar: {formAbierto.titulo}</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Nombre completo *</label>
+                <input value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} required />
+              </div>
+              <div className="form-group">
+                <label>Empresa (opcional)</label>
+                <input value={form.empresa} onChange={e => setForm({ ...form, empresa: e.target.value })} placeholder="Nombre de tu empresa" />
+              </div>
+              <div className="form-group">
+                <label>Detalles del servicio *</label>
+                <textarea
+                  value={form.detalles}
+                  onChange={e => setForm({ ...form, detalles: e.target.value })}
+                  required
+                  placeholder="Describe lo que necesitas: tipo de aro, problema, vehículo, etc."
+                  rows={5}
+                />
+              </div>
+              <div className="servicio-modal-buttons">
+                <button type="button" className="btn btn-secondary" onClick={() => setFormAbierto(null)}>Cancelar</button>
+                <button type="submit" className="btn btn-primary" disabled={enviando}>
+                  <FaWhatsapp /> {enviando ? 'Enviando...' : 'Enviar a WhatsApp'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

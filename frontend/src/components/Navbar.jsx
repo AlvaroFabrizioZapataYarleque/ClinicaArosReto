@@ -17,7 +17,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { HiMenu, HiX } from 'react-icons/hi';
 import { FaUser, FaSignOutAlt, FaShoppingCart, FaCog } from 'react-icons/fa';
-import logo from '../assets/logo-aroreto.jpg';
+import logo from '../assets/logo-aros-reto.png';
 import './Navbar.css';
 
 const Navbar = () => {
