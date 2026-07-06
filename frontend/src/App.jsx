@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CartPanel from './components/CartPanel';
 import AdminRoute from './components/AdminRoute';
 import Inicio from './pages/Inicio';
 import Productos from './pages/Productos';
@@ -15,11 +16,15 @@ import AdminProductos from './pages/AdminProductos';
 import AdminServicios from './pages/AdminServicios';
 import AdminPromociones from './pages/AdminPromociones';
 import AdminPedidos from './pages/AdminPedidos';
+import AdminSolicitudes from './pages/AdminSolicitudes';
+import AdminCategorias from './pages/AdminCategorias';
+import './App.css';
 
 function App() {
   return (
-    <>
+    <div className="app-wrapper">
       <Navbar />
+      <CartPanel />
       <main>
         <Routes>
           <Route path="/" element={<Inicio />} />
@@ -35,10 +40,12 @@ function App() {
           <Route path="/admin/servicios" element={<AdminRoute><AdminServicios /></AdminRoute>} />
           <Route path="/admin/promociones" element={<AdminRoute><AdminPromociones /></AdminRoute>} />
           <Route path="/admin/pedidos" element={<AdminRoute><AdminPedidos /></AdminRoute>} />
+          <Route path="/admin/solicitudes" element={<AdminRoute><AdminSolicitudes /></AdminRoute>} />
+          <Route path="/admin/categorias" element={<AdminRoute><AdminCategorias /></AdminRoute>} />
         </Routes>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

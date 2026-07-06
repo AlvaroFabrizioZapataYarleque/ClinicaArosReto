@@ -1,30 +1,38 @@
 import { useState, useEffect } from 'react';
-import { FaStar, FaShoppingCart } from 'react-icons/fa';
+import { FaStar, FaShoppingCart, FaWrench, FaTools, FaTruck, FaBox, FaCog, FaGift } from 'react-icons/fa';
 import { GiCarWheel, GiTireTracks } from 'react-icons/gi';
 import { HiOutlineSparkles } from 'react-icons/hi';
 import { useCart } from '../context/CartContext';
 import api from '../api';
 import './ProductTabs.css';
 
+const iconMap = {
+  GiCarWheel, GiTireTracks, HiOutlineSparkles,
+  FaWrench, FaTools, FaTruck, FaBox, FaCog, FaGift
+};
+
+const resolveIcon = (nombre) => iconMap[nombre] || GiCarWheel;
+
 const ProductTabs = ({ limitado = false }) => {
-  const [activo, setActivo] = useState('aros');
+  const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
+  const [activo, setActivo] = useState('');
   const [cargando, setCargando] = useState(true);
   const { agregar } = useCart();
-
-  const tabs = [
-    { id: 'aros', label: 'Aros', icon: GiCarWheel },
-    { id: 'llantas', label: 'Llantas', icon: GiTireTracks },
-    { id: 'accesorios', label: 'Accesorios', icon: HiOutlineSparkles }
-  ];
 
   useEffect(() => {
     const cargar = async () => {
       try {
-        const { data } = await api.get('/api/productos');
-        setProductos(data);
+        const [resCat, resProd] = await Promise.all([
+          api.get('/api/categorias'),
+          api.get('/api/productos')
+        ]);
+        const cats = resCat.data;
+        setCategorias(cats);
+        if (cats.length > 0) setActivo(cats[0].slug);
+        setProductos(resProd.data);
       } catch (e) {
-        console.error('Error al cargar productos:', e);
+        console.error('Error al cargar datos:', e);
       } finally {
         setCargando(false);
       }
@@ -33,9 +41,9 @@ const ProductTabs = ({ limitado = false }) => {
   }, []);
 
   const itemsPorCategoria = {};
-  tabs.forEach(t => {
-    const filtrados = productos.filter(p => p.categoria === t.id);
-    itemsPorCategoria[t.id] = limitado ? filtrados.slice(0, 4) : filtrados;
+  categorias.forEach(c => {
+    const filtrados = productos.filter(p => p.categoria === c.slug);
+    itemsPorCategoria[c.slug] = limitado ? filtrados.slice(0, 4) : filtrados;
   });
 
   const items = itemsPorCategoria[activo] || [];
@@ -45,20 +53,23 @@ const ProductTabs = ({ limitado = false }) => {
       <div className="container">
         <h2 className="section-title">Nuestros Productos</h2>
         <p className="section-subtitle">
-          Explora nuestra amplia gama de aros, llantas y accesorios para tu vehículo
+          Explora nuestra amplia gama de productos para tu vehículo
         </p>
 
         <div className="tabs-header">
-          {tabs.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              className={`tab-btn ${activo === id ? 'active' : ''}`}
-              onClick={() => setActivo(id)}
-            >
-              <Icon className="tab-icon" />
-              <span>{label}</span>
-            </button>
-          ))}
+          {categorias.map(({ slug, nombre, icono }) => {
+            const Icon = resolveIcon(icono);
+            return (
+              <button
+                key={slug}
+                className={`tab-btn ${activo === slug ? 'active' : ''}`}
+                onClick={() => setActivo(slug)}
+              >
+                <Icon className="tab-icon" />
+                <span>{nombre}</span>
+              </button>
+            );
+          })}
         </div>
 
         {cargando ? (

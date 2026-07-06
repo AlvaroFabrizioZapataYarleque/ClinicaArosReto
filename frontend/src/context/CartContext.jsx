@@ -6,6 +6,7 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState([]);
+  const [panelAbierto, setPanelAbierto] = useState(false);
 
   useEffect(() => {
     const guardado = localStorage.getItem('carrito');
@@ -43,11 +44,14 @@ export const CartProvider = ({ children }) => {
 
   const limpiar = () => setItems([]);
 
+  const abrirPanel = () => setPanelAbierto(true);
+  const cerrarPanel = () => setPanelAbierto(false);
+
   const totalItems = items.reduce((acc, i) => acc + i.cantidad, 0);
   const totalPrecio = items.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
 
   return (
-    <CartContext.Provider value={{ items, agregar, eliminar, actualizarCantidad, limpiar, totalItems, totalPrecio }}>
+    <CartContext.Provider value={{ items, agregar, eliminar, actualizarCantidad, limpiar, totalItems, totalPrecio, panelAbierto, abrirPanel, cerrarPanel }}>
       {children}
     </CartContext.Provider>
   );

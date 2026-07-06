@@ -84,6 +84,10 @@
   color: var(--secondary);
   padding: 8px;
   transition: var(--transition);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .navbar-cart:hover {

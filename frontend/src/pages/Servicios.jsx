@@ -1,71 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner } from 'react-icons/fa';
 import { GiCarWheel } from 'react-icons/gi';
+import api from '../api';
 import './Servicios.css';
 
 const TELEFONO = '51934096012';
 
+const iconos = {
+  reparacion: GiCarWheel,
+  mantenimiento: FaTools,
+  delivery: FaTruck
+};
+
 const Servicios = () => {
+  const [servicios, setServicios] = useState([]);
+  const [cargando, setCargando] = useState(true);
   const [formAbierto, setFormAbierto] = useState(null);
   const [form, setForm] = useState({ nombre: '', empresa: '', detalles: '' });
   const [enviando, setEnviando] = useState(false);
 
-  const servicios = [
-    {
-      id: 'reparacion',
-      icon: GiCarWheel,
-      titulo: 'Reparación de Aros',
-      descripcion: 'Servicio profesional de reparación para todo tipo de aros de aleación y acero.',
-      detalles: [
-        'Enderezado de aros con máquinas especializadas',
-        'Soldadura de grietas y fisuras',
-        'Pintura y acabado profesional',
-        'Pulido y cromado de alta calidad',
-        'Eliminación de rayones profundos'
-      ],
-      precio: 'Desde S/80',
-      duracion: '2-3 días'
-    },
-    {
-      id: 'mantenimiento',
-      icon: FaTools,
-      titulo: 'Mantenimiento',
-      descripcion: 'Mantenimiento preventivo y correctivo para alargar la vida útil de tus aros y llantas.',
-      detalles: [
-        'Balanceo electrónico de precisión',
-        'Alineación de dirección',
-        'Cambio y montaje de neumáticos',
-        'Rotación de llantas',
-        'Inspección técnica completa'
-      ],
-      precio: 'Desde S/35',
-      duracion: '1-2 horas'
-    },
-    {
-      id: 'delivery',
-      icon: FaTruck,
-      titulo: 'Delivery',
-      descripcion: 'Llevamos nuestros servicios hasta la puerta de tu casa u oficina.',
-      detalles: [
-        'Recojo de aros a domicilio',
-        'Entrega de productos comprados',
-        'Devolución de aros reparados',
-        'Seguimiento en tiempo real',
-        'Cobertura en toda Lima'
-      ],
-      precio: 'Gratis*',
-      duracion: '24 horas'
-    }
-  ];
+  useEffect(() => {
+    const cargar = async () => {
+      try {
+        const { data } = await api.get('/api/servicios');
+        setServicios(data);
+      } catch (e) {
+        console.error('Error al cargar servicios:', e);
+      } finally {
+        setCargando(false);
+      }
+    };
+    cargar();
+  }, []);
 
   const abrirForm = (servicio) => {
     setFormAbierto(servicio);
     setForm({ nombre: '', empresa: '', detalles: '' });
   };
 
-  const generarMensaje = () => {
+  const generarMensaje = (servicio) => {
     let msg = `🛞 *Solicitud de Servicio - Aros Reto*%0A%0A`;
-    msg += `*Servicio:* ${formAbierto.titulo}%0A`;
+    msg += `*Servicio:* ${servicio.nombre}%0A`;
     if (form.empresa) msg += `*Empresa:* ${form.empresa}%0A`;
     msg += `*Nombre:* ${form.nombre}%0A`;
     msg += `*Detalles:*%0A${form.detalles}%0A%0A`;
@@ -73,14 +48,41 @@ const Servicios = () => {
     return msg;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setEnviando(true);
-    const msg = generarMensaje();
-    window.open(`https://wa.me/${TELEFONO}?text=${msg}`, '_blank');
-    setEnviando(false);
-    setFormAbierto(null);
+    try {
+      await api.post('/api/solicitudes', {
+        servicioId: formAbierto._id,
+        nombre: form.nombre,
+        empresa: form.empresa,
+        detalles: form.detalles
+      });
+      const msg = generarMensaje(formAbierto);
+      window.open(`https://wa.me/${TELEFONO}?text=${msg}`, '_blank');
+    } catch (e) {
+      console.error('Error al enviar solicitud:', e);
+    } finally {
+      setEnviando(false);
+      setFormAbierto(null);
+    }
   };
+
+  if (cargando) return (
+    <div style={{ paddingTop: '70px' }}>
+      <div className="page-header">
+        <div className="container">
+          <h1 className="page-title">Servicios</h1>
+          <p className="page-subtitle">Cargando servicios...</p>
+        </div>
+      </div>
+      <div className="servicios-detalle" style={{ textAlign: 'center', padding: '60px 0' }}>
+        <FaSpinner className="fa-spin" style={{ fontSize: '2rem', color: 'var(--primary)' }} />
+      </div>
+    </div>
+  );
+
+  const IconComponent = (tipo) => iconos[tipo] || FaWrench;
 
   return (
     <div style={{ paddingTop: '70px' }}>
@@ -95,49 +97,46 @@ const Servicios = () => {
 
       <section className="servicios-detalle">
         <div className="container">
-          {servicios.map((servicio, idx) => (
-            <div key={idx} className="servicio-bloque">
-              <div className="servicio-bloque-icono" style={{
-                background: `var(--${idx === 0 ? 'secondary' : idx === 1 ? 'primary' : 'secondary-light'})`
-              }}>
-                <servicio.icon />
-              </div>
-              <div className="servicio-bloque-content">
-                <h2>{servicio.titulo}</h2>
-                <p className="servicio-descripcion">{servicio.descripcion}</p>
-                <ul className="servicio-detalles">
-                  {servicio.detalles.map((det, i) => (
-                    <li key={i}>
-                      <FaCheckCircle className="detalle-icon" />
-                      <span>{det}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="servicio-meta">
-                  <span className="servicio-precio">{servicio.precio}</span>
-                  <span className="servicio-duracion"><FaTools /> {servicio.duracion}</span>
+          {servicios.map((servicio, idx) => {
+            const Icon = IconComponent(servicio.tipo);
+            return (
+              <div key={servicio._id} className="servicio-bloque">
+                <div className="servicio-bloque-icono" style={{
+                  background: `var(--${idx === 0 ? 'secondary' : idx === 1 ? 'primary' : 'secondary-light'})`
+                }}>
+                  <Icon />
                 </div>
-                <button className="btn-solicitar-wsp" onClick={() => abrirForm(servicio)}>
-                  <FaWhatsapp /> Solicitar Servicio
-                </button>
+                <div className="servicio-bloque-content">
+                  <h2>{servicio.nombre}</h2>
+                  <p className="servicio-descripcion">{servicio.descripcion}</p>
+                  <div className="servicio-meta">
+                    <span className="servicio-precio">S/{servicio.precio > 0 ? `${servicio.precio}.00` : 'Gratuito'}</span>
+                    {servicio.duracion && (
+                      <span className="servicio-duracion"><FaTools /> {servicio.duracion}</span>
+                    )}
+                  </div>
+                  <button className="btn-solicitar-wsp" onClick={() => abrirForm(servicio)}>
+                    <FaWhatsapp /> Solicitar Servicio
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
       {formAbierto && (
-        <div className="servicio-modal-overlay" onClick={() => setFormAbierto(null)}>
+        <div className="servicio-modal-overlay" onClick={() => !enviando && setFormAbierto(null)}>
           <div className="servicio-modal" onClick={e => e.stopPropagation()}>
             <div className="servicio-modal-header">
               <div className="servicio-modal-icon">
-                <formAbierto.icon />
+                <FaWrench />
               </div>
               <div>
                 <h3>Solicitar Servicio</h3>
-                <p>{formAbierto.titulo}</p>
+                <p>{formAbierto.nombre}</p>
               </div>
-              <button className="servicio-modal-close" onClick={() => setFormAbierto(null)}>
+              <button className="servicio-modal-close" onClick={() => setFormAbierto(null)} disabled={enviando}>
                 <FaTimes />
               </button>
             </div>
@@ -172,7 +171,7 @@ const Servicios = () => {
                 </div>
               </div>
               <div className="servicio-modal-footer">
-                <button type="button" className="btn-servicio-cancelar" onClick={() => setFormAbierto(null)}>
+                <button type="button" className="btn-servicio-cancelar" onClick={() => setFormAbierto(null)} disabled={enviando}>
                   Cancelar
                 </button>
                 <button type="submit" className="btn-servicio-enviar" disabled={enviando}>

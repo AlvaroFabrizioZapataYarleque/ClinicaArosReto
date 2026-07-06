@@ -143,15 +143,31 @@ npm run preview   # Servir el build localmente
 
 ## 6. Solución de problemas comunes
 
-### ISP bloquea DNS SRV
+### ISP bloquea DNS SRV / querySrv ECONNREFUSED
 
 **Síntoma:** Error `querySrv ECONNREFUSED _mongodb._tcp.cluster0.xxxxx.mongodb.net`
 
-**Solución:** Usa el script especial de seed:
+**Causa:** El driver de MongoDB en Node.js usa `dns.resolveSrv()` para resolver `mongodb+srv://`. Algunos ISP o configuraciones de Windows bloquean las consultas SRV.
+
+**Solución 1 — Usar URI estándar (recomendado):**
+```env
+MONGO_URI=mongodb://usuario:password@shard00.mongodb.net:27017,shard01.mongodb.net:27017,shard02.mongodb.net:27017/arosreto?ssl=true&retryWrites=true&w=majority&authSource=admin
+```
+Para obtener los hosts de cada shard, ejecuta:
+```bash
+nslookup -type=srv _mongodb._tcp.tu-cluster.mongodb.net
+```
+
+**Solución 2 — Seed alternativo (solo para poblar):**
 ```bash
 node data/seed-atlas.js
 ```
-Este script resuelve las direcciones de los shards usando Google DNS (8.8.8.8) y construye una URI manualmente sin necesidad de SRV.
+
+**Solución 3 — Forzar dotenv (si el .env no se carga):**
+Asegúrate de que `server.js` tenga `require('dotenv').config()` al inicio y que `dotenv` esté instalado:
+```bash
+npm install dotenv
+```
 
 ### Puerto 27017 bloqueado por ISP
 

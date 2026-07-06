@@ -23,7 +23,7 @@ import './Navbar.css';
 const Navbar = () => {
   const [abierto, setAbierto] = useState(false);
   const { usuario, cerrarSesion } = useAuth();
-  const { totalItems } = useCart();
+  const { totalItems, abrirPanel } = useCart();
   const location = useLocation();
 
   const enlaces = [
@@ -66,10 +66,10 @@ const Navbar = () => {
           </ul>
 
           <div className="navbar-auth">
-            <Link to="/carrito" className="navbar-cart" onClick={() => setAbierto(false)}>
+            <button className="navbar-cart" onClick={() => { setAbierto(false); abrirPanel(); }}>
               <FaShoppingCart />
               {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
-            </Link>
+            </button>
 
             {usuario ? (
               <div className="navbar-user">

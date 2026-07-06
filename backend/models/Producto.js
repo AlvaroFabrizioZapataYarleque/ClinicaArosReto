@@ -18,11 +18,7 @@ const mongoose = require('mongoose');
 
 const productoSchema = new mongoose.Schema({
   nombre: { type: String, required: [true, 'El nombre del producto es obligatorio'] },
-  categoria: {
-    type: String,
-    required: [true, 'La categoría es obligatoria'],
-    enum: ['aros', 'llantas', 'accesorios']
-  },
+  categoria: { type: String, required: [true, 'La categoría es obligatoria'] },
   descripcion: { type: String, required: [true, 'La descripción es obligatoria'] },
   precio: { type: Number, required: [true, 'El precio es obligatorio'] },
   imagen: { type: String, default: '' },

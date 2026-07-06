@@ -176,13 +176,36 @@ MONGO_URI=mongodb+srv://usuario:password@cluster.mongodb.net/arosreto?retryWrite
 JWT_SECRET=tu_secreto_super_seguro
 ```
 
-> **Nota**: El código ya soporta `process.env.MONGO_URI` y `process.env.JWT_SECRET`. Si no están definidos, usa valores por defecto.
+> **Nota**: El código ya soporta `process.env.MONGO_URI` y `process.env.JWT_SECRET` vía `dotenv`.
 
 ## 9. Solución de Problemas
 
 | Problema | Causa | Solución |
 |----------|-------|----------|
 | `ECONNREFUSED :27017` | MongoDB no está corriendo | Iniciar MongoDB: `net start MongoDB` |
-| `npm run seed` falla | MongoDB no accesible | Verificar que MongoDB esté en puerto 27017 |
+| `querySrv ECONNREFUSED _mongodb._tcp.cluster...` | DNS no resuelve SRV (ISP o Windows) | Usar URI estándar sin `+srv` (ver abajo) |
+| `bad auth: Authentication failed` | Usuario/contraseña incorrectos | Revisar credenciales o agregar `&authSource=admin` |
+| `npm run seed` falla | MongoDB no accesible | Verificar conexión |
 | Token inválido | JWT_SECRET cambiado | Usar siempre el mismo secret |
 | CORS error | Frontend en otro puerto | Ya configurado en server.js con `cors()` |
+
+### Fix: `querySrv ECONNREFUSED` en MongoDB Atlas
+
+Algunos ISPs o configuraciones de Windows bloquean las consultas DNS tipo SRV que usa `mongodb+srv://`. Para solucionarlo:
+
+1. Agrega `require('dotenv').config()` al inicio de `server.js` (si no está):
+   ```js
+   require('dotenv').config();
+   ```
+
+2. Instala `dotenv`:
+   ```bash
+   npm install dotenv
+   ```
+
+3. Reemplaza la URI del `.env` con el formato estándar (sin `+srv`), usando los hosts de cada shard:
+   ```
+   MONGO_URI=mongodb://usuario:password@shard00.mongodb.net:27017,shard01.mongodb.net:27017,shard02.mongodb.net:27017/arosreto?ssl=true&retryWrites=true&w=majority&authSource=admin
+   ```
+
+   > Para obtener los shards, ejecuta: `nslookup -type=srv _mongodb._tcp.tu-cluster.mongodb.net`

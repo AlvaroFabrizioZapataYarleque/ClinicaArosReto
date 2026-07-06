@@ -12,7 +12,7 @@ const AdminPromociones = () => {
   const [modal, setModal] = useState(false);
   const [editando, setEditando] = useState(null);
   const [cargando, setCargando] = useState(false);
-  const [eliminando, setEliminando] = useState(null);
+  const [togglendoId, setTogglendoId] = useState(null);
   const [form, setForm] = useState({ titulo: '', descripcion: '', descuento: '', codigo: '', imagen: '' });
 
   const cargar = async () => {
@@ -66,17 +66,18 @@ const AdminPromociones = () => {
     }
   };
 
-  const eliminar = async (id) => {
-    if (!window.confirm('¿Eliminar esta promoción?')) return;
-    setEliminando(id);
+  const toggleVigente = async (promo) => {
+    setTogglendoId(promo._id);
     const token = localStorage.getItem('token');
     try {
-      await api.delete(`/api/promociones/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      await api.put(`/api/promociones/${promo._id}`, { vigente: !promo.vigente }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       cargar();
     } catch (err) {
       alert('Error: ' + (err.response?.data?.mensaje || err.message));
     } finally {
-      setEliminando(null);
+      setTogglendoId(null);
     }
   };
 
@@ -99,7 +100,8 @@ const AdminPromociones = () => {
             <th>Título</th>
             <th>Código</th>
             <th>Descuento</th>
-            <th>Acciones</th>
+            <th>Estado</th>
+            <th>Activar</th>
           </tr>
         </thead>
         <tbody>
@@ -109,11 +111,12 @@ const AdminPromociones = () => {
               <td>{p.titulo}</td>
               <td><strong>{p.codigo}</strong></td>
               <td>{p.descuento}%</td>
-              <td className="admin-table-actions">
-                <button className="btn-edit" onClick={() => abrirEditar(p)}>Editar</button>
-                <button className="btn-delete" onClick={() => eliminar(p._id)} disabled={eliminando === p._id}>
-                  {eliminando === p._id ? <><FaSpinner className="fa-spin" /> Eliminando</> : 'Eliminar'}
-                </button>
+              <td><span className={`estado-badge ${p.vigente ? 'estado-completado' : 'estado-cancelado'}`}>{p.vigente ? 'Activo' : 'Inactivo'}</span></td>
+              <td>
+                <label className="toggle-switch">
+                  <input type="checkbox" checked={p.vigente} onChange={() => toggleVigente(p)} disabled={togglendoId === p._id} />
+                  <span className="toggle-slider" />
+                </label>
               </td>
             </tr>
           ))}

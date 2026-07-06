@@ -9,22 +9,27 @@ const UPLOAD_PRESET = 'Aros_Reto';
 
 const AdminProductos = () => {
   const [productos, setProductos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
   const [modal, setModal] = useState(false);
   const [editando, setEditando] = useState(null);
   const [cargando, setCargando] = useState(false);
-  const [eliminando, setEliminando] = useState(null);
-  const [form, setForm] = useState({ nombre: '', categoria: 'aros', descripcion: '', precio: '', marca: '', medidas: '', stock: '', imagen: '' });
+  const [togglendoId, setTogglendoId] = useState(null);
+  const [form, setForm] = useState({ nombre: '', categoria: '', descripcion: '', precio: '', marca: '', medidas: '', stock: '', imagen: '' });
 
   const cargar = async () => {
-    const { data } = await api.get('/api/productos');
-    setProductos(data);
+    const [resProd, resCat] = await Promise.all([
+      api.get('/api/productos'),
+      api.get('/api/categorias?_all=true')
+    ]);
+    setProductos(resProd.data);
+    setCategorias(resCat.data);
   };
 
   useEffect(() => { cargar(); }, []);
 
   const abrirNuevo = () => {
     setEditando(null);
-    setForm({ nombre: '', categoria: 'aros', descripcion: '', precio: '', marca: '', medidas: '', stock: '', imagen: '' });
+    setForm({ nombre: '', categoria: categorias[0]?.slug || '', descripcion: '', precio: '', marca: '', medidas: '', stock: '', imagen: '' });
     setModal(true);
   };
 
@@ -66,17 +71,18 @@ const AdminProductos = () => {
     }
   };
 
-  const eliminar = async (id) => {
-    if (!window.confirm('¿Eliminar este producto?')) return;
-    setEliminando(id);
+  const toggleDisponible = async (producto) => {
+    setTogglendoId(producto._id);
     const token = localStorage.getItem('token');
     try {
-      await api.delete(`/api/productos/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      await api.put(`/api/productos/${producto._id}`, { disponible: !producto.disponible }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       cargar();
     } catch (err) {
       alert('Error: ' + (err.response?.data?.mensaje || err.message));
     } finally {
-      setEliminando(null);
+      setTogglendoId(null);
     }
   };
 
@@ -100,7 +106,8 @@ const AdminProductos = () => {
             <th>Categoría</th>
             <th>Precio</th>
             <th>Stock</th>
-            <th>Acciones</th>
+            <th>Estado</th>
+            <th>Activar</th>
           </tr>
         </thead>
         <tbody>
@@ -111,11 +118,12 @@ const AdminProductos = () => {
               <td>{p.categoria}</td>
               <td>S/{p.precio}</td>
               <td>{p.stock}</td>
-              <td className="admin-table-actions">
-                <button className="btn-edit" onClick={() => abrirEditar(p)}>Editar</button>
-                <button className="btn-delete" onClick={() => eliminar(p._id)} disabled={eliminando === p._id}>
-                  {eliminando === p._id ? <><FaSpinner className="fa-spin" /> Eliminando</> : 'Eliminar'}
-                </button>
+              <td><span className={`estado-badge ${p.disponible !== false ? 'estado-completado' : 'estado-cancelado'}`}>{p.disponible !== false ? 'Activo' : 'Inactivo'}</span></td>
+              <td>
+                <label className="toggle-switch">
+                  <input type="checkbox" checked={p.disponible !== false} onChange={() => toggleDisponible(p)} disabled={togglendoId === p._id} />
+                  <span className="toggle-slider" />
+                </label>
               </td>
             </tr>
           ))}
@@ -134,10 +142,11 @@ const AdminProductos = () => {
               <div className="form-row">
                 <div className="form-group">
                   <label>Categoría</label>
-                  <select value={form.categoria} onChange={e => setForm({ ...form, categoria: e.target.value })}>
-                    <option value="aros">Aros</option>
-                    <option value="llantas">Llantas</option>
-                    <option value="accesorios">Accesorios</option>
+                  <select value={form.categoria} onChange={e => setForm({ ...form, categoria: e.target.value })} required>
+                    <option value="">Seleccionar...</option>
+                    {categorias.map(c => (
+                      <option key={c.slug} value={c.slug}>{c.nombre}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">

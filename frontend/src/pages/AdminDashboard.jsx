@@ -1,9 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { FaBox, FaWrench, FaTag, FaShoppingBag, FaUsers, FaDollarSign, FaCog } from 'react-icons/fa';
+import { Bar } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+} from 'chart.js';
+import { FaBox, FaWrench, FaTag, FaShoppingBag, FaDollarSign, FaCog, FaClipboardList, FaThLarge } from 'react-icons/fa';
 import '../styles/Admin.css';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 const COLORS = ['#fcb900', '#005a87', '#00a86b', '#dc3545', '#6c757d'];
 
@@ -30,16 +43,50 @@ const AdminDashboard = () => {
 
   if (cargando) return <div className="admin-loading">Cargando dashboard...</div>;
 
-  const datosMensuales = metricas?.pedidosPorMes?.map(p => ({
-    mes: `${p._id.mes}/${p._id.anio}`.slice(0, 7),
-    ingresos: p.total,
-    pedidos: p.cantidad
-  })) || [];
+  const datosMensuales = metricas?.pedidosPorMes || [];
+  const labels = datosMensuales.map(p => `${p._id.mes}/${p._id.anio}`.slice(0, 7));
 
-  const datosEstado = metricas?.pedidosPorEstado?.map(p => ({
-    name: p._id,
-    value: p.cantidad
-  })) || [];
+  const dataPedidos = {
+    labels,
+    datasets: [{
+      label: 'Pedidos',
+      data: datosMensuales.map(p => p.cantidad),
+      backgroundColor: '#005a87',
+      borderRadius: 4
+    }]
+  };
+
+  const dataIngresos = {
+    labels,
+    datasets: [{
+      label: 'Ingresos (S/)',
+      data: datosMensuales.map(p => p.total),
+      backgroundColor: '#fcb900',
+      borderRadius: 4
+    }]
+  };
+
+  const datosEstado = metricas?.pedidosPorEstado || [];
+  const dataEstado = {
+    labels: datosEstado.map(p => p._id),
+    datasets: [{
+      data: datosEstado.map(p => p.cantidad),
+      backgroundColor: COLORS.slice(0, datosEstado.length),
+      borderWidth: 0
+    }]
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } }
+  };
+
+  const optionsPie = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } }
+  };
 
   return (
     <div className="admin-page">
@@ -60,6 +107,12 @@ const AdminDashboard = () => {
         </Link>
         <Link to="/admin/pedidos" className="admin-nav-card">
           <FaShoppingBag /> Ver Pedidos
+        </Link>
+        <Link to="/admin/solicitudes" className="admin-nav-card">
+          <FaClipboardList /> Solicitudes de Servicio
+        </Link>
+        <Link to="/admin/categorias" className="admin-nav-card">
+          <FaThLarge /> Gestionar Categorías
         </Link>
       </div>
 
@@ -97,42 +150,24 @@ const AdminDashboard = () => {
       <div className="admin-charts">
         <div className="chart-container">
           <h3>Pedidos por Mes</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={datosMensuales}>
-              <XAxis dataKey="mes" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="pedidos" fill="#005a87" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <div style={{ height: 300 }}>
+            <Bar data={dataPedidos} options={options} />
+          </div>
         </div>
 
         <div className="chart-container">
           <h3>Ingresos por Mes</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={datosMensuales}>
-              <XAxis dataKey="mes" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="ingresos" fill="#fcb900" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <div style={{ height: 300 }}>
+            <Bar data={dataIngresos} options={options} />
+          </div>
         </div>
 
         {datosEstado.length > 0 && (
           <div className="chart-container">
             <h3>Estado de Pedidos</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie data={datosEstado} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                  {datosEstado.map((_, i) => (
-                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+            <div style={{ height: 300, display: 'flex', justifyContent: 'center' }}>
+              <Pie data={dataEstado} options={optionsPie} />
+            </div>
           </div>
         )}
       </div>

@@ -1,0 +1,363 @@
+.cart-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 3000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.cart-panel-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 420px;
+  max-width: 100vw;
+  height: 100vh;
+  background: #f8f9fa;
+  z-index: 3001;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.3s ease;
+  box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+}
+
+.cart-panel.active {
+  right: 0;
+}
+
+.cart-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cart-panel-header h2 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-panel-close {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.cart-panel-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-dark);
+}
+
+.cart-panel-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  gap: 12px;
+}
+
+.cart-panel-empty .empty-icon {
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+.cart-panel-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cart-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.cart-panel-item-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-panel-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-panel-item-info h4 {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-panel-item-precio {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--primary);
+}
+
+.cart-panel-item-cantidad {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-panel-item-cantidad button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(0, 90, 135, 0.15);
+  border-radius: 6px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--secondary);
+  font-size: 0.7rem;
+  transition: all 0.2s;
+}
+
+.cart-panel-item-cantidad button:hover {
+  background: var(--primary);
+  color: var(--text-dark);
+  border-color: var(--primary);
+}
+
+.cart-panel-item-cantidad span {
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.cart-panel-item-subtotal {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--secondary);
+  min-width: 70px;
+  text-align: right;
+}
+
+.cart-panel-item-eliminar {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 6px;
+  opacity: 0.4;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.cart-panel-item-eliminar:hover {
+  opacity: 1;
+}
+
+.cart-panel-footer {
+  padding: 16px 24px 24px;
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cart-panel-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  color: var(--secondary);
+}
+
+.cart-panel-total strong {
+  font-size: 1.5rem;
+}
+
+.btn-panel-pedir {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 50px;
+  background: #25D366;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+
+.btn-panel-pedir:hover {
+  background: #1da851;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.btn-panel-limpiar {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 50px;
+  background: rgba(220, 53, 69, 0.08);
+  color: #dc3545;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-panel-limpiar:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.cart-panel-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+  padding: 20px;
+}
+
+.cart-panel-form {
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: formEntrada 0.3s ease;
+}
+
+@keyframes formEntrada {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.cart-panel-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cart-panel-form-header h3 {
+  color: var(--secondary);
+  font-size: 1.2rem;
+}
+
+.cart-panel-form > p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.cart-panel-form .form-group {
+  margin-bottom: 16px;
+}
+
+.cart-panel-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--secondary);
+  margin-bottom: 6px;
+}
+
+.cart-panel-form input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid rgba(0, 90, 135, 0.15);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.cart-panel-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.cart-panel-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cart-panel-form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.fa-spin {
+  animation: fa-spin 1s linear infinite;
+}
+
+@keyframes fa-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .cart-panel {
+    width: 100vw;
+    right: -100vw;
+  }
+
+  .cart-panel-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}

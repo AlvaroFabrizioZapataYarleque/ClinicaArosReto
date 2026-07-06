@@ -12,6 +12,7 @@
 
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 const { conectarDB } = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -28,7 +29,9 @@ app.use('/api/auth', require('./routes/auth'));           // Autenticación: log
 app.use('/api/productos', require('./routes/productos')); // CRUD de productos (aros, llantas, accesorios)
 app.use('/api/servicios', require('./routes/servicios')); // CRUD de servicios (reparación, mantenimiento, delivery)
 app.use('/api/promociones', require('./routes/promociones')); // CRUD de promociones
+app.use('/api/categorias', require('./routes/categorias'));   // CRUD de categorías
 app.use('/api/pedidos', require('./routes/pedidos'));         // Pedidos (carrito → WhatsApp)
+app.use('/api/solicitudes', require('./routes/solicitudes')); // Solicitudes de servicio
 app.use('/api/admin', require('./routes/admin'));             // Panel admin protegido
 
 app.use(errorHandler);                           // Middleware que captura errores no controlados
