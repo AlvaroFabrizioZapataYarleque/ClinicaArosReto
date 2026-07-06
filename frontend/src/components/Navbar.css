@@ -73,6 +73,7 @@
 .navbar-auth {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
 .navbar-buttons {
@@ -174,6 +175,48 @@
     border-bottom: 1px solid rgba(0, 90, 135, 0.1);
     box-shadow: var(--shadow-md);
   }
+
+  .navbar-menu.active {
+    transform: translateY(0);
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-link {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
+
+  .navbar-auth {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .navbar-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-login,
+  .btn-register {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .navbar-user {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+}
 
   .navbar-menu.active {
     transform: translateY(0);

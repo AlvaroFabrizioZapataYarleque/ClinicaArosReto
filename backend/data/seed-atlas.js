@@ -93,13 +93,9 @@ const main = async () => {
   await Servicio.deleteMany();
   await Promocion.deleteMany();
 
-  const adminExiste = await Usuario.findOne({ email: 'alvarozapata505@gmail.com' });
-  if (!adminExiste) {
-    console.log('👑 Creando usuario administrador...');
-    await Usuario.create({ nombre: 'Admin', email: 'alvarozapata505@gmail.com', password: 'admin123', rol: 'admin' });
-  } else {
-    console.log('👑 Admin ya existe, omitiendo...');
-  }
+  console.log('👑 Creando usuario administrador...');
+  await Usuario.deleteOne({ email: 'alvarozapata505@gmail.com' });
+  await Usuario.create({ nombre: 'Admin', email: 'alvarozapata505@gmail.com', password: 'admin123', rol: 'admin' });
 
   console.log('📦 Insertando productos...');
   await Producto.insertMany(productos);
