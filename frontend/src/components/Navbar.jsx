@@ -16,7 +16,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { FaUser, FaSignOutAlt, FaRulerCombined, FaShoppingCart, FaCog } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaShoppingCart, FaCog } from 'react-icons/fa';
+import logo from '../assets/logo-aroreto.jpg';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -45,8 +46,7 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo de la empresa */}
         <Link to="/" className="navbar-logo">
-          <FaRulerCombined className="logo-icon" />
-          <span className="logo-text">Aros <span className="logo-highlight">Reto</span></span>
+          <img src={logo} alt="Aros Reto" className="logo-img" />
         </Link>
 
         {/* Menú de navegación (se oculta en mobile) */}
