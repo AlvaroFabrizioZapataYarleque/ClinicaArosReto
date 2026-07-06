@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api';
+import { FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import '../styles/Admin.css';
 
 const AdminPedidos = () => {
   const [pedidos, setPedidos] = useState([]);
+  const [cargandoId, setCargandoId] = useState(null);
 
   const cargar = async () => {
     const token = localStorage.getItem('token');
@@ -20,17 +23,29 @@ const AdminPedidos = () => {
   useEffect(() => { cargar(); }, []);
 
   const cambiarEstado = async (id, estado) => {
+    setCargandoId(id);
     const token = localStorage.getItem('token');
-    await api.put(`/api/admin/pedidos/${id}`, { estado }, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    cargar();
+    try {
+      await api.put(`/api/admin/pedidos/${id}`, { estado }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      cargar();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setCargandoId(null);
+    }
   };
 
   return (
     <div className="admin-crud">
       <div className="admin-crud-header">
-        <h2>Pedidos Recibidos</h2>
+        <div className="admin-crud-header-left">
+          <Link to="/admin" className="btn-back">
+            <FaArrowLeft />
+          </Link>
+          <h2>Pedidos Recibidos</h2>
+        </div>
       </div>
 
       {pedidos.length === 0 ? (
@@ -61,13 +76,13 @@ const AdminPedidos = () => {
                 </td>
                 <td className="admin-table-actions">
                   {p.estado === 'pendiente' && (
-                    <button className="btn-edit" onClick={() => cambiarEstado(p._id, 'confirmado')}>
-                      Confirmar
+                    <button className="btn-edit" onClick={() => cambiarEstado(p._id, 'confirmado')} disabled={cargandoId === p._id}>
+                      {cargandoId === p._id ? <><FaSpinner className="fa-spin" /> Procesando</> : 'Confirmar'}
                     </button>
                   )}
                   {p.estado === 'confirmado' && (
-                    <button className="btn-edit" onClick={() => cambiarEstado(p._id, 'completado')}>
-                      Completar
+                    <button className="btn-edit" onClick={() => cambiarEstado(p._id, 'completado')} disabled={cargandoId === p._id}>
+                      {cargandoId === p._id ? <><FaSpinner className="fa-spin" /> Procesando</> : 'Completar'}
                     </button>
                   )}
                 </td>

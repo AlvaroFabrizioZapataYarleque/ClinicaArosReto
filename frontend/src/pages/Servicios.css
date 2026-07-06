@@ -88,6 +88,7 @@
   display: flex;
   gap: 24px;
   align-items: center;
+  margin-bottom: 16px;
 }
 
 .servicio-precio {
@@ -102,6 +103,237 @@
   gap: 6px;
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+.btn-solicitar-wsp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 50px;
+  background: #25D366;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.btn-solicitar-wsp:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+}
+
+.btn-solicitar-wsp svg {
+  font-size: 1.2rem;
+}
+
+/* ─── Modal de Servicios ─────────────────────────────── */
+
+.servicio-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.servicio-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalEntrada 0.3s ease;
+}
+
+@keyframes modalEntrada {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.servicio-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 24px 0;
+  position: relative;
+}
+
+.servicio-modal-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(37, 211, 102, 0.12);
+  color: #25D366;
+  font-size: 1.4rem;
+}
+
+.servicio-modal-header h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--secondary);
+  margin: 0;
+}
+
+.servicio-modal-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+.servicio-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.servicio-modal-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-dark);
+}
+
+.servicio-modal-body {
+  padding: 20px 24px;
+}
+
+.servicio-modal-body .form-group {
+  margin-bottom: 16px;
+}
+
+.servicio-modal-body label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--secondary);
+  margin-bottom: 6px;
+}
+
+.servicio-modal-body label svg {
+  color: var(--primary);
+  font-size: 0.85rem;
+}
+
+.servicio-modal-body input,
+.servicio-modal-body textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  background: #f8f9fa;
+}
+
+.servicio-modal-body input:focus,
+.servicio-modal-body textarea:focus {
+  outline: none;
+  border-color: #25D366;
+  background: white;
+}
+
+.servicio-modal-body textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.servicio-modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 0 24px 24px;
+}
+
+.btn-servicio-cancelar {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  background: white;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-servicio-cancelar:hover {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.btn-servicio-enviar {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 50px;
+  background: #25D366;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+}
+
+.btn-servicio-enviar:hover:not(:disabled) {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+
+.btn-servicio-enviar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.fa-spin {
+  animation: fa-spin 1s linear infinite;
+}
+
+@keyframes fa-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @media (max-width: 768px) {

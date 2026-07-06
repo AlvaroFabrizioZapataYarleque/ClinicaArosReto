@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api';
-import { FaPlus, FaImage } from 'react-icons/fa';
+import { FaPlus, FaImage, FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import '../styles/Admin.css';
 
 const CLOUD_NAME = 'snvgg8s7';
@@ -10,6 +11,8 @@ const AdminPromociones = () => {
   const [promociones, setPromociones] = useState([]);
   const [modal, setModal] = useState(false);
   const [editando, setEditando] = useState(null);
+  const [cargando, setCargando] = useState(false);
+  const [eliminando, setEliminando] = useState(null);
   const [form, setForm] = useState({ titulo: '', descripcion: '', descuento: '', codigo: '', imagen: '' });
 
   const cargar = async () => {
@@ -45,6 +48,7 @@ const AdminPromociones = () => {
 
   const guardar = async (e) => {
     e.preventDefault();
+    setCargando(true);
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
     try {
@@ -57,20 +61,34 @@ const AdminPromociones = () => {
       cargar();
     } catch (err) {
       alert('Error: ' + (err.response?.data?.mensaje || err.message));
+    } finally {
+      setCargando(false);
     }
   };
 
   const eliminar = async (id) => {
     if (!window.confirm('¿Eliminar esta promoción?')) return;
+    setEliminando(id);
     const token = localStorage.getItem('token');
-    await api.delete(`/api/promociones/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-    cargar();
+    try {
+      await api.delete(`/api/promociones/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      cargar();
+    } catch (err) {
+      alert('Error: ' + (err.response?.data?.mensaje || err.message));
+    } finally {
+      setEliminando(null);
+    }
   };
 
   return (
     <div className="admin-crud">
       <div className="admin-crud-header">
-        <h2>Gestionar Promociones</h2>
+        <div className="admin-crud-header-left">
+          <Link to="/admin" className="btn-back">
+            <FaArrowLeft />
+          </Link>
+          <h2>Gestionar Promociones</h2>
+        </div>
         <button className="btn-admin" onClick={abrirNuevo}><FaPlus /> Nueva Promoción</button>
       </div>
 
@@ -93,7 +111,9 @@ const AdminPromociones = () => {
               <td>{p.descuento}%</td>
               <td className="admin-table-actions">
                 <button className="btn-edit" onClick={() => abrirEditar(p)}>Editar</button>
-                <button className="btn-delete" onClick={() => eliminar(p._id)}>Eliminar</button>
+                <button className="btn-delete" onClick={() => eliminar(p._id)} disabled={eliminando === p._id}>
+                  {eliminando === p._id ? <><FaSpinner className="fa-spin" /> Eliminando</> : 'Eliminar'}
+                </button>
               </td>
             </tr>
           ))}
@@ -132,7 +152,9 @@ const AdminPromociones = () => {
               </div>
               <div className="admin-modal-buttons">
                 <button type="button" className="btn-admin btn-admin-secondary" onClick={() => setModal(false)}>Cancelar</button>
-                <button type="submit" className="btn-admin">{editando ? 'Actualizar' : 'Crear'}</button>
+                <button type="submit" className="btn-admin" disabled={cargando}>
+                  {cargando ? <><FaSpinner className="fa-spin" /> {editando ? 'Actualizando...' : 'Creando...'}</> : (editando ? 'Actualizar' : 'Crear')}
+                </button>
               </div>
             </form>
           </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaWhatsapp } from 'react-icons/fa';
+import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner } from 'react-icons/fa';
 import { GiCarWheel } from 'react-icons/gi';
 import './Servicios.css';
 
@@ -117,7 +117,7 @@ const Servicios = () => {
                   <span className="servicio-precio">{servicio.precio}</span>
                   <span className="servicio-duracion"><FaTools /> {servicio.duracion}</span>
                 </div>
-                <button className="btn-solicitar" onClick={() => abrirForm(servicio)}>
+                <button className="btn-solicitar-wsp" onClick={() => abrirForm(servicio)}>
                   <FaWhatsapp /> Solicitar Servicio
                 </button>
               </div>
@@ -129,30 +129,54 @@ const Servicios = () => {
       {formAbierto && (
         <div className="servicio-modal-overlay" onClick={() => setFormAbierto(null)}>
           <div className="servicio-modal" onClick={e => e.stopPropagation()}>
-            <h3>Solicitar: {formAbierto.titulo}</h3>
+            <div className="servicio-modal-header">
+              <div className="servicio-modal-icon">
+                <formAbierto.icon />
+              </div>
+              <div>
+                <h3>Solicitar Servicio</h3>
+                <p>{formAbierto.titulo}</p>
+              </div>
+              <button className="servicio-modal-close" onClick={() => setFormAbierto(null)}>
+                <FaTimes />
+              </button>
+            </div>
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Nombre completo *</label>
-                <input value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} required />
+              <div className="servicio-modal-body">
+                <div className="form-group">
+                  <label><FaUser /> Nombre completo</label>
+                  <input
+                    value={form.nombre}
+                    onChange={e => setForm({ ...form, nombre: e.target.value })}
+                    required
+                    placeholder="Ingresa tu nombre"
+                  />
+                </div>
+                <div className="form-group">
+                  <label><FaBuilding /> Empresa (opcional)</label>
+                  <input
+                    value={form.empresa}
+                    onChange={e => setForm({ ...form, empresa: e.target.value })}
+                    placeholder="Nombre de tu empresa"
+                  />
+                </div>
+                <div className="form-group">
+                  <label><FaClipboardList /> Detalles del servicio</label>
+                  <textarea
+                    value={form.detalles}
+                    onChange={e => setForm({ ...form, detalles: e.target.value })}
+                    required
+                    placeholder="Describe lo que necesitas: tipo de aro, problema, vehículo, etc."
+                    rows={4}
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label>Empresa (opcional)</label>
-                <input value={form.empresa} onChange={e => setForm({ ...form, empresa: e.target.value })} placeholder="Nombre de tu empresa" />
-              </div>
-              <div className="form-group">
-                <label>Detalles del servicio *</label>
-                <textarea
-                  value={form.detalles}
-                  onChange={e => setForm({ ...form, detalles: e.target.value })}
-                  required
-                  placeholder="Describe lo que necesitas: tipo de aro, problema, vehículo, etc."
-                  rows={5}
-                />
-              </div>
-              <div className="servicio-modal-buttons">
-                <button type="button" className="btn btn-secondary" onClick={() => setFormAbierto(null)}>Cancelar</button>
-                <button type="submit" className="btn btn-primary" disabled={enviando}>
-                  <FaWhatsapp /> {enviando ? 'Enviando...' : 'Enviar a WhatsApp'}
+              <div className="servicio-modal-footer">
+                <button type="button" className="btn-servicio-cancelar" onClick={() => setFormAbierto(null)}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn-servicio-enviar" disabled={enviando}>
+                  {enviando ? <><FaSpinner className="fa-spin" /> Enviando...</> : <><FaWhatsapp /> Enviar a WhatsApp</>}
                 </button>
               </div>
             </form>
