@@ -13,6 +13,7 @@ const AdminServicios = () => {
   const [editando, setEditando] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [togglendoId, setTogglendoId] = useState(null);
+  const [subiendoImagen, setSubiendoImagen] = useState(false);
   const [form, setForm] = useState({ nombre: '', tipo: 'reparacion', descripcion: '', precio: '', duracion: '', imagen: '' });
 
   const cargar = async () => {
@@ -35,9 +36,11 @@ const AdminServicios = () => {
   };
 
   const subirImagen = () => {
+    setSubiendoImagen(true);
     const widget = window.cloudinary?.createUploadWidget(
       { cloudName: CLOUD_NAME, uploadPreset: UPLOAD_PRESET, cropping: true },
       (err, result) => {
+        setSubiendoImagen(false);
         if (!err && result.event === 'success') {
           setForm(prev => ({ ...prev, imagen: result.info.secure_url }));
         }
@@ -161,10 +164,16 @@ const AdminServicios = () => {
                 </div>
                 <div className="form-group">
                   <label>Imagen</label>
-                  <button type="button" className="btn-admin btn-admin-secondary" onClick={subirImagen} style={{ width: '100%', justifyContent: 'center' }}>
-                    <FaImage /> {form.imagen ? 'Cambiar Imagen' : 'Subir Imagen'}
+                  <button type="button" className="btn-admin btn-admin-secondary" onClick={subirImagen} disabled={subiendoImagen} style={{ width: '100%', justifyContent: 'center' }}>
+                    {subiendoImagen ? <><FaSpinner className="fa-spin" /> Subiendo...</> : <><FaImage /> {form.imagen ? 'Cambiar Imagen' : 'Subir Imagen'}</>}
                   </button>
-                  {form.imagen && <img src={form.imagen} alt="" className="admin-img-preview" style={{ marginTop: 8 }} />}
+                  {subiendoImagen ? (
+                    <div className="admin-img-preview" style={{ marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f0f0' }}>
+                      <FaSpinner className="fa-spin" style={{ fontSize: '1.5rem', color: 'var(--primary)' }} />
+                    </div>
+                  ) : form.imagen ? (
+                    <img src={form.imagen} alt="" className="admin-img-preview" style={{ marginTop: 8 }} />
+                  ) : null}
                 </div>
               </div>
               <div className="admin-modal-buttons">

@@ -287,6 +287,7 @@
 .btn-edit {
   background: rgba(0, 90, 135, 0.1);
   color: var(--secondary);
+  border: none;
 }
 
 .btn-edit:hover {
