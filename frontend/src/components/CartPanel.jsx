@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import { FaTrash, FaPlus, FaMinus, FaWhatsapp, FaTimes, FaShoppingCart, FaSpinner } from 'react-icons/fa';
 import './CartPanel.css';
@@ -8,9 +9,27 @@ const TELEFONO = '51934096012';
 
 const CartPanel = () => {
   const { items, eliminar, actualizarCantidad, totalPrecio, limpiar, panelAbierto, cerrarPanel } = useCart();
+  const { usuario } = useAuth();
   const [mostrarForm, setMostrarForm] = useState(false);
   const [form, setForm] = useState({ nombre: '', email: '', telefono: '', dni: '', direccion: '' });
   const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState('');
+
+  const abrirFormulario = () => {
+    setError('');
+    if (usuario) {
+      setForm({
+        nombre: usuario.nombre || '',
+        email: usuario.email || '',
+        telefono: usuario.telefono || '',
+        dni: usuario.dni || '',
+        direccion: usuario.direccion || ''
+      });
+    } else {
+      setForm({ nombre: '', email: '', telefono: '', dni: '', direccion: '' });
+    }
+    setMostrarForm(true);
+  };
 
   const generarMensaje = () => {
     let msg = '🛒 *Nuevo Pedido - Aros Reto*%0A%0A';
@@ -28,8 +47,28 @@ const CartPanel = () => {
     return msg;
   };
 
+  const validarForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      setError('Ingresa un email válido');
+      return false;
+    }
+    if (!/^\d{8}$/.test(form.dni)) {
+      setError('El DNI debe tener exactamente 8 dígitos numéricos');
+      return false;
+    }
+    const soloDigitos = form.telefono.replace(/\D/g, '');
+    if (soloDigitos.length < 7 || soloDigitos.length > 12) {
+      setError('El teléfono debe tener entre 7 y 12 dígitos');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    if (!validarForm()) return;
     setEnviando(true);
     try {
       await api.post('/api/pedidos', {
@@ -94,7 +133,7 @@ const CartPanel = () => {
                 <span>Total:</span>
                 <strong>S/{totalPrecio.toFixed(2)}</strong>
               </div>
-              <button className="btn-panel-pedir" onClick={() => setMostrarForm(true)}>
+              <button className="btn-panel-pedir" onClick={abrirFormulario}>
                 <FaWhatsapp /> Solicitar Pedido
               </button>
               <button className="btn-panel-limpiar" onClick={limpiar}>Vaciar Carrito</button>
@@ -104,40 +143,41 @@ const CartPanel = () => {
       </div>
 
       {mostrarForm && (
-        <div className="cart-panel-form-overlay" onClick={() => setMostrarForm(false)}>
+        <div className="cart-panel-form-overlay" onClick={() => { setError(''); setMostrarForm(false); }}>
           <div className="cart-panel-form" onClick={e => e.stopPropagation()}>
             <div className="cart-panel-form-header">
               <h3>Completa tus datos</h3>
-              <button className="cart-panel-close" onClick={() => setMostrarForm(false)}>
+              <button className="cart-panel-close" onClick={() => { setError(''); setMostrarForm(false); }}>
                 <FaTimes />
               </button>
             </div>
             <p>Te contactaremos v\u00eda WhatsApp para coordinar el pago y la entrega.</p>
+            {error && <div className="auth-error" style={{ marginBottom: '10px', color: '#dc3545', background: '#ffe6e6', padding: '8px', borderRadius: '4px', fontSize: '0.9rem' }}>{error}</div>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Nombre completo *</label>
-                <input value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} required />
+                <input value={form.nombre} onChange={e => { setError(''); setForm({ ...form, nombre: e.target.value }); }} required />
               </div>
               <div className="form-row">
                 <div className="form-group">
                   <label>DNI *</label>
-                  <input value={form.dni} onChange={e => setForm({ ...form, dni: e.target.value })} required />
+                  <input value={form.dni} onChange={e => { setError(''); setForm({ ...form, dni: e.target.value.replace(/\D/g, '').slice(0, 8) }); }} maxLength={8} required />
                 </div>
                 <div className="form-group">
-                  <label>Tel\u00e9fono *</label>
-                  <input type="tel" value={form.telefono} onChange={e => setForm({ ...form, telefono: e.target.value })} required />
+                  <label>Teléfono *</label>
+                  <input type="tel" value={form.telefono} onChange={e => { setError(''); setForm({ ...form, telefono: e.target.value.replace(/\D/g, '').slice(0, 12) }); }} maxLength={12} required />
                 </div>
               </div>
               <div className="form-group">
                 <label>Email *</label>
-                <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+                <input type="email" value={form.email} onChange={e => { setError(''); setForm({ ...form, email: e.target.value }); }} required />
               </div>
               <div className="form-group">
-                <label>Direcci\u00f3n</label>
-                <input value={form.direccion} onChange={e => setForm({ ...form, direccion: e.target.value })} />
+                <label>Dirección</label>
+                <input value={form.direccion} onChange={e => { setError(''); setForm({ ...form, direccion: e.target.value }); }} />
               </div>
               <div className="cart-panel-form-buttons">
-                <button type="button" className="btn btn-secondary" onClick={() => setMostrarForm(false)}>Cancelar</button>
+                <button type="button" className="btn btn-secondary" onClick={() => { setError(''); setMostrarForm(false); }}>Cancelar</button>
                 <button type="submit" className="btn btn-primary" disabled={enviando}>
                   {enviando ? <><FaSpinner className="fa-spin" /> Enviando...</> : <><FaWhatsapp /> Enviar a WhatsApp</>}
                 </button>

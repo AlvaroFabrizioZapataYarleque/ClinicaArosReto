@@ -1,0 +1,346 @@
+.perfil-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  gap: 10px;
+}
+
+.perfil-page {
+  padding-top: 70px;
+}
+
+.perfil-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: flex;
+  gap: 30px;
+}
+
+.perfil-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.perfil-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+}
+
+.perfil-tab:hover {
+  background: var(--bg-light);
+  color: var(--secondary);
+}
+
+.perfil-tab.active {
+  background: var(--secondary);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 90, 135, 0.3);
+}
+
+.perfil-tab svg {
+  font-size: 1rem;
+}
+
+.perfil-content {
+  flex: 1;
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.perfil-content h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.perfil-form .form-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.perfil-form .form-group label svg {
+  color: var(--primary);
+}
+
+.perfil-form .form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: var(--transition);
+  background: var(--bg-light);
+}
+
+.perfil-form .form-group input:focus {
+  outline: none;
+  border-color: var(--secondary-light);
+  box-shadow: 0 0 0 4px rgba(0, 119, 182, 0.1);
+}
+
+.perfil-mensaje {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.perfil-mensaje-exito {
+  background: rgba(25, 135, 84, 0.08);
+  border: 1px solid rgba(25, 135, 84, 0.2);
+  color: #198754;
+}
+
+.perfil-mensaje-error {
+  background: rgba(220, 53, 69, 0.08);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+/* Vehículos */
+.perfil-vehiculos h3 {
+  margin-bottom: 20px;
+}
+
+.vehiculo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: var(--bg-light);
+  border-radius: var(--radius-sm);
+}
+
+.vehiculos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vehiculo-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.vehiculo-card:hover {
+  border-color: var(--primary);
+}
+
+.vehiculo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vehiculo-info strong {
+  font-size: 0.95rem;
+  color: var(--secondary);
+}
+
+.vehiculo-info span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.vehiculo-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-vehiculo-editar,
+.btn-vehiculo-eliminar {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-vehiculo-editar {
+  background: rgba(0, 119, 182, 0.1);
+  color: var(--secondary-light);
+}
+
+.btn-vehiculo-editar:hover {
+  background: var(--secondary-light);
+  color: white;
+}
+
+.btn-vehiculo-eliminar {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.btn-vehiculo-eliminar:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Historial */
+.historial-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.historial-card {
+  padding: 16px;
+  background: var(--bg-light);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.historial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.historial-fecha {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.historial-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.historial-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.historial-total {
+  text-align: right;
+  font-size: 1rem;
+  color: var(--secondary);
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.historial-detalle {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.historial-detalle p {
+  margin: 4px 0;
+}
+
+.historial-detalle strong {
+  color: var(--secondary);
+}
+
+.perfil-sin-datos {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 0;
+  font-size: 0.95rem;
+}
+
+/* Estado badges */
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado-warning { background: rgba(255, 193, 7, 0.15); color: #cc9a00; }
+.estado-info { background: rgba(13, 110, 253, 0.12); color: #0d6efd; }
+.estado-success { background: rgba(25, 135, 84, 0.12); color: #198754; }
+.estado-danger { background: rgba(220, 53, 69, 0.12); color: #dc3545; }
+
+@media (max-width: 768px) {
+  .perfil-container {
+    flex-direction: column;
+    padding: 20px 16px 60px;
+  }
+
+  .perfil-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    min-width: unset;
+    gap: 6px;
+    padding-bottom: 8px;
+  }
+
+  .perfil-tab {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .perfil-content {
+    padding: 20px;
+  }
+
+  .perfil-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .vehiculo-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}

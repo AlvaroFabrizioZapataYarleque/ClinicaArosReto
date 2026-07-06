@@ -71,9 +71,11 @@ const Navbar = () => {
               {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
             </button>
 
-            {usuario ? (
+              {usuario ? (
               <div className="navbar-user">
-                <span className="user-name">{usuario.nombre}</span>
+                <Link to="/perfil" className="user-name" onClick={() => setAbierto(false)}>
+                  <FaUser /> {usuario.nombre}
+                </Link>
                 <button className="btn-logout" onClick={cerrarSesion}>
                   <FaSignOutAlt /> Salir
                 </button>

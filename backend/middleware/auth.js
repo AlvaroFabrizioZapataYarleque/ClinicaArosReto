@@ -38,4 +38,17 @@ const proteger = async (req, res, next) => {
   }
 };
 
-module.exports = { proteger };
+const protegerOpcional = async (req, res, next) => {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      const token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'arosreto_secret_key_2024');
+      req.usuario = await Usuario.findById(decoded.id).select('-password');
+    } catch {
+      // Token inválido, simplemente sigue sin usuario
+    }
+  }
+  next();
+};
+
+module.exports = { proteger, protegerOpcional };

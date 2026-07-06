@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner } from 'react-icons/fa';
+import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner, FaCar } from 'react-icons/fa';
 import { GiCarWheel } from 'react-icons/gi';
 import api from '../api';
 import './Servicios.css';
@@ -16,7 +16,7 @@ const Servicios = () => {
   const [servicios, setServicios] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [formAbierto, setFormAbierto] = useState(null);
-  const [form, setForm] = useState({ nombre: '', empresa: '', detalles: '' });
+  const [form, setForm] = useState({ nombre: '', empresa: '', detalles: '', vehiculo: '' });
   const [enviando, setEnviando] = useState(false);
 
   useEffect(() => {
@@ -35,13 +35,14 @@ const Servicios = () => {
 
   const abrirForm = (servicio) => {
     setFormAbierto(servicio);
-    setForm({ nombre: '', empresa: '', detalles: '' });
+    setForm({ nombre: '', empresa: '', detalles: '', vehiculo: '' });
   };
 
   const generarMensaje = (servicio) => {
     let msg = `🛞 *Solicitud de Servicio - Aros Reto*%0A%0A`;
     msg += `*Servicio:* ${servicio.nombre}%0A`;
     if (form.empresa) msg += `*Empresa:* ${form.empresa}%0A`;
+    if (form.vehiculo) msg += `*Vehículo:* ${form.vehiculo}%0A`;
     msg += `*Nombre:* ${form.nombre}%0A`;
     msg += `*Detalles:*%0A${form.detalles}%0A%0A`;
     msg += `Enviado desde la web de Aros Reto`;
@@ -56,7 +57,8 @@ const Servicios = () => {
         servicioId: formAbierto._id,
         nombre: form.nombre,
         empresa: form.empresa,
-        detalles: form.detalles
+        detalles: form.detalles,
+        vehiculo: form.vehiculo
       });
       const msg = generarMensaje(formAbierto);
       window.open(`https://wa.me/${TELEFONO}?text=${msg}`, '_blank');
@@ -149,6 +151,14 @@ const Servicios = () => {
                     onChange={e => setForm({ ...form, nombre: e.target.value })}
                     required
                     placeholder="Ingresa tu nombre"
+                  />
+                </div>
+                <div className="form-group">
+                  <label><FaCar /> Vehículo (opcional)</label>
+                  <input
+                    value={form.vehiculo}
+                    onChange={e => setForm({ ...form, vehiculo: e.target.value })}
+                    placeholder="Ej: Toyota Yaris 2019 - ABC-123"
                   />
                 </div>
                 <div className="form-group">

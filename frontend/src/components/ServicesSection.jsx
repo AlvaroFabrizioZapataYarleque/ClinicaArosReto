@@ -24,21 +24,21 @@ const ServicesSection = () => {
       titulo: 'Reparación de Aros',
       tipo: 'reparacion',
       items: ['Enderezado profesional', 'Soldadura especializada', 'Pintura y cromado', 'Pulido de alta calidad'],
-      color: 'var(--secondary)'             // Azul oscuro
+      color: '#1a1a2e'
     },
     {
       icon: FaWrench,
       titulo: 'Mantenimiento',
       tipo: 'mantenimiento',
       items: ['Balanceo electrónico', 'Alineación precisa', 'Cambio de neumáticos', 'Revisión general'],
-      color: 'var(--primary)'               // Dorado
+      color: '#16213e'
     },
     {
       icon: FaTruck,
       titulo: 'Delivery',
       tipo: 'delivery',
       items: ['Recojo a domicilio', 'Entrega de productos', 'Devolución de aros', 'Seguimiento en tiempo real'],
-      color: 'var(--secondary-light)'       // Azul claro
+      color: '#0f3460'
     }
   ];
 

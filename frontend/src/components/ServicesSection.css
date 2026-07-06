@@ -44,9 +44,10 @@
 }
 
 .service-header h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 800;
   margin-top: 12px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .service-icon-main {

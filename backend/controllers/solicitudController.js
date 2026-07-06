@@ -11,7 +11,9 @@ const obtenerSolicitudes = async (req, res) => {
 
 const crearSolicitud = async (req, res) => {
   try {
-    const solicitud = new SolicitudServicio(req.body);
+    const datos = { ...req.body };
+    if (req.usuario) datos.usuario = req.usuario.id;
+    const solicitud = new SolicitudServicio(datos);
     await solicitud.save();
     res.status(201).json(solicitud);
   } catch (error) {
@@ -34,4 +36,15 @@ const actualizarEstadoSolicitud = async (req, res) => {
   }
 };
 
-module.exports = { obtenerSolicitudes, crearSolicitud, actualizarEstadoSolicitud };
+const obtenerSolicitudesUsuario = async (req, res) => {
+  try {
+    const solicitudes = await SolicitudServicio.find({ usuario: req.usuario.id })
+      .populate('servicioId', 'nombre tipo')
+      .sort({ createdAt: -1 });
+    res.json(solicitudes);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener solicitudes', error: error.message });
+  }
+};
+
+module.exports = { obtenerSolicitudes, crearSolicitud, actualizarEstadoSolicitud, obtenerSolicitudesUsuario };

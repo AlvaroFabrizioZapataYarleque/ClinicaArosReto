@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await api.post('/api/auth/login', { email, password });
     localStorage.setItem('token', data.token);
     setToken(data.token);
-    setUsuario({ _id: data._id, nombre: data.nombre, email: data.email, rol: data.rol });
+    setUsuario({ _id: data._id, nombre: data.nombre, email: data.email, telefono: data.telefono, dni: data.dni, direccion: data.direccion, vehiculos: data.vehiculos, rol: data.rol });
     return data;
   };
 
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await api.post('/api/auth/registrar', datos);
     localStorage.setItem('token', data.token);
     setToken(data.token);
-    setUsuario({ _id: data._id, nombre: data.nombre, email: data.email, rol: data.rol });
+    setUsuario({ _id: data._id, nombre: data.nombre, email: data.email, telefono: data.telefono, dni: data.dni, direccion: data.direccion, vehiculos: data.vehiculos, rol: data.rol });
     return data;
   };
 

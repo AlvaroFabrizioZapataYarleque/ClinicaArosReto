@@ -10,6 +10,7 @@ import Promociones from './pages/Promociones';
 import Nosotros from './pages/Nosotros';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
+import Perfil from './pages/Perfil';
 import Carrito from './pages/Carrito';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProductos from './pages/AdminProductos';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/perfil" element={<Perfil />} />
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/productos" element={<AdminRoute><AdminProductos /></AdminRoute>} />

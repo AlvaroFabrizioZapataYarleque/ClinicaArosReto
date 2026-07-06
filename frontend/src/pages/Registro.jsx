@@ -14,7 +14,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaUser, FaEnvelope, FaLock, FaPhone, FaEye, FaEyeSlash, FaRulerCombined } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaPhone, FaEye, FaEyeSlash, FaRulerCombined, FaIdCard } from 'react-icons/fa';
 import './Auth.css';
 
 const Registro = () => {
@@ -23,7 +23,8 @@ const Registro = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    telefono: ''
+    telefono: '',
+    dni: ''
   });
   const [verPassword, setVerPassword] = useState(false);
   const [error, setError] = useState('');
@@ -45,6 +46,25 @@ const Registro = () => {
       return;
     }
 
+    // Validación: email formato válido
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Ingresa un email válido');
+      return;
+    }
+
+    // Validación: DNI 8 dígitos numéricos
+    if (formData.dni && !/^\d{8}$/.test(formData.dni)) {
+      setError('El DNI debe tener exactamente 8 dígitos numéricos');
+      return;
+    }
+
+    // Validación: teléfono máximo 12 dígitos numéricos
+    if (formData.telefono && (!/^\d{1,12}$/.test(formData.telefono.replace(/\D/g, '')))) {
+      setError('El teléfono debe tener máximo 12 dígitos');
+      return;
+    }
+
     // Validación: longitud mínima de contraseña
     if (formData.password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres');
@@ -57,7 +77,8 @@ const Registro = () => {
         nombre: formData.nombre,
         email: formData.email,
         password: formData.password,
-        telefono: formData.telefono
+        telefono: formData.telefono,
+        dni: formData.dni
       });
       navigate('/');
     } catch (err) {
@@ -92,10 +113,22 @@ const Registro = () => {
               <input type="email" name="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
             </div>
 
+            {/* DNI */}
+            <div className="form-group">
+              <label><FaIdCard /> DNI</label>
+              <input type="text" name="dni" placeholder="12345678" maxLength={8} value={formData.dni} onChange={e => {
+                const val = e.target.value.replace(/\D/g, '').slice(0, 8);
+                setFormData({ ...formData, dni: val });
+              }} />
+            </div>
+
             {/* Teléfono */}
             <div className="form-group">
               <label><FaPhone /> Teléfono</label>
-              <input type="tel" name="telefono" placeholder="+51 999 888 777" value={formData.telefono} onChange={handleChange} />
+              <input type="tel" name="telefono" placeholder="+51 999 888 777" value={formData.telefono} onChange={e => {
+                const val = e.target.value.replace(/\D/g, '').slice(0, 12);
+                setFormData({ ...formData, telefono: val });
+              }} />
             </div>
 
             {/* Contraseña y Confirmar en fila */}

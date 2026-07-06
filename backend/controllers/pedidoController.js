@@ -91,4 +91,13 @@ const eliminarPedido = async (req, res, next) => {
   }
 };
 
-module.exports = { crearPedido, obtenerPedidos, obtenerMetricas, actualizarEstadoPedido, eliminarPedido };
+const obtenerPedidosUsuario = async (req, res, next) => {
+  try {
+    const pedidos = await Pedido.find({ usuario: req.usuario.id }).sort({ fechaPedido: -1 });
+    res.json(pedidos);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { crearPedido, obtenerPedidos, obtenerPedidosUsuario, obtenerMetricas, actualizarEstadoPedido, eliminarPedido };
