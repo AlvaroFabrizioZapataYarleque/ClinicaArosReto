@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const Producto = require('../models/Producto');
 const Servicio = require('../models/Servicio');
 const Promocion = require('../models/Promocion');
+const Usuario = require('../models/Usuario');
 
 const ATLAS_USER = 'alvarozapata505_db_user';
 const ATLAS_PASS = 'LSNW5hVkjMR6pMTi';
@@ -92,6 +93,14 @@ const main = async () => {
   await Servicio.deleteMany();
   await Promocion.deleteMany();
 
+  const adminExiste = await Usuario.findOne({ email: 'alvarozapata505@gmail.com' });
+  if (!adminExiste) {
+    console.log('👑 Creando usuario administrador...');
+    await Usuario.create({ nombre: 'Admin', email: 'alvarozapata505@gmail.com', password: 'admin123', rol: 'admin' });
+  } else {
+    console.log('👑 Admin ya existe, omitiendo...');
+  }
+
   console.log('📦 Insertando productos...');
   await Producto.insertMany(productos);
 
@@ -105,6 +114,7 @@ const main = async () => {
   console.log(`   • ${productos.length} productos`);
   console.log(`   • ${servicios.length} servicios`);
   console.log(`   • ${promociones.length} promociones`);
+  console.log(`   • 1 administrador (alvarozapata505@gmail.com)`);
 
   await mongoose.disconnect();
   process.exit(0);

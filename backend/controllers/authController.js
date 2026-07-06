@@ -44,6 +44,7 @@ const registrar = async (req, res, next) => {
       _id: usuario._id,
       nombre: usuario.nombre,
       email: usuario.email,
+      rol: usuario.rol,
       token: generarToken(usuario._id)
     });
   } catch (error) {
@@ -74,6 +75,7 @@ const login = async (req, res, next) => {
       _id: usuario._id,
       nombre: usuario.nombre,
       email: usuario.email,
+      rol: usuario.rol,
       token: generarToken(usuario._id)
     });
   } catch (error) {

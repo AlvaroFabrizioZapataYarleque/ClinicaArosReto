@@ -10,6 +10,8 @@
 
 const express = require('express');
 const router = express.Router();
+const { proteger } = require('../middleware/auth');
+const { esAdmin } = require('../middleware/adminAuth');
 const {
   obtenerProductos,
   obtenerProducto,
@@ -20,8 +22,8 @@ const {
 
 router.get('/', obtenerProductos);
 router.get('/:id', obtenerProducto);
-router.post('/', crearProducto);
-router.put('/:id', actualizarProducto);
-router.delete('/:id', eliminarProducto);
+router.post('/', proteger, esAdmin, crearProducto);
+router.put('/:id', proteger, esAdmin, actualizarProducto);
+router.delete('/:id', proteger, esAdmin, eliminarProducto);
 
 module.exports = router;

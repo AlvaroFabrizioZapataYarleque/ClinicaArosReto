@@ -10,6 +10,8 @@
 
 const express = require('express');
 const router = express.Router();
+const { proteger } = require('../middleware/auth');
+const { esAdmin } = require('../middleware/adminAuth');
 const {
   obtenerPromociones,
   obtenerPromocion,
@@ -20,8 +22,8 @@ const {
 
 router.get('/', obtenerPromociones);
 router.get('/:id', obtenerPromocion);
-router.post('/', crearPromocion);
-router.put('/:id', actualizarPromocion);
-router.delete('/:id', eliminarPromocion);
+router.post('/', proteger, esAdmin, crearPromocion);
+router.put('/:id', proteger, esAdmin, actualizarPromocion);
+router.delete('/:id', proteger, esAdmin, eliminarPromocion);
 
 module.exports = router;

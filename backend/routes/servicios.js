@@ -10,6 +10,8 @@
 
 const express = require('express');
 const router = express.Router();
+const { proteger } = require('../middleware/auth');
+const { esAdmin } = require('../middleware/adminAuth');
 const {
   obtenerServicios,
   obtenerServicio,
@@ -20,8 +22,8 @@ const {
 
 router.get('/', obtenerServicios);
 router.get('/:id', obtenerServicio);
-router.post('/', crearServicio);
-router.put('/:id', actualizarServicio);
-router.delete('/:id', eliminarServicio);
+router.post('/', proteger, esAdmin, crearServicio);
+router.put('/:id', proteger, esAdmin, actualizarServicio);
+router.delete('/:id', proteger, esAdmin, eliminarServicio);
 
 module.exports = router;

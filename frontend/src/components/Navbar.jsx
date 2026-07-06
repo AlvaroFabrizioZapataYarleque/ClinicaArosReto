@@ -14,16 +14,17 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { FaUser, FaSignOutAlt, FaRulerCombined } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaRulerCombined, FaShoppingCart, FaCog } from 'react-icons/fa';
 import './Navbar.css';
 
 const Navbar = () => {
-  const [abierto, setAbierto] = useState(false);        // Controla menú mobile abierto/cerrado
-  const { usuario, cerrarSesion } = useAuth();           // Estado de autenticación
-  const location = useLocation();                        // Para saber qué ruta está activa
+  const [abierto, setAbierto] = useState(false);
+  const { usuario, cerrarSesion } = useAuth();
+  const { totalItems } = useCart();
+  const location = useLocation();
 
-  // Enlaces de navegación
   const enlaces = [
     { path: '/', label: 'Inicio' },
     { path: '/productos', label: 'Productos' },
@@ -31,6 +32,10 @@ const Navbar = () => {
     { path: '/promociones', label: 'Promociones' },
     { path: '/nosotros', label: 'Nosotros' }
   ];
+
+  if (usuario?.rol === 'admin') {
+    enlaces.push({ path: '/admin', label: 'Panel Admin' });
+  }
 
   // Verifica si una ruta está activa (para resaltar el enlace)
   const estaActivo = (path) => location.pathname === path;
@@ -60,8 +65,12 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Botones de autenticación según estado */}
           <div className="navbar-auth">
+            <Link to="/carrito" className="navbar-cart" onClick={() => setAbierto(false)}>
+              <FaShoppingCart />
+              {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+            </Link>
+
             {usuario ? (
               <div className="navbar-user">
                 <span className="user-name">{usuario.nombre}</span>

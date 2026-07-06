@@ -15,6 +15,7 @@ const mongoose = require('mongoose');
 const Producto = require('../models/Producto');
 const Servicio = require('../models/Servicio');
 const Promocion = require('../models/Promocion');
+const Usuario = require('../models/Usuario');
 
 const conectarDB = async () => {
   try {
@@ -69,7 +70,12 @@ const seed = async () => {
   await Servicio.deleteMany();
   await Promocion.deleteMany();
 
-  // Insertar datos nuevos
+  const adminExiste = await Usuario.findOne({ email: 'alvarozapata505@gmail.com' });
+  if (!adminExiste) {
+    console.log('Creando administrador...');
+    await Usuario.create({ nombre: 'Admin', email: 'alvarozapata505@gmail.com', password: 'admin123', rol: 'admin' });
+  }
+
   await Producto.insertMany(productos);
   await Servicio.insertMany(servicios);
   await Promocion.insertMany(promociones);

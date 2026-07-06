@@ -1,60 +1,44 @@
-// ═══════════════════════════════════════════════════════════════
-// components/ProductTabs.jsx — TABS DE PRODUCTOS
-//
-// Muestra productos organizados por categorías en tabs.
-// Categorías: Aros | Llantas | Accesorios
-//
-// Props:
-//   limitado (boolean, opcional)
-//     • true  → Muestra solo 4 productos (usado en landing page)
-//     • false → Muestra todos (usado en página /productos)
-//
-// Estados:
-//   activo → Controla qué tab está seleccionada (aros / llantas / accesorios)
-//
-// Los datos son estáticos (mock). En producción se conectarían a la API.
-// ═══════════════════════════════════════════════════════════════
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaStar, FaShoppingCart } from 'react-icons/fa';
 import { GiCarWheel, GiTireTracks } from 'react-icons/gi';
 import { HiOutlineSparkles } from 'react-icons/hi';
+import { useCart } from '../context/CartContext';
+import api from '../api';
 import './ProductTabs.css';
 
 const ProductTabs = ({ limitado = false }) => {
-  const [activo, setActivo] = useState('aros');   // Tab seleccionada por defecto: aros
+  const [activo, setActivo] = useState('aros');
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const { agregar } = useCart();
 
-  // Configuración de las tabs
   const tabs = [
     { id: 'aros', label: 'Aros', icon: GiCarWheel },
     { id: 'llantas', label: 'Llantas', icon: GiTireTracks },
     { id: 'accesorios', label: 'Accesorios', icon: HiOutlineSparkles }
   ];
 
-  // Datos mock de productos (cada objeto representa un producto)
-  const productos = {
-    aros: [
-      { nombre: 'Aro Deportivo 18"', precio: 'S/450', marca: 'MMX', descripcion: 'Aleación ligera 5 radios', destacado: true },
-      { nombre: 'Aro Clásico 16"', precio: 'S/320', marca: 'Dream', descripcion: 'Cromado para sedan', destacado: false },
-      { nombre: 'Aro Todo Terreno 20"', precio: 'S/580', marca: 'Fuel', descripcion: 'Robusto para SUV 4x4', destacado: true },
-      { nombre: 'Aro Deportivo 17"', precio: 'S/390', marca: 'Enkei', descripcion: 'Diseño racing', destacado: false }
-    ],
-    llantas: [
-      { nombre: 'Pirelli 225/45R17', precio: 'S/280', marca: 'Pirelli', descripcion: 'Alto rendimiento', destacado: true },
-      { nombre: 'Michelin 205/55R16', precio: 'S/250', marca: 'Michelin', descripcion: 'Excelente durabilidad', destacado: false },
-      { nombre: 'Bridgestone 265/70R17', precio: 'S/320', marca: 'Bridgestone', descripcion: 'Todo terreno', destacado: true },
-      { nombre: 'Goodyear 215/60R16', precio: 'S/230', marca: 'Goodyear', descripcion: 'Excelente agarre', destacado: false }
-    ],
-    accesorios: [
-      { nombre: 'Kit Run Flat', precio: 'S/85', marca: 'Slime', descripcion: 'Kit antipinchazos', destacado: false },
-      { nombre: 'Tapas Válvulas LED', precio: 'S/25', marca: 'AutoStyle', descripcion: 'Tapas luminosas', destacado: true },
-      { nombre: 'Sensores TPMS', precio: 'S/150', marca: 'Orange', descripcion: 'Presión neumáticos', destacado: false },
-      { nombre: 'Llantas Deportivas', precio: 'S/180', marca: 'Racing', descripcion: 'Aro de repuesto', destacado: false }
-    ]
-  };
+  useEffect(() => {
+    const cargar = async () => {
+      try {
+        const { data } = await api.get('/api/productos');
+        setProductos(data);
+      } catch (e) {
+        console.error('Error al cargar productos:', e);
+      } finally {
+        setCargando(false);
+      }
+    };
+    cargar();
+  }, []);
 
-  // Si limitado es true, muestra solo los primeros 4 productos
-  const items = limitado ? productos[activo].slice(0, 4) : productos[activo];
+  const itemsPorCategoria = {};
+  tabs.forEach(t => {
+    const filtrados = productos.filter(p => p.categoria === t.id);
+    itemsPorCategoria[t.id] = limitado ? filtrados.slice(0, 4) : filtrados;
+  });
+
+  const items = itemsPorCategoria[activo] || [];
 
   return (
     <section className="product-tabs">
@@ -64,7 +48,6 @@ const ProductTabs = ({ limitado = false }) => {
           Explora nuestra amplia gama de aros, llantas y accesorios para tu vehículo
         </p>
 
-        {/* Barra de tabs */}
         <div className="tabs-header">
           {tabs.map(({ id, label, icon: Icon }) => (
             <button
@@ -78,37 +61,41 @@ const ProductTabs = ({ limitado = false }) => {
           ))}
         </div>
 
-        {/* Grid de productos */}
-        <div className="tabs-content">
-          {items.map((producto, idx) => (
-            <div key={idx} className="product-card card" style={{ animationDelay: `${idx * 0.1}s` }}>
-              {/* Imagen placeholder con icono */}
-              <div className="product-image">
-                <div className="product-placeholder">
-                  <GiCarWheel className="placeholder-icon" />
+        {cargando ? (
+          <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>Cargando productos...</div>
+        ) : (
+          <div className="tabs-content">
+            {items.map((producto, idx) => (
+              <div key={producto._id} className="product-card card" style={{ animationDelay: `${idx * 0.1}s` }}>
+                <div className="product-image">
+                  {producto.imagen ? (
+                    <img src={producto.imagen} alt={producto.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <div className="product-placeholder">
+                      <GiCarWheel className="placeholder-icon" />
+                    </div>
+                  )}
+                  {producto.destacado && (
+                    <span className="product-badge">
+                      <FaStar /> Destacado
+                    </span>
+                  )}
                 </div>
-                {/* Badge "Destacado" si el producto lo es */}
-                {producto.destacado && (
-                  <span className="product-badge">
-                    <FaStar /> Destacado
-                  </span>
-                )}
-              </div>
-              {/* Información del producto */}
-              <div className="product-info">
-                <span className="product-marca">{producto.marca}</span>
-                <h3 className="product-nombre">{producto.nombre}</h3>
-                <p className="product-descripcion">{producto.descripcion}</p>
-                <div className="product-footer">
-                  <span className="product-precio">{producto.precio}</span>
-                  <button className="btn-buy" title="Agregar al carrito">
-                    <FaShoppingCart />
-                  </button>
+                <div className="product-info">
+                  <span className="product-marca">{producto.marca}</span>
+                  <h3 className="product-nombre">{producto.nombre}</h3>
+                  <p className="product-descripcion">{producto.descripcion}</p>
+                  <div className="product-footer">
+                    <span className="product-precio">S/{producto.precio}</span>
+                    <button className="btn-buy" onClick={() => agregar(producto)} title="Agregar al carrito">
+                      <FaShoppingCart />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

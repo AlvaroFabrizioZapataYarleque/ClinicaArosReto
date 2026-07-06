@@ -15,7 +15,8 @@ const Promocion = require('../models/Promocion');
 // Devuelve solo las promociones con vigente = true, ordenadas por fecha descendente
 const obtenerPromociones = async (req, res, next) => {
   try {
-    const promociones = await Promocion.find({ vigente: true }).sort({ createdAt: -1 });
+    const filtro = req.query._all ? {} : { vigente: true };
+    const promociones = await Promocion.find(filtro).sort({ createdAt: -1 });
     res.json(promociones);
   } catch (error) {
     next(error);
