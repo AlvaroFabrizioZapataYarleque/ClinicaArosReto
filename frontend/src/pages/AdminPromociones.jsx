@@ -101,6 +101,7 @@ const AdminPromociones = () => {
             <th>Código</th>
             <th>Descuento</th>
             <th>Estado</th>
+            <th>Editar</th>
             <th>Activar</th>
           </tr>
         </thead>
@@ -112,6 +113,7 @@ const AdminPromociones = () => {
               <td><strong>{p.codigo}</strong></td>
               <td>{p.descuento}%</td>
               <td><span className={`estado-badge ${p.vigente ? 'estado-completado' : 'estado-cancelado'}`}>{p.vigente ? 'Activo' : 'Inactivo'}</span></td>
+              <td><button className="btn-edit" onClick={() => abrirEditar(p)}>Editar</button></td>
               <td>
                 <label className="toggle-switch">
                   <input type="checkbox" checked={p.vigente} onChange={() => toggleVigente(p)} disabled={togglendoId === p._id} />

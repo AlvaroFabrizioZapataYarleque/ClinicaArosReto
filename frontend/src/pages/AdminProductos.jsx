@@ -107,6 +107,7 @@ const AdminProductos = () => {
             <th>Precio</th>
             <th>Stock</th>
             <th>Estado</th>
+            <th>Editar</th>
             <th>Activar</th>
           </tr>
         </thead>
@@ -119,6 +120,7 @@ const AdminProductos = () => {
               <td>S/{p.precio}</td>
               <td>{p.stock}</td>
               <td><span className={`estado-badge ${p.disponible !== false ? 'estado-completado' : 'estado-cancelado'}`}>{p.disponible !== false ? 'Activo' : 'Inactivo'}</span></td>
+              <td><button className="btn-edit" onClick={() => abrirEditar(p)}>Editar</button></td>
               <td>
                 <label className="toggle-switch">
                   <input type="checkbox" checked={p.disponible !== false} onChange={() => toggleDisponible(p)} disabled={togglendoId === p._id} />
