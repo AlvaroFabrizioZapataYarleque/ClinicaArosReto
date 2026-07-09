@@ -114,6 +114,9 @@ const AdminDashboard = () => {
         <Link to="/admin/categorias" className="admin-nav-card">
           <FaThLarge /> Gestionar Categorías
         </Link>
+        <Link to="/admin/configuracion" className="admin-nav-card">
+          <FaCog /> Configuración del Sitio
+        </Link>
       </div>
 
       <div className="admin-stats">

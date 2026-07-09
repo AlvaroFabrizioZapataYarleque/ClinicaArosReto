@@ -32,6 +32,7 @@ app.use('/api/promociones', require('./routes/promociones')); // CRUD de promoci
 app.use('/api/categorias', require('./routes/categorias'));   // CRUD de categorías
 app.use('/api/pedidos', require('./routes/pedidos'));         // Pedidos (carrito → WhatsApp)
 app.use('/api/solicitudes', require('./routes/solicitudes')); // Solicitudes de servicio
+app.use('/api/configuracion', require('./routes/configuracion')); // Configuración del sitio
 app.use('/api/admin', require('./routes/admin'));             // Panel admin protegido
 
 app.use(errorHandler);                           // Middleware que captura errores no controlados

@@ -19,6 +19,7 @@ import AdminPromociones from './pages/AdminPromociones';
 import AdminPedidos from './pages/AdminPedidos';
 import AdminSolicitudes from './pages/AdminSolicitudes';
 import AdminCategorias from './pages/AdminCategorias';
+import AdminConfiguracion from './pages/AdminConfiguracion';
 import './App.css';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           <Route path="/admin/pedidos" element={<AdminRoute><AdminPedidos /></AdminRoute>} />
           <Route path="/admin/solicitudes" element={<AdminRoute><AdminSolicitudes /></AdminRoute>} />
           <Route path="/admin/categorias" element={<AdminRoute><AdminCategorias /></AdminRoute>} />
+          <Route path="/admin/configuracion" element={<AdminRoute><AdminConfiguracion /></AdminRoute>} />
         </Routes>
       </main>
       <Footer />

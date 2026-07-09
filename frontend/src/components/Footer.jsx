@@ -1,25 +1,13 @@
-// ═══════════════════════════════════════════════════════════════
-// components/Footer.jsx — PIE DE PÁGINA
-//
-// Contiene:
-//   • Ola decorativa SVG en la parte superior
-//   • Logo + descripción de la empresa
-//   • Redes sociales (Facebook, Instagram, WhatsApp)
-//   • Enlaces rápidos a todas las páginas
-//   • Enlaces a servicios
-//   • Información de contacto (dirección, teléfono, email, horario)
-//   • Copyright
-// ═══════════════════════════════════════════════════════════════
-
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
-import { useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import segundologo from '../assets/segundologo-aroreto.jpg';
+import api from '../api';
 import './Footer.css';
 
 const defaultIcon = L.icon({
@@ -33,23 +21,31 @@ const defaultIcon = L.icon({
 });
 
 const Footer = () => {
+  const [config, setConfig] = useState(null);
+
   useEffect(() => {
+    api.get('/api/configuracion')
+      .then(({ data }) => setConfig(data))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!config) return;
     const container = document.getElementById('map');
     if (container && !container._leaflet_id) {
-      const map = L.map('map', { zoomControl: true }).setView([-12.2025, -76.9500], 14);
+      const map = L.map('map', { zoomControl: true }).setView([config.lat || -12.2025, config.lng || -76.9500], 14);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
-      L.marker([-12.2025, -76.9500], { icon: defaultIcon }).addTo(map)
-        .bindPopup('<b>Clínica de Aros Reto S.A.C.</b><br>Av Mateo Pumacahua MZ B LT 4<br>Villa el Salvador, Lima')
+      L.marker([config.lat || -12.2025, config.lng || -76.9500], { icon: defaultIcon }).addTo(map)
+        .bindPopup(`<b>Clínica de Aros Reto S.A.C.</b><br>${(config.direccion || '').replace(/,/g, '<br>')}`)
         .openPopup();
       setTimeout(() => map.invalidateSize(), 200);
     }
-  }, []);
+  }, [config]);
 
   return (
     <footer className="footer">
-      {/* Ola decorativa SVG en la parte superior del footer */}
       <div className="footer-wave">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
           <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,511.73,50.41,585,56.77c82.06,7.4,161.8-8.56,241-8.56,96.54,0,184.32,17.56,277,27.56,42.42,4.57,87.46,7.17,133,1.06,51.38-6.85,102.29-25.89,152-38.16V0Z" opacity=".25" />
@@ -61,23 +57,20 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-grid">
           <div className="footer-left-cols">
-              {/* Columna 1: Logo + Descripción + Redes Sociales */}
               <div className="footer-brand">
                 <Link to="/" className="footer-logo">
                   <img src={segundologo} alt="Aros Reto" className="footer-logo-img" />
                 </Link>
                 <p className="footer-desc">
-                  Clínica de Aros Reto S.A.C. - Más de 10 años de experiencia en reparación,
-                  mantenimiento y venta de aros para todo tipo de automóviles.
+                  {config?.descripcion || 'Clínica de Aros Reto S.A.C. - Más de 10 años de experiencia en reparación, mantenimiento y venta de aros para todo tipo de automóviles.'}
                 </p>
                 <div className="footer-social">
-                  <a href="https://www.facebook.com/clinicadearosreto" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Facebook"><FaFacebook /></a>
-                  <a href="https://www.instagram.com/clinicadearosreto/" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram"><FaInstagram /></a>
-                  <a href="https://wa.me/51934096012" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="WhatsApp"><FaWhatsapp /></a>
+                  {config?.facebook && <a href={config.facebook} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Facebook"><FaFacebook /></a>}
+                  {config?.instagram && <a href={config.instagram} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram"><FaInstagram /></a>}
+                  {config?.whatsapp && <a href={`https://wa.me/${config.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="WhatsApp"><FaWhatsapp /></a>}
                 </div>
               </div>
 
-              {/* Columna 2: Enlaces rápidos */}
               <div className="footer-col">
                 <h4>Enlaces Rápidos</h4>
                 <ul>
@@ -89,7 +82,6 @@ const Footer = () => {
                 </ul>
               </div>
 
-              {/* Columna 3: Servicios */}
               <div className="footer-col">
                 <h4>Servicios</h4>
                 <ul>
@@ -101,19 +93,17 @@ const Footer = () => {
                 </ul>
               </div>
 
-              {/* Columna 4: Contacto */}
               <div className="footer-col">
                 <h4>Contacto</h4>
                 <ul className="footer-contact">
-                  <li><FaMapMarkerAlt /><span>Av Mateo Pumacahua MZ B LT 4, Villa el Salvador, Lima</span></li>
-                  <li><FaPhone /><span>(511) 2925710 – 993365051 – 981578455</span></li>
-                  <li><FaEnvelope /><span>asesordeservicios@clinicadearosreto.com</span></li>
-                  <li><FaClock /><span>Lun-Sab: 8:00am - 7:00pm</span></li>
+                  {config?.direccion && <li><FaMapMarkerAlt /><span>{config.direccion}</span></li>}
+                  {config?.telefonos && <li><FaPhone /><span>{config.telefonos}</span></li>}
+                  {config?.email && <li><FaEnvelope /><span>{config.email}</span></li>}
+                  {config?.horario && <li><FaClock /><span>{config.horario}</span></li>}
                 </ul>
               </div>
             </div>
 
-            {/* Columna 5: Mapa */}
             <div className="footer-map-wrapper">
               <h4>Ubícanos</h4>
               <div id="map" className="footer-map"></div>
@@ -121,7 +111,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright */}
       <div className="footer-bottom">
         <div className="container">
           <p>&copy; {new Date().getFullYear()} Clínica de Aros Reto S.A.C. Todos los derechos reservados.</p>
