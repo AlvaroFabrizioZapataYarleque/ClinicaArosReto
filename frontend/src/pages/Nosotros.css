@@ -13,8 +13,8 @@
 .historia-badge {
   display: inline-block;
   padding: 6px 18px;
-  background: rgba(252, 185, 0, 0.15);
-  border: 1px solid rgba(252, 185, 0, 0.3);
+  background: rgba(254, 237, 1, 0.15);
+  border: 1px solid rgba(254, 237, 1, 0.3);
   border-radius: var(--radius-full);
   color: var(--primary-dark);
   font-size: 0.8rem;
@@ -104,12 +104,12 @@
 }
 
 .mv-card.mision {
-  background: linear-gradient(135deg, #005a87, #0077b6);
+  background: linear-gradient(135deg, #342f64, #4a4590);
   color: white;
 }
 
 .mv-card.vision {
-  background: linear-gradient(135deg, #fcb900, #e6a600);
+  background: linear-gradient(135deg, #feed01, #d4c000);
   color: var(--text-dark);
 }
 

@@ -6,7 +6,7 @@
   z-index: 1000;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 90, 135, 0.1);
+  border-bottom: 1px solid rgba(52, 47, 100, 0.1);
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -62,7 +62,7 @@
 
 .navbar-link:hover {
   color: var(--secondary);
-  background: rgba(0, 90, 135, 0.05);
+  background: rgba(52, 47, 100, 0.05);
 }
 
 .navbar-link.active {
@@ -208,7 +208,7 @@
     gap: 20px;
     transform: translateY(-120%);
     transition: var(--transition);
-    border-bottom: 1px solid rgba(0, 90, 135, 0.1);
+    border-bottom: 1px solid rgba(52, 47, 100, 0.1);
     box-shadow: var(--shadow-md);
   }
 

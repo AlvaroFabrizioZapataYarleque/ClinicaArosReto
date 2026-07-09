@@ -15,7 +15,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaUser, FaLock, FaEye, FaEyeSlash, FaRulerCombined } from 'react-icons/fa';
+import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import logo from '../assets/logo-aros-reto.png';
 import './Auth.css';
 
 const Login = () => {
@@ -47,7 +48,7 @@ const Login = () => {
         <div className="auth-card">
           {/* Header con icono corporativo */}
           <div className="auth-header">
-            <FaRulerCombined className="auth-logo-icon" />
+            <img src={logo} alt="Aros Reto" className="auth-logo-img" />
             <h2>Bienvenido de vuelta</h2>
             <p>Ingresa a tu cuenta de Aros Reto</p>
           </div>

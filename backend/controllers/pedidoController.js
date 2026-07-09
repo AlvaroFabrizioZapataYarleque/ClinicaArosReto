@@ -2,7 +2,9 @@ const Pedido = require('../models/Pedido');
 
 const crearPedido = async (req, res, next) => {
   try {
-    const pedido = await Pedido.create(req.body);
+    const datos = { ...req.body };
+    if (req.usuario) datos.usuario = req.usuario.id;
+    const pedido = await Pedido.create(datos);
     res.status(201).json(pedido);
   } catch (error) {
     next(error);

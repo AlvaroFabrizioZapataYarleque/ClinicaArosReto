@@ -75,7 +75,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: rgba(252, 185, 0, 0.1);
+  background: rgba(254, 237, 1, 0.1);
   border: 1px dashed var(--primary);
   border-radius: var(--radius-sm);
   font-size: 0.85rem;

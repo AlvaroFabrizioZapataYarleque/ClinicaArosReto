@@ -1,16 +1,9 @@
 import { useState, useEffect } from 'react';
-import { FaWrench, FaTools, FaTruck, FaCheckCircle, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner, FaCar } from 'react-icons/fa';
-import { GiCarWheel } from 'react-icons/gi';
+import { FaWrench, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner, FaCar, FaTools } from 'react-icons/fa';
 import api from '../api';
 import './Servicios.css';
 
 const TELEFONO = '51934096012';
-
-const iconos = {
-  reparacion: GiCarWheel,
-  mantenimiento: FaTools,
-  delivery: FaTruck
-};
 
 const Servicios = () => {
   const [servicios, setServicios] = useState([]);
@@ -84,8 +77,6 @@ const Servicios = () => {
     </div>
   );
 
-  const IconComponent = (tipo) => iconos[tipo] || FaWrench;
-
   return (
     <div style={{ paddingTop: '70px' }}>
       <div className="page-header">
@@ -99,31 +90,30 @@ const Servicios = () => {
 
       <section className="servicios-detalle">
         <div className="container">
-          {servicios.map((servicio, idx) => {
-            const Icon = IconComponent(servicio.tipo);
-            return (
-              <div key={servicio._id} className="servicio-bloque">
-                <div className="servicio-bloque-icono" style={{
-                  background: `var(--${idx === 0 ? 'secondary' : idx === 1 ? 'primary' : 'secondary-light'})`
-                }}>
-                  <Icon />
-                </div>
-                <div className="servicio-bloque-content">
-                  <h2>{servicio.nombre}</h2>
-                  <p className="servicio-descripcion">{servicio.descripcion}</p>
-                  <div className="servicio-meta">
-                    <span className="servicio-precio">S/{servicio.precio > 0 ? `${servicio.precio}.00` : 'Gratuito'}</span>
-                    {servicio.duracion && (
-                      <span className="servicio-duracion"><FaTools /> {servicio.duracion}</span>
-                    )}
-                  </div>
-                  <button className="btn-solicitar-wsp" onClick={() => abrirForm(servicio)}>
-                    <FaWhatsapp /> Solicitar Servicio
-                  </button>
-                </div>
+          {servicios.map((servicio) => (
+            <div key={servicio._id} className="servicio-bloque">
+              <div className="servicio-bloque-img">
+                {servicio.imagen ? (
+                  <img src={servicio.imagen} alt={servicio.nombre} />
+                ) : (
+                  <FaWrench style={{ fontSize: '2.5rem', color: 'var(--secondary)' }} />
+                )}
               </div>
-            );
-          })}
+              <div className="servicio-bloque-content">
+                <h2>{servicio.nombre}</h2>
+                <p className="servicio-descripcion">{servicio.descripcion}</p>
+                <div className="servicio-meta">
+                  <span className="servicio-precio">S/{servicio.precio > 0 ? `${servicio.precio}.00` : 'Gratuito'}</span>
+                  {servicio.duracion && (
+                    <span className="servicio-duracion"><FaTools /> {servicio.duracion}</span>
+                  )}
+                </div>
+                <button className="btn-solicitar-wsp" onClick={() => abrirForm(servicio)}>
+                  <FaWhatsapp /> Solicitar Servicio
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

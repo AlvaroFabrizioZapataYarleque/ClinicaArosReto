@@ -17,7 +17,7 @@ const AdminServicios = () => {
   const [form, setForm] = useState({ nombre: '', tipo: 'reparacion', descripcion: '', precio: '', duracion: '', imagen: '' });
 
   const cargar = async () => {
-    const { data } = await api.get('/api/servicios');
+    const { data } = await api.get('/api/servicios?_all=true');
     setServicios(data);
   };
 

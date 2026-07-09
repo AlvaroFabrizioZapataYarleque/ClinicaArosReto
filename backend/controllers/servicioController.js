@@ -17,8 +17,8 @@ const Servicio = require('../models/Servicio');
 // Lista servicios. Filtro opcional: ?tipo=reparacion
 const obtenerServicios = async (req, res, next) => {
   try {
-    const { tipo } = req.query;
-    const filtro = {};
+    const { tipo, _all } = req.query;
+    const filtro = _all ? {} : { disponible: true };
     if (tipo) filtro.tipo = tipo;
     const servicios = await Servicio.find(filtro).sort({ createdAt: -1 });
     res.json(servicios);

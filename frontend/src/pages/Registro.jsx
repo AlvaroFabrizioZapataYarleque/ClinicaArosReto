@@ -14,7 +14,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaUser, FaEnvelope, FaLock, FaPhone, FaEye, FaEyeSlash, FaRulerCombined, FaIdCard } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaPhone, FaEye, FaEyeSlash, FaIdCard } from 'react-icons/fa';
+import logo from '../assets/logo-aros-reto.png';
 import './Auth.css';
 
 const Registro = () => {
@@ -93,7 +94,7 @@ const Registro = () => {
       <div className="auth-container">
         <div className="auth-card">
           <div className="auth-header">
-            <FaRulerCombined className="auth-logo-icon" />
+            <img src={logo} alt="Aros Reto" className="auth-logo-img" />
             <h2>Crear una cuenta</h2>
             <p>Regístrate en Aros Reto</p>
           </div>

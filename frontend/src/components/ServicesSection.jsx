@@ -11,36 +11,36 @@
 // Fondo con gradiente azul corporativo.
 // ═══════════════════════════════════════════════════════════════
 
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaTools, FaWrench, FaTruck, FaArrowRight, FaShieldAlt, FaClock, FaStar } from 'react-icons/fa';
-import { GiCarWheel } from 'react-icons/gi';
+import { FaArrowRight, FaShieldAlt, FaClock, FaStar, FaWrench, FaSpinner } from 'react-icons/fa';
+import api from '../api';
 import './ServicesSection.css';
 
+const itemsPorTipo = {
+  reparacion: ['Enderezado profesional', 'Soldadura especializada', 'Pintura y cromado', 'Pulido de alta calidad'],
+  mantenimiento: ['Balanceo electrónico', 'Alineación precisa', 'Cambio de neumáticos', 'Revisión general'],
+  delivery: ['Recojo a domicilio', 'Entrega de productos', 'Devolución de aros', 'Seguimiento en tiempo real']
+};
+
+const colores = ['#1a1a2e', '#16213e', '#0f3460'];
+
 const ServicesSection = () => {
-  // Datos de los 3 servicios principales
-  const servicios = [
-    {
-      icon: GiCarWheel,
-      titulo: 'Reparación de Aros',
-      tipo: 'reparacion',
-      items: ['Enderezado profesional', 'Soldadura especializada', 'Pintura y cromado', 'Pulido de alta calidad'],
-      color: '#1a1a2e'
-    },
-    {
-      icon: FaWrench,
-      titulo: 'Mantenimiento',
-      tipo: 'mantenimiento',
-      items: ['Balanceo electrónico', 'Alineación precisa', 'Cambio de neumáticos', 'Revisión general'],
-      color: '#16213e'
-    },
-    {
-      icon: FaTruck,
-      titulo: 'Delivery',
-      tipo: 'delivery',
-      items: ['Recojo a domicilio', 'Entrega de productos', 'Devolución de aros', 'Seguimiento en tiempo real'],
-      color: '#0f3460'
-    }
-  ];
+  const [servicios, setServicios] = useState([]);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    api.get('/api/servicios')
+      .then(({ data }) => setServicios(data))
+      .catch(() => {})
+      .finally(() => setCargando(false));
+  }, []);
+
+  if (cargando) return (
+    <section className="services-section" style={{ textAlign: 'center', padding: '60px 0' }}>
+      <FaSpinner className="fa-spin" style={{ fontSize: '2rem', color: 'var(--primary)' }} />
+    </section>
+  );
 
   return (
     <section className="services-section">
@@ -52,23 +52,24 @@ const ServicesSection = () => {
 
         <div className="services-grid">
           {servicios.map((servicio, idx) => (
-            <div key={idx} className="service-card card" style={{ animationDelay: `${idx * 0.15}s` }}>
-              {/* Header de la tarjeta con color distintivo según el tipo de servicio */}
-              <div className="service-header" style={{ background: `linear-gradient(135deg, ${servicio.color}, ${servicio.color}dd)` }}>
-                <servicio.icon className="service-icon-main" />
-                <h3>{servicio.titulo}</h3>
+            <div key={servicio._id} className="service-card card" style={{ animationDelay: `${idx * 0.15}s` }}>
+              <div className="service-header" style={{ background: `linear-gradient(135deg, ${colores[idx % colores.length]}, ${colores[idx % colores.length]}dd)` }}>
+                {servicio.imagen ? (
+                  <img src={servicio.imagen} alt={servicio.nombre} className="service-header-img" />
+                ) : (
+                  <FaWrench className="service-icon-main" />
+                )}
+                <h3>{servicio.nombre}</h3>
               </div>
               <div className="service-body">
-                {/* Lista de servicios incluidos */}
                 <ul className="service-list">
-                  {servicio.items.map((item, i) => (
+                  {(itemsPorTipo[servicio.tipo] || []).map((item, i) => (
                     <li key={i} className="service-item">
                       <FaStar className="check-icon" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                {/* Indicadores de garantía */}
                 <div className="service-features">
                   <div className="sf-item">
                     <FaShieldAlt />

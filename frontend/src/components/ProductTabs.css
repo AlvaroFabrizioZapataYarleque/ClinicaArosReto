@@ -16,7 +16,7 @@
   align-items: center;
   gap: 10px;
   padding: 14px 32px;
-  border: 2px solid rgba(0, 90, 135, 0.15);
+  border: 2px solid rgba(52, 47, 100, 0.15);
   border-radius: var(--radius-full);
   background: white;
   color: var(--text-muted);

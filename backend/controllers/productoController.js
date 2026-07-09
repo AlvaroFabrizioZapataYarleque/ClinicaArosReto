@@ -16,8 +16,8 @@ const Producto = require('../models/Producto');
 // Ejemplo: GET /api/productos?categoria=aros → solo aros
 const obtenerProductos = async (req, res, next) => {
   try {
-    const { categoria } = req.query;
-    const filtro = {};
+    const { categoria, _all } = req.query;
+    const filtro = _all ? {} : { disponible: true };
     if (categoria) filtro.categoria = categoria;
     const productos = await Producto.find(filtro).sort({ createdAt: -1 });
     res.json(productos);

@@ -19,7 +19,7 @@ const AdminProductos = () => {
 
   const cargar = async () => {
     const [resProd, resCat] = await Promise.all([
-      api.get('/api/productos'),
+      api.get('/api/productos?_all=true'),
       api.get('/api/categorias?_all=true')
     ]);
     setProductos(resProd.data);

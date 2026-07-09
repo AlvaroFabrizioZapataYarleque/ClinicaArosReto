@@ -50,7 +50,7 @@
   font-weight: 600;
   color: var(--secondary);
   transition: var(--transition);
-  border: 1px solid rgba(0, 90, 135, 0.1);
+  border: 1px solid rgba(52, 47, 100, 0.1);
 }
 
 .admin-nav-card:hover {
@@ -79,13 +79,13 @@
   background: white;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(0, 90, 135, 0.1);
+  border: 1px solid rgba(52, 47, 100, 0.1);
 }
 
 .stat-icon {
   font-size: 2rem;
   color: var(--primary);
-  background: rgba(252, 185, 0, 0.15);
+  background: rgba(254, 237, 1, 0.15);
   padding: 12px;
   border-radius: var(--radius-md);
 }
@@ -115,7 +115,7 @@
   padding: 24px;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(0, 90, 135, 0.1);
+  border: 1px solid rgba(52, 47, 100, 0.1);
 }
 
 .chart-container h3 {
@@ -150,7 +150,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(0, 90, 135, 0.08);
+  background: rgba(52, 47, 100, 0.08);
   color: var(--secondary);
   font-size: 1.1rem;
   transition: var(--transition);
@@ -210,7 +210,7 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(0, 90, 135, 0.1);
+  border: 1px solid rgba(52, 47, 100, 0.1);
 }
 
 .admin-table th,
@@ -227,7 +227,7 @@
 }
 
 .admin-table td {
-  border-bottom: 1px solid rgba(0, 90, 135, 0.05);
+  border-bottom: 1px solid rgba(52, 47, 100, 0.05);
 }
 
 .admin-table tr:last-child td {
@@ -235,7 +235,7 @@
 }
 
 .admin-table tr:hover td {
-  background: rgba(252, 185, 0, 0.05);
+  background: rgba(254, 237, 1, 0.05);
 }
 
 .admin-table-actions {
@@ -285,7 +285,7 @@
 }
 
 .btn-edit {
-  background: rgba(0, 90, 135, 0.1);
+  background: rgba(52, 47, 100, 0.1);
   color: var(--secondary);
   border: none;
 }
@@ -353,7 +353,7 @@
 .admin-form textarea {
   width: 100%;
   padding: 10px 14px;
-  border: 2px solid rgba(0, 90, 135, 0.15);
+  border: 2px solid rgba(52, 47, 100, 0.15);
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-family: inherit;
