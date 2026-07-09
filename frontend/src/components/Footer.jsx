@@ -23,10 +23,16 @@ const defaultIcon = L.icon({
 const Footer = () => {
   const [config, setConfig] = useState(null);
 
-  useEffect(() => {
+  const cargarConfig = () => {
     api.get('/api/configuracion')
       .then(({ data }) => setConfig(data))
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    cargarConfig();
+    window.addEventListener('config-updated', cargarConfig);
+    return () => window.removeEventListener('config-updated', cargarConfig);
   }, []);
 
   useEffect(() => {

@@ -23,6 +23,7 @@ const AdminConfiguracion = () => {
     setMensaje('');
     try {
       await api.put('/api/configuracion', form);
+      window.dispatchEvent(new Event('config-updated'));
       setMensaje('Configuración actualizada correctamente');
     } catch (err) {
       alert('Error: ' + (err.response?.data?.mensaje || err.message));
