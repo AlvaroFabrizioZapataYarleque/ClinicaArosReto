@@ -11,13 +11,12 @@
 //   • Ruta activa         → El enlace se resalta con gradiente azul
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { FaUser, FaSignOutAlt, FaShoppingCart, FaCog, FaSearch } from 'react-icons/fa';
-import api from '../api';
+import { FaUser, FaSignOutAlt, FaShoppingCart } from 'react-icons/fa';
 import logo from '../assets/logo-aros-reto.png';
 import './Navbar.css';
 
@@ -26,23 +25,6 @@ const Navbar = () => {
   const { usuario, cerrarSesion } = useAuth();
   const { totalItems, abrirPanel } = useCart();
   const location = useLocation();
-  const [tieneActivo, setTieneActivo] = useState(false);
-
-  useEffect(() => {
-    if (!usuario) { setTieneActivo(false); return; }
-    const check = async () => {
-      try {
-        const [pedido, solicitud] = await Promise.all([
-          api.get('/api/pedidos/estado-actual').catch(() => ({ data: null })),
-          api.get('/api/solicitudes/estado-actual').catch(() => ({ data: null }))
-        ]);
-        setTieneActivo(!!(pedido.data || solicitud.data));
-      } catch { setTieneActivo(false); }
-    };
-    check();
-    const interval = setInterval(check, 30000);
-    return () => clearInterval(interval);
-  }, [usuario]);
 
   const enlaces = [
     { path: '/', label: 'Inicio' },
@@ -81,7 +63,6 @@ const Navbar = () => {
                     onClick={() => setAbierto(false)}
                   >
                     {label}
-                    {label === 'Seguimiento' && tieneActivo && <span className="seguimiento-dot" />}
                   </Link>
               </li>
             ))}
