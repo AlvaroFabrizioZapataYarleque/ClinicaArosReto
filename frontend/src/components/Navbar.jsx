@@ -11,12 +11,13 @@
 //   • Ruta activa         → El enlace se resalta con gradiente azul
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { FaUser, FaSignOutAlt, FaShoppingCart, FaCog } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaShoppingCart, FaCog, FaSearch } from 'react-icons/fa';
+import api from '../api';
 import logo from '../assets/logo-aros-reto.png';
 import './Navbar.css';
 
@@ -25,6 +26,23 @@ const Navbar = () => {
   const { usuario, cerrarSesion } = useAuth();
   const { totalItems, abrirPanel } = useCart();
   const location = useLocation();
+  const [tieneActivo, setTieneActivo] = useState(false);
+
+  useEffect(() => {
+    if (!usuario) { setTieneActivo(false); return; }
+    const check = async () => {
+      try {
+        const [pedido, solicitud] = await Promise.all([
+          api.get('/api/pedidos/estado-actual').catch(() => ({ data: null })),
+          api.get('/api/solicitudes/estado-actual').catch(() => ({ data: null }))
+        ]);
+        setTieneActivo(!!(pedido.data || solicitud.data));
+      } catch { setTieneActivo(false); }
+    };
+    check();
+    const interval = setInterval(check, 30000);
+    return () => clearInterval(interval);
+  }, [usuario]);
 
   const enlaces = [
     { path: '/', label: 'Inicio' },
@@ -34,6 +52,9 @@ const Navbar = () => {
     { path: '/nosotros', label: 'Nosotros' }
   ];
 
+  if (usuario) {
+    enlaces.push({ path: '/mis-estados', label: 'Seguimiento' });
+  }
   if (usuario?.rol === 'admin') {
     enlaces.push({ path: '/admin', label: 'Panel Admin' });
   }
@@ -54,13 +75,14 @@ const Navbar = () => {
           <ul className="navbar-links">
             {enlaces.map(({ path, label }) => (
               <li key={path}>
-                <Link
-                  to={path}
-                  className={`navbar-link ${estaActivo(path) ? 'active' : ''}`}
-                  onClick={() => setAbierto(false)}    // Cierra menú al hacer clic
-                >
-                  {label}
-                </Link>
+                  <Link
+                    to={path}
+                    className={`navbar-link ${estaActivo(path) ? 'active' : ''}`}
+                    onClick={() => setAbierto(false)}
+                  >
+                    {label}
+                    {label === 'Seguimiento' && tieneActivo && <span className="seguimiento-dot" />}
+                  </Link>
               </li>
             ))}
           </ul>
@@ -73,11 +95,15 @@ const Navbar = () => {
 
               {usuario ? (
               <div className="navbar-user">
-                <Link to="/perfil" className="user-name" onClick={() => setAbierto(false)}>
-                  <FaUser /> {usuario.nombre}
+                <Link to="/perfil" className="user-profile-link" onClick={() => setAbierto(false)}>
+                  <span className="user-avatar"><FaUser /></span>
+                  <span className="user-info">
+                    <span className="user-name">{usuario.nombre}</span>
+                    <span className="user-label">Mi Perfil</span>
+                  </span>
                 </Link>
-                <button className="btn-logout" onClick={cerrarSesion}>
-                  <FaSignOutAlt /> Salir
+                <button className="btn-logout" onClick={cerrarSesion} title="Cerrar sesión">
+                  <FaSignOutAlt />
                 </button>
               </div>
             ) : (

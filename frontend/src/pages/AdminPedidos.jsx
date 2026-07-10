@@ -10,7 +10,8 @@ const ESTADOS_PEDIDO = [
   { value: 'en_preparacion', label: 'En preparación', color: 'primary', icon: FaBox },
   { value: 'listo_entrega', label: 'Listo para entrega', color: 'info', icon: FaTruck },
   { value: 'entregado', label: 'Entregado', color: 'success', icon: FaCheckCircle },
-  { value: 'cancelado', label: 'Cancelado', color: 'danger', icon: FaBan }
+  { value: 'cancelado', label: 'Cancelado', color: 'danger', icon: FaBan },
+  { value: 'rechazado', label: 'Rechazado', color: 'danger', icon: FaBan }
 ];
 
 const ESTADO_MAP = Object.fromEntries(ESTADOS_PEDIDO.map(e => [e.value, e]));

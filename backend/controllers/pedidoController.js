@@ -107,4 +107,16 @@ const obtenerPedidosUsuario = async (req, res, next) => {
   }
 };
 
-module.exports = { crearPedido, obtenerPedidos, obtenerPedidosUsuario, obtenerMetricas, actualizarEstadoPedido, eliminarPedido };
+const obtenerEstadoActualPedido = async (req, res, next) => {
+  try {
+    const pedido = await Pedido.findOne({
+      usuario: req.usuario.id,
+      estado: { $nin: ['entregado', 'cancelado', 'rechazado'] }
+    }).sort({ fechaPedido: -1 });
+    res.json(pedido);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { crearPedido, obtenerPedidos, obtenerPedidosUsuario, obtenerMetricas, actualizarEstadoPedido, eliminarPedido, obtenerEstadoActualPedido };

@@ -26,7 +26,7 @@ const pedidoSchema = new mongoose.Schema({
   direccionDelivery: { type: String, default: '' },
   estado: {
     type: String,
-    enum: ['pendiente', 'confirmado', 'en_preparacion', 'listo_entrega', 'entregado', 'cancelado'],
+    enum: ['pendiente', 'confirmado', 'en_preparacion', 'listo_entrega', 'entregado', 'cancelado', 'rechazado'],
     default: 'pendiente'
   },
   estadoHistorial: [estadoHistorialSchema],

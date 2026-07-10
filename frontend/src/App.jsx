@@ -20,6 +20,7 @@ import AdminPedidos from './pages/AdminPedidos';
 import AdminSolicitudes from './pages/AdminSolicitudes';
 import AdminCategorias from './pages/AdminCategorias';
 import AdminConfiguracion from './pages/AdminConfiguracion';
+import MisEstados from './pages/MisEstados';
 import './App.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/perfil" element={<Perfil />} />
+          <Route path="/mis-estados" element={<MisEstados />} />
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/productos" element={<AdminRoute><AdminProductos /></AdminRoute>} />

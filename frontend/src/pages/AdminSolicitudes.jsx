@@ -11,7 +11,8 @@ const ESTADOS_SOLICITUD = [
   { value: 'en_reparacion', label: 'En reparación', color: 'primary', icon: FaWrench },
   { value: 'listo_entrega', label: 'Listo para entrega', color: 'info', icon: FaCheckCircle },
   { value: 'entregado', label: 'Entregado', color: 'success', icon: FaCheckCircle },
-  { value: 'cancelado', label: 'Cancelado', color: 'danger', icon: FaBan }
+  { value: 'cancelado', label: 'Cancelado', color: 'danger', icon: FaBan },
+  { value: 'rechazado', label: 'Rechazado', color: 'danger', icon: FaBan }
 ];
 
 const ESTADO_MAP = Object.fromEntries(ESTADOS_SOLICITUD.map(e => [e.value, e]));

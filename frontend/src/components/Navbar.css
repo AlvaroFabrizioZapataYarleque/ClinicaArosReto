@@ -65,6 +65,22 @@
   background: rgba(52, 47, 100, 0.05);
 }
 
+.seguimiento-dot {
+  width: 8px;
+  height: 8px;
+  background: #25D366;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 6px;
+  animation: pulse-dot 1.5s ease infinite;
+  vertical-align: middle;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
 .navbar-link.active {
   color: var(--text-light);
   background: var(--gradient-primary);
@@ -120,8 +136,59 @@
 .navbar-user {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   margin-left: 20px;
+}
+
+.user-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 8px;
+  border-radius: 50px;
+  background: rgba(52, 47, 100, 0.06);
+  border: 2px solid transparent;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user-profile-link:hover {
+  background: rgba(254, 237, 1, 0.15);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(254, 237, 1, 0.2);
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: white;
+  font-size: 0.85rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.user-name {
+  font-weight: 700;
+  color: var(--secondary);
+  font-size: 0.85rem;
+}
+
+.user-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .btn-login {
@@ -158,31 +225,31 @@
   box-shadow: var(--shadow-glow);
 }
 
-.user-name {
-  font-weight: 600;
-  color: var(--secondary);
-  font-size: 0.9rem;
-}
-
 .btn-logout {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius-full);
-  background: rgba(220, 53, 69, 0.1);
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: rgba(220, 53, 69, 0.08);
   color: #dc3545;
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s;
   font-family: inherit;
 }
 
 .btn-logout:hover {
   background: #dc3545;
   color: white;
+  border-color: #dc3545;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
 }
 
 .navbar-toggle {

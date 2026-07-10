@@ -47,4 +47,16 @@ const obtenerSolicitudesUsuario = async (req, res) => {
   }
 };
 
-module.exports = { obtenerSolicitudes, crearSolicitud, actualizarEstadoSolicitud, obtenerSolicitudesUsuario };
+const obtenerEstadoActualSolicitud = async (req, res) => {
+  try {
+    const solicitud = await SolicitudServicio.findOne({
+      usuario: req.usuario.id,
+      estado: { $nin: ['entregado', 'cancelado', 'rechazado'] }
+    }).populate('servicioId', 'nombre tipo').sort({ createdAt: -1 });
+    res.json(solicitud);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener estado actual', error: error.message });
+  }
+};
+
+module.exports = { obtenerSolicitudes, crearSolicitud, actualizarEstadoSolicitud, obtenerSolicitudesUsuario, obtenerEstadoActualSolicitud };
