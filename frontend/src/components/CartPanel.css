@@ -383,6 +383,55 @@
   to { transform: rotate(360deg); }
 }
 
+.cart-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--text-dark);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2500;
+  box-shadow: 0 4px 20px rgba(254, 237, 1, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fabEntrada 0.3s ease;
+}
+
+.cart-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(254, 237, 1, 0.6);
+}
+
+.cart-fab-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #dc3545;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 800;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.4);
+}
+
+@keyframes fabEntrada {
+  from { opacity: 0; transform: scale(0.5) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
 @media (max-width: 480px) {
   .cart-panel {
     width: 100vw;
@@ -391,5 +440,23 @@
 
   .cart-panel-form .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .cart-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 54px;
+    height: 54px;
+    font-size: 1.2rem;
+  }
+
+  .cart-panel-form-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cart-panel-form-buttons .btn {
+    width: 100%;
+    justify-content: center;
   }
 }

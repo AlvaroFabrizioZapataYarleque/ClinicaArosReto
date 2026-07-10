@@ -18,7 +18,7 @@ const ProductTabs = ({ limitado = false }) => {
   const [productos, setProductos] = useState([]);
   const [activo, setActivo] = useState('');
   const [cargando, setCargando] = useState(true);
-  const { agregar } = useCart();
+  const { agregar, items: cartItems } = useCart();
 
   useEffect(() => {
     const cargar = async () => {
@@ -100,6 +100,7 @@ const ProductTabs = ({ limitado = false }) => {
                     <span className="product-precio">S/{producto.precio}</span>
                     <button className="btn-buy" onClick={() => agregar(producto)} title="Agregar al carrito">
                       <FaShoppingCart />
+                      {(() => { const enCarrito = cartItems.find(i => i._id === producto._id); return enCarrito ? <span className="btn-buy-badge">{enCarrito.cantidad}</span> : null; })()}
                     </button>
                   </div>
                 </div>

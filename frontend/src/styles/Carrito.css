@@ -269,20 +269,108 @@
 }
 
 @media (max-width: 768px) {
+  .carrito-page {
+    padding: 80px 12px 40px;
+  }
+
+  .carrito-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .carrito-header h1 {
+    font-size: 1.2rem;
+  }
+
   .carrito-item {
     flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px;
+    position: relative;
+  }
+
+  .carrito-item-img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .carrito-item-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .carrito-item-info h3 {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .carrito-item-cantidad {
+    order: 1;
+  }
+
+  .carrito-item-cantidad button {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
   }
 
   .carrito-item-subtotal {
     min-width: auto;
+    font-size: 0.9rem;
+  }
+
+  .carrito-item-eliminar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px;
+    font-size: 0.9rem;
+  }
+
+  .carrito-footer {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .carrito-total {
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .carrito-total strong {
+    font-size: 1.3rem;
+    margin-left: 0;
+  }
+
+  .btn-pedir {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+    font-size: 0.9rem;
   }
 
   .carrito-form .form-row {
     grid-template-columns: 1fr;
   }
 
-  .carrito-footer {
+  .carrito-modal {
+    padding: 20px 16px;
+  }
+
+  .carrito-modal-buttons {
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
+  }
+
+  .carrito-modal-buttons .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
