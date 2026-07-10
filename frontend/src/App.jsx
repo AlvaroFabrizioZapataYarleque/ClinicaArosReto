@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CartPanel from './components/CartPanel';
+import { useCart } from './context/CartContext';
+import { FaShoppingCart } from 'react-icons/fa';
 import AdminRoute from './components/AdminRoute';
 import Inicio from './pages/Inicio';
 import Productos from './pages/Productos';
@@ -24,6 +26,8 @@ import MisEstados from './pages/MisEstados';
 import './App.css';
 
 function App() {
+  const { totalItems, abrirPanel } = useCart();
+
   return (
     <div className="app-wrapper">
       <Navbar />
@@ -49,6 +53,12 @@ function App() {
           <Route path="/admin/categorias" element={<AdminRoute><AdminCategorias /></AdminRoute>} />
           <Route path="/admin/configuracion" element={<AdminRoute><AdminConfiguracion /></AdminRoute>} />
         </Routes>
+        {totalItems > 0 && (
+          <button className="cart-fab" onClick={abrirPanel} aria-label="Abrir carrito">
+            <FaShoppingCart />
+            <span className="cart-fab-badge">{totalItems}</span>
+          </button>
+        )}
       </main>
       <Footer />
     </div>

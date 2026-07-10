@@ -8,7 +8,7 @@ import './CartPanel.css';
 const TELEFONO = '51934096012';
 
 const CartPanel = () => {
-  const { items, eliminar, actualizarCantidad, totalPrecio, totalItems, limpiar, panelAbierto, abrirPanel, cerrarPanel } = useCart();
+  const { items, eliminar, actualizarCantidad, totalPrecio, limpiar, panelAbierto, cerrarPanel } = useCart();
   const { usuario } = useAuth();
   const [mostrarForm, setMostrarForm] = useState(false);
   const [form, setForm] = useState({ nombre: '', email: '', telefono: '', dni: '', direccion: '', tipoEntrega: 'recojo', direccionDelivery: '' });
@@ -104,12 +104,6 @@ const CartPanel = () => {
 
   return (
     <>
-      {totalItems > 0 && (
-        <button className="cart-fab" onClick={abrirPanel} aria-label="Abrir carrito">
-          <FaShoppingCart />
-          <span className="cart-fab-badge">{totalItems}</span>
-        </button>
-      )}
       <div className={`cart-panel-overlay ${panelAbierto ? 'active' : ''}`} onClick={cerrarPanel}>
       <div className={`cart-panel ${panelAbierto ? 'active' : ''}`} onClick={e => e.stopPropagation()}>
         <div className="cart-panel-header">

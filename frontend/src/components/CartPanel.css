@@ -384,9 +384,10 @@
 }
 
 .cart-fab {
-  position: fixed;
+  position: sticky;
   bottom: 24px;
-  right: 24px;
+  align-self: flex-end;
+  margin: 0 24px 24px 0;
   width: 60px;
   height: 60px;
   border: none;
@@ -402,6 +403,7 @@
   box-shadow: 0 4px 20px rgba(254, 237, 1, 0.4);
   transition: transform 0.2s, box-shadow 0.2s;
   animation: fabEntrada 0.3s ease;
+  flex-shrink: 0;
 }
 
 .cart-fab:hover {
@@ -443,8 +445,7 @@
   }
 
   .cart-fab {
-    bottom: 16px;
-    right: 16px;
+    margin: 0 16px 16px 0;
     width: 54px;
     height: 54px;
     font-size: 1.2rem;
