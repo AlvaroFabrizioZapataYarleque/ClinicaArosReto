@@ -52,7 +52,7 @@ const Navbar = () => {
     { path: '/nosotros', label: 'Nosotros' }
   ];
 
-  if (usuario) {
+  if (usuario && usuario.rol !== 'admin') {
     enlaces.push({ path: '/mis-estados', label: 'Seguimiento' });
   }
   if (usuario?.rol === 'admin') {
