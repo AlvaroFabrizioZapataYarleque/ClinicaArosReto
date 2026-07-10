@@ -232,6 +232,38 @@
   color: var(--text-dark);
 }
 
+.tipo-entrega-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.tipo-entrega-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  background: #f8f9fa;
+}
+
+.tipo-entrega-option input { display: none; }
+
+.tipo-entrega-option.active {
+  border-color: #25D366;
+  background: rgba(37, 211, 102, 0.08);
+  color: var(--secondary);
+}
+
+.tipo-entrega-option svg { font-size: 1rem; }
+
 .servicio-modal-body {
   padding: 20px 24px;
 }

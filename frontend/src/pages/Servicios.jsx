@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaWrench, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner, FaCar, FaTools } from 'react-icons/fa';
+import { FaWrench, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaSpinner, FaCar, FaTools, FaTruck, FaStore } from 'react-icons/fa';
 import api from '../api';
 import './Servicios.css';
 
@@ -9,7 +9,7 @@ const Servicios = () => {
   const [servicios, setServicios] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [formAbierto, setFormAbierto] = useState(null);
-  const [form, setForm] = useState({ nombre: '', empresa: '', detalles: '', vehiculo: '' });
+  const [form, setForm] = useState({ nombre: '', empresa: '', detalles: '', vehiculo: '', tipoEntrega: 'local', direccionDelivery: '' });
   const [enviando, setEnviando] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Servicios = () => {
 
   const abrirForm = (servicio) => {
     setFormAbierto(servicio);
-    setForm({ nombre: '', empresa: '', detalles: '', vehiculo: '' });
+    setForm({ nombre: '', empresa: '', detalles: '', vehiculo: '', tipoEntrega: 'local', direccionDelivery: '' });
   };
 
   const generarMensaje = (servicio) => {
@@ -37,6 +37,8 @@ const Servicios = () => {
     if (form.empresa) msg += `*Empresa:* ${form.empresa}%0A`;
     if (form.vehiculo) msg += `*Vehículo:* ${form.vehiculo}%0A`;
     msg += `*Nombre:* ${form.nombre}%0A`;
+    msg += `*Tipo:* ${form.tipoEntrega === 'delivery' ? 'A domicilio' : 'En local'}%0A`;
+    if (form.tipoEntrega === 'delivery') msg += `*Dirección:* ${form.direccionDelivery}%0A`;
     msg += `*Detalles:*%0A${form.detalles}%0A%0A`;
     msg += `Enviado desde la web de Aros Reto`;
     return msg;
@@ -51,7 +53,9 @@ const Servicios = () => {
         nombre: form.nombre,
         empresa: form.empresa,
         detalles: form.detalles,
-        vehiculo: form.vehiculo
+        vehiculo: form.vehiculo,
+        tipoEntrega: form.tipoEntrega,
+        direccionDelivery: form.direccionDelivery
       });
       const msg = generarMensaje(formAbierto);
       window.open(`https://wa.me/${TELEFONO}?text=${msg}`, '_blank');
@@ -159,6 +163,33 @@ const Servicios = () => {
                     placeholder="Nombre de tu empresa"
                   />
                 </div>
+
+                <div className="form-group">
+                  <label>Tipo de servicio</label>
+                  <div className="tipo-entrega-options">
+                    <label className={`tipo-entrega-option ${form.tipoEntrega === 'local' ? 'active' : ''}`}>
+                      <input type="radio" name="tipoEntrega" value="local" checked={form.tipoEntrega === 'local'} onChange={() => setForm({ ...form, tipoEntrega: 'local' })} />
+                      <FaStore /> En local (traigo mi vehículo)
+                    </label>
+                    <label className={`tipo-entrega-option ${form.tipoEntrega === 'delivery' ? 'active' : ''}`}>
+                      <input type="radio" name="tipoEntrega" value="delivery" checked={form.tipoEntrega === 'delivery'} onChange={() => setForm({ ...form, tipoEntrega: 'delivery' })} />
+                      <FaTruck /> A domicilio (mecánico va al lugar)
+                    </label>
+                  </div>
+                </div>
+
+                {form.tipoEntrega === 'delivery' && (
+                  <div className="form-group">
+                    <label>Dirección del servicio *</label>
+                    <input
+                      value={form.direccionDelivery}
+                      onChange={e => setForm({ ...form, direccionDelivery: e.target.value })}
+                      placeholder="Av. Ejemplo 123, Lima"
+                      required
+                    />
+                  </div>
+                )}
+
                 <div className="form-group">
                   <label><FaClipboardList /> Detalles del servicio</label>
                   <textarea

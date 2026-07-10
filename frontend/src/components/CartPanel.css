@@ -335,6 +335,38 @@
   gap: 12px;
 }
 
+.tipo-entrega-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.tipo-entrega-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  background: #f8f9fa;
+}
+
+.tipo-entrega-option input { display: none; }
+
+.tipo-entrega-option.active {
+  border-color: var(--primary);
+  background: rgba(254, 237, 1, 0.1);
+  color: var(--secondary);
+}
+
+.tipo-entrega-option svg { font-size: 1rem; }
+
 .cart-panel-form-buttons {
   display: flex;
   justify-content: flex-end;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
-import { FaTrash, FaPlus, FaMinus, FaWhatsapp, FaTimes, FaShoppingCart, FaSpinner } from 'react-icons/fa';
+import { FaTrash, FaPlus, FaMinus, FaWhatsapp, FaTimes, FaShoppingCart, FaSpinner, FaTruck, FaStore } from 'react-icons/fa';
 import './CartPanel.css';
 
 const TELEFONO = '51934096012';
@@ -11,7 +11,7 @@ const CartPanel = () => {
   const { items, eliminar, actualizarCantidad, totalPrecio, limpiar, panelAbierto, cerrarPanel } = useCart();
   const { usuario } = useAuth();
   const [mostrarForm, setMostrarForm] = useState(false);
-  const [form, setForm] = useState({ nombre: '', email: '', telefono: '', dni: '', direccion: '' });
+  const [form, setForm] = useState({ nombre: '', email: '', telefono: '', dni: '', direccion: '', tipoEntrega: 'recojo', direccionDelivery: '' });
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState('');
 
@@ -23,10 +23,12 @@ const CartPanel = () => {
         email: usuario.email || '',
         telefono: usuario.telefono || '',
         dni: usuario.dni || '',
-        direccion: usuario.direccion || ''
+        direccion: usuario.direccion || '',
+        tipoEntrega: 'recojo',
+        direccionDelivery: ''
       });
     } else {
-      setForm({ nombre: '', email: '', telefono: '', dni: '', direccion: '' });
+      setForm({ nombre: '', email: '', telefono: '', dni: '', direccion: '', tipoEntrega: 'recojo', direccionDelivery: '' });
     }
     setMostrarForm(true);
   };
@@ -43,7 +45,9 @@ const CartPanel = () => {
     msg += `DNI: ${form.dni}%0A`;
     msg += `Email: ${form.email}%0A`;
     msg += `Tel\u00e9fono: ${form.telefono}%0A`;
-    if (form.direccion) msg += `Direcci\u00f3n: ${form.direccion}%0A`;
+    msg += `Tipo de entrega: ${form.tipoEntrega === 'delivery' ? 'Delivery' : 'Recojo en tienda'}%0A`;
+    if (form.tipoEntrega === 'delivery') msg += `Direcci\u00f3n de delivery: ${form.direccionDelivery}%0A`;
+    else if (form.direccion) msg += `Direcci\u00f3n: ${form.direccion}%0A`;
     return msg;
   };
 
@@ -62,6 +66,10 @@ const CartPanel = () => {
       setError('El teléfono debe tener entre 7 y 12 dígitos');
       return false;
     }
+    if (form.tipoEntrega === 'delivery' && !form.direccionDelivery.trim()) {
+      setError('Ingresa la dirección de delivery');
+      return false;
+    }
     return true;
   };
 
@@ -74,7 +82,13 @@ const CartPanel = () => {
       await api.post('/api/pedidos', {
         items: items.map(i => ({ productoId: i._id, nombre: i.nombre, precio: i.precio, cantidad: i.cantidad })),
         total: totalPrecio,
-        ...form
+        nombre: form.nombre,
+        email: form.email,
+        telefono: form.telefono,
+        dni: form.dni,
+        direccion: form.direccion,
+        tipoEntrega: form.tipoEntrega,
+        direccionDelivery: form.direccionDelivery
       });
       const msg = generarMensaje();
       window.open(`https://wa.me/${TELEFONO}?text=${msg}`, '_blank');
@@ -151,7 +165,7 @@ const CartPanel = () => {
                 <FaTimes />
               </button>
             </div>
-            <p>Te contactaremos v\u00eda WhatsApp para coordinar el pago y la entrega.</p>
+            <p>Te contactaremos vía WhatsApp para coordinar el pago y la entrega.</p>
             {error && <div className="auth-error" style={{ marginBottom: '10px', color: '#dc3545', background: '#ffe6e6', padding: '8px', borderRadius: '4px', fontSize: '0.9rem' }}>{error}</div>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -172,10 +186,28 @@ const CartPanel = () => {
                 <label>Email *</label>
                 <input type="email" value={form.email} onChange={e => { setError(''); setForm({ ...form, email: e.target.value }); }} required />
               </div>
+
               <div className="form-group">
-                <label>Dirección</label>
-                <input value={form.direccion} onChange={e => { setError(''); setForm({ ...form, direccion: e.target.value }); }} />
+                <label>Tipo de entrega</label>
+                <div className="tipo-entrega-options">
+                  <label className={`tipo-entrega-option ${form.tipoEntrega === 'recojo' ? 'active' : ''}`}>
+                    <input type="radio" name="tipoEntrega" value="recojo" checked={form.tipoEntrega === 'recojo'} onChange={() => setForm({ ...form, tipoEntrega: 'recojo' })} />
+                    <FaStore /> Recojo en tienda
+                  </label>
+                  <label className={`tipo-entrega-option ${form.tipoEntrega === 'delivery' ? 'active' : ''}`}>
+                    <input type="radio" name="tipoEntrega" value="delivery" checked={form.tipoEntrega === 'delivery'} onChange={() => setForm({ ...form, tipoEntrega: 'delivery' })} />
+                    <FaTruck /> Delivery
+                  </label>
+                </div>
               </div>
+
+              {form.tipoEntrega === 'delivery' && (
+                <div className="form-group">
+                  <label>Dirección de delivery *</label>
+                  <input value={form.direccionDelivery} onChange={e => { setError(''); setForm({ ...form, direccionDelivery: e.target.value }); }} placeholder="Av. Ejemplo 123, Lima" required />
+                </div>
+              )}
+
               <div className="cart-panel-form-buttons">
                 <button type="button" className="btn btn-secondary" onClick={() => { setError(''); setMostrarForm(false); }}>Cancelar</button>
                 <button type="submit" className="btn btn-primary" disabled={enviando}>

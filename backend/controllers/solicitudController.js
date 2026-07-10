@@ -13,6 +13,7 @@ const crearSolicitud = async (req, res) => {
   try {
     const datos = { ...req.body };
     if (req.usuario) datos.usuario = req.usuario.id;
+    datos.estadoHistorial = [{ estado: 'pendiente', fecha: new Date(), comentario: 'Solicitud creada' }];
     const solicitud = new SolicitudServicio(datos);
     await solicitud.save();
     res.status(201).json(solicitud);
@@ -23,13 +24,12 @@ const crearSolicitud = async (req, res) => {
 
 const actualizarEstadoSolicitud = async (req, res) => {
   try {
-    const { estado } = req.body;
-    const solicitud = await SolicitudServicio.findByIdAndUpdate(
-      req.params.id,
-      { estado },
-      { new: true }
-    ).populate('servicioId', 'nombre tipo');
+    const { estado, comentario } = req.body;
+    const solicitud = await SolicitudServicio.findById(req.params.id).populate('servicioId', 'nombre tipo');
     if (!solicitud) return res.status(404).json({ mensaje: 'Solicitud no encontrada' });
+    solicitud.estado = estado;
+    solicitud.estadoHistorial.push({ estado, fecha: new Date(), comentario: comentario || '' });
+    await solicitud.save();
     res.json(solicitud);
   } catch (error) {
     res.status(400).json({ mensaje: 'Error al actualizar solicitud', error: error.message });

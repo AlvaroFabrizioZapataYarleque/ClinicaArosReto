@@ -4,7 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import {
   FaUser, FaCar, FaClipboardList, FaKey, FaTruck, FaPlus, FaTrash, FaEdit,
-  FaSave, FaSpinner, FaTimes, FaCheckCircle, FaHourglass, FaBan
+  FaSave, FaSpinner, FaTimes, FaCheckCircle, FaHourglass, FaBan,
+  FaStore, FaTruck as FaTruckIcon, FaBox, FaHistory, FaWrench, FaClipboardCheck,
+  FaCommentAlt, FaSearch
 } from 'react-icons/fa';
 import './Perfil.css';
 
@@ -16,8 +18,68 @@ const TABS = [
   { key: 'password', label: 'Cambiar Contraseña', icon: FaKey }
 ];
 
-const estadosPedido = { pendiente: ['warning', FaHourglass], confirmado: ['info', FaCheckCircle], completado: ['success', FaCheckCircle], cancelado: ['danger', FaBan] };
-const estadosSolicitud = { pendiente: ['warning', FaHourglass], en_proceso: ['info', FaCheckCircle], completado: ['success', FaCheckCircle], cancelado: ['danger', FaBan] };
+const estadosPedido = {
+  pendiente: ['warning', FaHourglass],
+  confirmado: ['info', FaClipboardCheck],
+  en_preparacion: ['primary', FaBox],
+  listo_entrega: ['info', FaTruckIcon],
+  entregado: ['success', FaCheckCircle],
+  cancelado: ['danger', FaBan]
+};
+
+const LABELS_PEDIDO = {
+  pendiente: 'Pedido creado',
+  confirmado: 'Confirmado',
+  en_preparacion: 'En preparación',
+  listo_entrega: 'Listo para entrega',
+  entregado: 'Entregado',
+  cancelado: 'Cancelado'
+};
+
+const estadosSolicitud = {
+  pendiente: ['warning', FaHourglass],
+  vehiculo_en_local: ['info', FaCar],
+  mecanico_asignado: ['primary', FaTruckIcon],
+  en_reparacion: ['primary', FaWrench],
+  listo_entrega: ['info', FaCheckCircle],
+  entregado: ['success', FaCheckCircle],
+  cancelado: ['danger', FaBan]
+};
+
+const LABELS_SOLICITUD = {
+  pendiente: 'Solicitud creada',
+  vehiculo_en_local: 'Vehículo en local',
+  mecanico_asignado: 'Mecánico asignado',
+  en_reparacion: 'En reparación',
+  listo_entrega: 'Listo para entrega',
+  entregado: 'Entregado',
+  cancelado: 'Cancelado'
+};
+
+const Timeline = ({ historial, labels }) => {
+  if (!historial || historial.length === 0) return null;
+  return (
+    <div className="perfil-timeline">
+      {historial.map((h, i) => {
+        const info = estadosPedido[h.estado] || estadosSolicitud[h.estado] || ['secondary', FaHourglass];
+        const [color, Icon] = info;
+        const label = labels[h.estado] || h.estado;
+        return (
+          <div key={i} className={`perfil-timeline-item ${i === historial.length - 1 ? 'actual' : ''}`}>
+            <div className={`perfil-timeline-icon timeline-${color}`}>
+              <Icon />
+            </div>
+            <div className="perfil-timeline-content">
+              <span className="perfil-timeline-estado">{label}</span>
+              <span className="perfil-timeline-fecha">{new Date(h.fecha).toLocaleString('es-PE')}</span>
+              {h.comentario && <span className="perfil-timeline-comentario"><FaCommentAlt /> {h.comentario}</span>}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 const Perfil = () => {
   const { usuario, token, cargando: authCargando } = useAuth();
@@ -27,24 +89,19 @@ const Perfil = () => {
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
 
-  // Perfil form
   const [perfil, setPerfil] = useState({ nombre: '', email: '', telefono: '', dni: '', direccion: '' });
 
-  // Vehículos
   const [vehiculos, setVehiculos] = useState([]);
   const [vehiculoForm, setVehiculoForm] = useState({ marca: '', modelo: '', placa: '', anio: '' });
   const [editandoVehiculo, setEditandoVehiculo] = useState(null);
   const [guardandoVehiculo, setGuardandoVehiculo] = useState(false);
 
-  // Pedidos
   const [pedidos, setPedidos] = useState([]);
   const [cargandoPedidos, setCargandoPedidos] = useState(false);
 
-  // Solicitudes
   const [solicitudes, setSolicitudes] = useState([]);
   const [cargandoSolicitudes, setCargandoSolicitudes] = useState(false);
 
-  // Cambiar contraseña
   const [passForm, setPassForm] = useState({ passwordActual: '', passwordNuevo: '', confirmPassword: '' });
   const [guardandoPass, setGuardandoPass] = useState(false);
 
@@ -153,7 +210,8 @@ const Perfil = () => {
 
   const EstadoBadge = ({ estado, map }) => {
     const [color, Icon] = map[estado] || ['secondary', FaHourglass];
-    return <span className={`estado-badge estado-${color}`}><Icon /> {estado.replace('_', ' ')}</span>;
+    const labels = map === estadosPedido ? LABELS_PEDIDO : LABELS_SOLICITUD;
+    return <span className={`estado-badge estado-${color}`}><Icon /> {labels[estado] || estado.replace(/_/g, ' ')}</span>;
   };
 
   if (authCargando || !usuario) return <div className="perfil-loading"><FaSpinner className="fa-spin" /> Cargando...</div>;
@@ -269,25 +327,37 @@ const Perfil = () => {
                 <p className="perfil-sin-datos">No tienes pedidos registrados</p>
               ) : (
                 <div className="historial-lista">
-                  {pedidos.map(p => (
-                    <div key={p._id} className="historial-card">
-                      <div className="historial-header">
-                        <span className="historial-fecha">{new Date(p.fechaPedido).toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
-                        <EstadoBadge estado={p.estado} map={estadosPedido} />
+                  {pedidos.map(p => {
+                    const [color] = estadosPedido[p.estado] || ['secondary', FaHourglass];
+                    return (
+                      <div key={p._id} className="historial-card">
+                        <div className="historial-header">
+                          <span className="historial-fecha">{new Date(p.fechaPedido).toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                          <EstadoBadge estado={p.estado} map={estadosPedido} />
+                        </div>
+                        <div className="historial-tipo-entrega">
+                          {p.tipoEntrega === 'delivery' ? <><FaTruckIcon /> Delivery - {p.direccionDelivery}</> : <><FaStore /> Recojo en tienda</>}
+                        </div>
+                        <div className="historial-items">
+                          {p.items.map((item, i) => (
+                            <div key={i} className="historial-item">
+                              <span>{item.nombre} x{item.cantidad}</span>
+                              <span>S/{(item.precio * item.cantidad).toFixed(2)}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="historial-total">
+                          <strong>Total: S/{p.total.toFixed(2)}</strong>
+                        </div>
+                        {p.estadoHistorial && p.estadoHistorial.length > 0 && (
+                          <details className="historial-timeline-details">
+                            <summary><FaHistory /> Ver seguimiento</summary>
+                            <Timeline historial={p.estadoHistorial} labels={LABELS_PEDIDO} />
+                          </details>
+                        )}
                       </div>
-                      <div className="historial-items">
-                        {p.items.map((item, i) => (
-                          <div key={i} className="historial-item">
-                            <span>{item.nombre} x{item.cantidad}</span>
-                            <span>S/{(item.precio * item.cantidad).toFixed(2)}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="historial-total">
-                        <strong>Total: S/{p.total.toFixed(2)}</strong>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -308,11 +378,20 @@ const Perfil = () => {
                         <span className="historial-fecha">{new Date(s.createdAt).toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                         <EstadoBadge estado={s.estado} map={estadosSolicitud} />
                       </div>
+                      <div className="historial-tipo-entrega">
+                        {s.tipoEntrega === 'delivery' ? <><FaTruckIcon /> A domicilio - {s.direccionDelivery}</> : <><FaStore /> En local</>}
+                      </div>
                       <div className="historial-detalle">
                         <p><strong>Servicio:</strong> {s.servicioId?.nombre || 'N/A'}</p>
                         {s.vehiculo && <p><strong>Vehículo:</strong> {s.vehiculo}</p>}
                         <p><strong>Detalles:</strong> {s.detalles}</p>
                       </div>
+                      {s.estadoHistorial && s.estadoHistorial.length > 0 && (
+                        <details className="historial-timeline-details">
+                          <summary><FaHistory /> Ver seguimiento</summary>
+                          <Timeline historial={s.estadoHistorial} labels={LABELS_SOLICITUD} />
+                        </details>
+                      )}
                     </div>
                   ))}
                 </div>

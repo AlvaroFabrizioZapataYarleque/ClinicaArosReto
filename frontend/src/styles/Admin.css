@@ -468,7 +468,287 @@
   color: var(--text-muted);
 }
 
+.admin-pedidos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pedido-card {
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(52, 47, 100, 0.1);
+  overflow: hidden;
+}
+
+.pedido-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pedido-card-header:hover {
+  background: rgba(254, 237, 1, 0.05);
+}
+
+.pedido-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pedido-fecha {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.pedido-cliente {
+  font-size: 0.95rem;
+  color: var(--secondary);
+}
+
+.pedido-card-estado .estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+
+.pedido-card-tipo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 12px;
+  background: var(--bg-light);
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+.estado-primary { background: rgba(52, 47, 100, 0.12); color: var(--secondary); }
+.estado-success { background: rgba(25, 135, 84, 0.12); color: #198754; }
+.estado-danger { background: rgba(220, 53, 69, 0.12); color: #dc3545; }
+.estado-warning { background: rgba(255, 193, 7, 0.15); color: #cc9a00; }
+.estado-info { background: rgba(13, 110, 253, 0.12); color: #0d6efd; }
+
+.pedido-card-body {
+  padding: 0 20px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pedido-detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 16px 0;
+}
+
+.pedido-detalle-seccion h4 {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pedido-detalle-seccion p {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.pedido-detalle-seccion p strong {
+  color: var(--secondary);
+}
+
+.pedido-item-detalle {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  padding: 3px 0;
+}
+
+.pedido-total-detalle {
+  text-align: right;
+  font-size: 0.95rem;
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--secondary);
+}
+
+.pedido-historial {
+  padding: 12px 0;
+}
+
+.pedido-historial h4,
+.pedido-acciones h4 {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-left: 20px;
+  border-left: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+.timeline-item {
+  display: flex;
+  gap: 14px;
+  padding: 8px 0;
+  position: relative;
+}
+
+.timeline-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  margin-left: -34px;
+  z-index: 1;
+  border: 2px solid white;
+}
+
+.timeline-warning { background: rgba(255, 193, 7, 0.2); color: #cc9a00; }
+.timeline-info { background: rgba(13, 110, 253, 0.15); color: #0d6efd; }
+.timeline-primary { background: rgba(52, 47, 100, 0.15); color: var(--secondary); }
+.timeline-success { background: rgba(25, 135, 84, 0.15); color: #198754; }
+.timeline-danger { background: rgba(220, 53, 69, 0.15); color: #dc3545; }
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timeline-estado {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.timeline-fecha {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.timeline-comentario {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-style: italic;
+}
+
+.timeline-item.actual .timeline-icon {
+  box-shadow: 0 0 0 3px var(--primary);
+}
+
+.pedido-acciones {
+  padding: 12px 0;
+}
+
+.pedido-selector-estados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-estado {
+  padding: 8px 14px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-estado:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-estado:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-estado-principal {
+  border-color: var(--primary);
+  background: rgba(254, 237, 1, 0.15);
+}
+
+.btn-estado-success { border-color: #198754; color: #198754; }
+.btn-estado-success:hover:not(:disabled) { background: #198754; color: white; }
+.btn-estado-info { border-color: #0d6efd; color: #0d6efd; }
+.btn-estado-info:hover:not(:disabled) { background: #0d6efd; color: white; }
+.btn-estado-primary { border-color: var(--secondary); color: var(--secondary); }
+.btn-estado-primary:hover:not(:disabled) { background: var(--secondary); color: white; }
+.btn-estado-warning { border-color: #cc9a00; color: #cc9a00; }
+.btn-estado-warning:hover:not(:disabled) { background: #cc9a00; color: white; }
+.btn-estado-danger { border-color: #dc3545; color: #dc3545; }
+.btn-estado-danger:hover:not(:disabled) { background: #dc3545; color: white; }
+
+.pedido-comentario {
+  margin-top: 12px;
+}
+
+.pedido-comentario input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.pedido-comentario input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
 @media (max-width: 768px) {
+  .pedido-card-header {
+    flex-wrap: wrap;
+  }
+
+  .pedido-detalles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pedido-selector-estados {
+    flex-direction: column;
+  }
+
   .admin-charts {
     grid-template-columns: 1fr;
   }

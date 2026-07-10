@@ -7,6 +7,12 @@ const pedidoItemSchema = new mongoose.Schema({
   cantidad: Number,
 }, { _id: false });
 
+const estadoHistorialSchema = new mongoose.Schema({
+  estado: { type: String, required: true },
+  fecha: { type: Date, default: Date.now },
+  comentario: { type: String, default: '' }
+}, { _id: false });
+
 const pedidoSchema = new mongoose.Schema({
   usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', default: null },
   items: [pedidoItemSchema],
@@ -16,7 +22,14 @@ const pedidoSchema = new mongoose.Schema({
   telefono: { type: String, required: true },
   dni: { type: String, required: true },
   direccion: { type: String, default: '' },
-  estado: { type: String, enum: ['pendiente', 'confirmado', 'completado', 'cancelado'], default: 'pendiente' },
+  tipoEntrega: { type: String, enum: ['recojo', 'delivery'], default: 'recojo' },
+  direccionDelivery: { type: String, default: '' },
+  estado: {
+    type: String,
+    enum: ['pendiente', 'confirmado', 'en_preparacion', 'listo_entrega', 'entregado', 'cancelado'],
+    default: 'pendiente'
+  },
+  estadoHistorial: [estadoHistorialSchema],
   fechaPedido: { type: Date, default: Date.now }
 });
 

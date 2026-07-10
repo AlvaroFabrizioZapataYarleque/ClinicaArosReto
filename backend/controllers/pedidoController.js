@@ -4,6 +4,7 @@ const crearPedido = async (req, res, next) => {
   try {
     const datos = { ...req.body };
     if (req.usuario) datos.usuario = req.usuario.id;
+    datos.estadoHistorial = [{ estado: 'pendiente', fecha: new Date(), comentario: 'Pedido creado' }];
     const pedido = await Pedido.create(datos);
     res.status(201).json(pedido);
   } catch (error) {
@@ -75,8 +76,12 @@ const obtenerMetricas = async (req, res, next) => {
 
 const actualizarEstadoPedido = async (req, res, next) => {
   try {
-    const pedido = await Pedido.findByIdAndUpdate(req.params.id, { estado: req.body.estado }, { new: true });
+    const { estado, comentario } = req.body;
+    const pedido = await Pedido.findById(req.params.id);
     if (!pedido) return res.status(404).json({ mensaje: 'Pedido no encontrado' });
+    pedido.estado = estado;
+    pedido.estadoHistorial.push({ estado, fecha: new Date(), comentario: comentario || '' });
+    await pedido.save();
     res.json(pedido);
   } catch (error) {
     next(error);
