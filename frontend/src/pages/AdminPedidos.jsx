@@ -10,7 +10,6 @@ const ESTADOS_PEDIDO = [
   { value: 'en_preparacion', label: 'En preparación', color: 'primary', icon: FaBox },
   { value: 'listo_entrega', label: 'Listo para entrega', color: 'info', icon: FaTruck },
   { value: 'entregado', label: 'Entregado', color: 'success', icon: FaCheckCircle },
-  { value: 'cancelado', label: 'Cancelado', color: 'danger', icon: FaBan },
   { value: 'rechazado', label: 'Rechazado', color: 'danger', icon: FaBan }
 ];
 
@@ -59,7 +58,7 @@ const AdminPedidos = () => {
   };
 
   const getEstadosDisponibles = (estadoActual) => {
-    if (estadoActual === 'cancelado' || estadoActual === 'entregado') return [];
+    if (estadoActual === 'cancelado' || estadoActual === 'entregado' || estadoActual === 'rechazado') return [];
     return ESTADOS_PEDIDO.filter(e => e.value !== estadoActual);
   };
 

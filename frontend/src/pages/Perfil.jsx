@@ -331,7 +331,7 @@ const Perfil = () => {
                 <p className="perfil-sin-datos">No tienes pedidos completados o cancelados</p>
               ) : (
                 <div className="historial-lista">
-                  {pedidos.filter(p => ['entregado', 'cancelado', 'rechazado'].includes(p.estado)).map(p => {
+                  {pedidos.filter(p => ['entregado', 'cancelado', 'rechazado', 'completado'].includes(p.estado)).map(p => {
                     const [color] = estadosPedido[p.estado] || ['secondary', FaHourglass];
                     return (
                       <div key={p._id} className="historial-card">
@@ -369,14 +369,14 @@ const Perfil = () => {
 
           {tab === 'solicitudes' && (
             <div className="perfil-historial">
-              <h3>Historial de Solicitudes de Servicio</h3>
+              <h3>Historial de Servicios</h3>
               {cargandoSolicitudes ? (
                 <div className="perfil-loading"><FaSpinner className="fa-spin" /> Cargando...</div>
               ) : solicitudes.length === 0 ? (
-                <p className="perfil-sin-datos">No tienes solicitudes completadas o canceladas</p>
+                <p className="perfil-sin-datos">No tienes servicios completados o cancelados</p>
               ) : (
                 <div className="historial-lista">
-                  {solicitudes.filter(s => ['entregado', 'cancelado', 'rechazado'].includes(s.estado)).map(s => (
+                  {solicitudes.filter(s => ['entregado', 'cancelado', 'rechazado', 'completado'].includes(s.estado)).map(s => (
                     <div key={s._id} className="historial-card">
                       <div className="historial-header">
                         <span className="historial-fecha">{new Date(s.createdAt).toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>

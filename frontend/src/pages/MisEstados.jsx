@@ -36,16 +36,24 @@ const SOLICITUD_STEPS_BY_TYPE = {
 const Stepper = ({ steps, estadoActual, tipo }) => {
   if (!estadoActual) return null;
 
-  if (['cancelado', 'rechazado'].includes(estadoActual)) {
+  const normalizarEstado = (est) => {
+    if (est === 'completado') return 'entregado';
+    if (est === 'en_proceso') return 'en_reparacion';
+    return est;
+  };
+
+  const estadoNormalizado = normalizarEstado(estadoActual);
+
+  if (['cancelado', 'rechazado'].includes(estadoNormalizado)) {
     return (
       <div className="stepper-cancelado">
         <FaBan className="stepper-cancelado-icon" />
-        <p>{estadoActual === 'rechazado' ? 'Pedido rechazado' : 'Pedido cancelado'}</p>
+        <p>Pedido cancelado / rechazado</p>
       </div>
     );
   }
 
-  const currentIdx = steps.findIndex(s => s.key === estadoActual);
+  const currentIdx = steps.findIndex(s => s.key === estadoNormalizado);
 
   return (
     <div className="stepper">

@@ -11,7 +11,6 @@ const ESTADOS_SOLICITUD = [
   { value: 'en_reparacion', label: 'En reparación', color: 'primary', icon: FaWrench },
   { value: 'listo_entrega', label: 'Listo para entrega', color: 'info', icon: FaCheckCircle },
   { value: 'entregado', label: 'Entregado', color: 'success', icon: FaCheckCircle },
-  { value: 'cancelado', label: 'Cancelado', color: 'danger', icon: FaBan },
   { value: 'rechazado', label: 'Rechazado', color: 'danger', icon: FaBan }
 ];
 
@@ -54,7 +53,7 @@ const AdminSolicitudes = () => {
   };
 
   const getEstadosDisponibles = (estadoActual, tipoEntrega) => {
-    if (estadoActual === 'cancelado' || estadoActual === 'entregado') return [];
+    if (estadoActual === 'cancelado' || estadoActual === 'entregado' || estadoActual === 'rechazado') return [];
 
     let disponibles = ESTADOS_SOLICITUD.filter(e => e.value !== estadoActual);
 
@@ -65,7 +64,7 @@ const AdminSolicitudes = () => {
     }
 
     if (estadoActual === 'pendiente') {
-      return disponibles.filter(e => e.value === 'vehiculo_en_local' || e.value === 'mecanico_asignado' || e.value === 'cancelado');
+      return disponibles.filter(e => e.value === 'vehiculo_en_local' || e.value === 'mecanico_asignado' || e.value === 'rechazado');
     }
 
     return disponibles;
