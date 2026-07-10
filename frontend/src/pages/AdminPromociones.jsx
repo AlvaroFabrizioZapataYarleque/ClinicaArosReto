@@ -96,6 +96,7 @@ const AdminPromociones = () => {
         <button className="btn-admin" onClick={abrirNuevo}><FaPlus /> Nueva Promoción</button>
       </div>
 
+      <div className="admin-table-wrapper">
       <table className="admin-table">
         <thead>
           <tr>
@@ -127,6 +128,7 @@ const AdminPromociones = () => {
           ))}
         </tbody>
       </table>
+      </div>
 
       {modal && (
         <div className="admin-modal-overlay" onClick={() => setModal(false)}>
