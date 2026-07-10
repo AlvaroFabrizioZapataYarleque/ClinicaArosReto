@@ -1,0 +1,19 @@
+{
+  "name": "Aros Reto - Clínica de Aros",
+  "short_name": "Aros Reto",
+  "description": "Clínica de Aros Reto S.A.C. - Reparación y mantenimiento de aros de todo tipo de automóviles",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#342f64",
+  "theme_color": "#342f64",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "automotive"]
+}
