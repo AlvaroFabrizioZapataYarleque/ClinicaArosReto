@@ -5,7 +5,7 @@ import api from '../api';
 import { FaTrash, FaPlus, FaMinus, FaWhatsapp, FaTimes, FaShoppingCart, FaSpinner, FaTruck, FaStore } from 'react-icons/fa';
 import './CartPanel.css';
 
-const TELEFONO = '51934096012';
+const TELEFONO = '51935430323'; // Número de WhatsApp del negocio
 
 const CartPanel = () => {
   const { items, eliminar, actualizarCantidad, totalPrecio, limpiar, panelAbierto, cerrarPanel } = useCart();

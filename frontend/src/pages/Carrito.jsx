@@ -5,7 +5,7 @@ import api from '../api';
 import { FaTrash, FaPlus, FaMinus, FaWhatsapp, FaShoppingCart } from 'react-icons/fa';
 import '../styles/Carrito.css';
 
-const TELEFONO = '51934096012';
+const TELEFONO = '51935430323';
 
 const Carrito = () => {
   const { items, eliminar, actualizarCantidad, totalPrecio, limpiar } = useCart();

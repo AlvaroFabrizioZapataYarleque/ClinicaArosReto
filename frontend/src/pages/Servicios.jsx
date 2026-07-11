@@ -3,7 +3,7 @@ import { FaWrench, FaWhatsapp, FaTimes, FaUser, FaBuilding, FaClipboardList, FaS
 import api from '../api';
 import './Servicios.css';
 
-const TELEFONO = '51934096012';
+const TELEFONO = '51935430323';
 
 const Servicios = () => {
   const [servicios, setServicios] = useState([]);

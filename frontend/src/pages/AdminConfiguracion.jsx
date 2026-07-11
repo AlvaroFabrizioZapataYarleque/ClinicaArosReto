@@ -101,7 +101,7 @@ const AdminConfiguracion = () => {
         </div>
         <div className="form-group">
           <label><FaWhatsapp /> WhatsApp (número sin +)</label>
-          <input value={form.whatsapp} onChange={e => setForm({ ...form, whatsapp: e.target.value })} placeholder="51934096012" />
+          <input value={form.whatsapp} onChange={e => setForm({ ...form, whatsapp: e.target.value })} placeholder="51935430323" />
         </div>
 
         <div className="admin-modal-buttons" style={{ marginTop: 24 }}>

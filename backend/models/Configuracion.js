@@ -9,7 +9,7 @@ const configuracionSchema = new mongoose.Schema({
   lng: { type: Number, default: -76.9500 },
   facebook: { type: String, default: '' },
   instagram: { type: String, default: '' },
-  whatsapp: { type: String, default: '51934096012' },
+  whatsapp: { type: String, default: '51935430323' },
   descripcion: { type: String, default: '' }
 });
 
